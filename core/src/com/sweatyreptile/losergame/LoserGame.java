@@ -8,7 +8,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class LoserGame extends Game {
+public class LoserGame extends Game implements ScreenFinishedListener{
 	SpriteBatch batch;
 	AssetManager assets;
 	
@@ -17,12 +17,17 @@ public class LoserGame extends Game {
 		assets = new AssetManager();
 		batch = new SpriteBatch();
 
-		Texture logic = new Texture("badlogic.jpg");
 		assets.load("badlogic.jpg", Texture.class);
 		Screen testScreen = new TestLevelScreen(batch, assets);
 		Screen loadingScreen = new LoadingScreen(this, assets, testScreen);
 		
 		setScreen(loadingScreen);
+	}
+
+	@Override
+	public void onFinish(FinishableScreen finished, Screen next) {
+		setScreen(next);
+		Gdx.app.log("A", next.getClass().toString());
 	}
 	
 }
