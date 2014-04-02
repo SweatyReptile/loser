@@ -6,7 +6,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -15,25 +14,28 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class TestLevelScreen implements Screen {
 
+	private int width;
+	private int height;
+	
 	private Camera camera;
 	private SpriteBatch spriteRenderer;
 	private Box2DDebugRenderer physRenderer;
 	
 	private AssetManager assets;
-	private Texture image;
 	
 	private World physWorld;
 	
-	public TestLevelScreen(SpriteBatch batch, AssetManager assets){
+	public TestLevelScreen(SpriteBatch batch, AssetManager assets, int width, int height){
 		spriteRenderer = batch;
 		this.assets = assets;
+		this.width = width;
+		this.height = height;
 	}
 	
 	@Override
@@ -44,16 +46,11 @@ public class TestLevelScreen implements Screen {
 		physWorld.step(1/60f, 6, 2); // TODO: Change step
 		
 		physRenderer.render(physWorld, camera.combined);
-		
-		spriteRenderer.begin();
-		//spriteRenderer.draw(image, 0, 0);
-		spriteRenderer.end();
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		camera.position.set(new Vector3(width / 2, height / 2, 0));
-		Gdx.app.log("wow", "height: " + height + ", width: " + width);
 		camera.viewportHeight = height;
 		camera.viewportWidth = width;
 		camera.update();
@@ -62,14 +59,9 @@ public class TestLevelScreen implements Screen {
 
 	@Override
 	public void show() {
-		int width = Gdx.graphics.getWidth();
-		int height = Gdx.graphics.getHeight();
-		
 		camera = new OrthographicCamera(width, height);
 		
 		resize(width, height);
-		
-		image = assets.get("badlogic.jpg", Texture.class);
 		
 		physWorld = new World(new Vector2(0, -392f), true);
 		physRenderer = new Box2DDebugRenderer();
@@ -96,7 +88,7 @@ public class TestLevelScreen implements Screen {
 		fixtureDef.density = 2f;
 		fixtureDef.friction = 0.4f;
 		fixtureDef.restitution = .7f;
-		Fixture fixture = body.createFixture(fixtureDef);
+		body.createFixture(fixtureDef);
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth, 10f);
@@ -122,11 +114,9 @@ public class TestLevelScreen implements Screen {
 
 	}
 
-	// Don't dispose of the renderer here, so that 
-	// it may be used by other Screens
 	@Override
 	public void dispose() {
-
+		physWorld.dispose();
 	}
 
 }
