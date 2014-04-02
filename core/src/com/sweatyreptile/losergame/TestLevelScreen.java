@@ -54,8 +54,9 @@ public class TestLevelScreen implements Screen {
 	public void resize(int width, int height) {
 		camera.position.set(new Vector3(width / 2, height / 2, 0));
 		Gdx.app.log("wow", "height: " + height + ", width: " + width);
-		camera.viewportHeight = 144;
-		camera.viewportWidth = 256;
+		camera.viewportHeight = height;
+		camera.viewportWidth = width;
+		camera.update();
 		spriteRenderer.setProjectionMatrix(camera.combined);
 	}
 
@@ -63,10 +64,14 @@ public class TestLevelScreen implements Screen {
 	public void show() {
 		int width = Gdx.graphics.getWidth();
 		int height = Gdx.graphics.getHeight();
+		
 		camera = new OrthographicCamera(width, height);
+		
 		resize(width, height);
+		
 		image = assets.get("badlogic.jpg", Texture.class);
-		physWorld = new World(new Vector2(0, -9.8f), true);
+		
+		physWorld = new World(new Vector2(0, -392f), true);
 		physRenderer = new Box2DDebugRenderer();
 		setupWorld();
 	}
@@ -90,7 +95,7 @@ public class TestLevelScreen implements Screen {
 		fixtureDef.shape = circle;
 		fixtureDef.density = 2f;
 		fixtureDef.friction = 0.4f;
-		fixtureDef.restitution = 2f;
+		fixtureDef.restitution = .7f;
 		Fixture fixture = body.createFixture(fixtureDef);
 		
 		PolygonShape groundBox = new PolygonShape();
