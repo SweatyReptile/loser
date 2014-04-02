@@ -20,6 +20,9 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class TestLevelScreen implements Screen {
 
+	// 1.8 * M_TO_PIX = 720 pixels (screen height)
+	private static final int M_TO_PIX = 400; 
+	
 	private int width;
 	private int height;
 	
@@ -63,38 +66,38 @@ public class TestLevelScreen implements Screen {
 		
 		resize(width, height);
 		
-		physWorld = new World(new Vector2(0, -392f), true);
+		physWorld = new World(new Vector2(0, -9.8f * M_TO_PIX), true);
 		physRenderer = new Box2DDebugRenderer();
 		setupWorld();
 	}
 	
 	private void setupWorld() {
-		BodyDef bodyDef = new BodyDef();
+		BodyDef circleDef = new BodyDef();
 		BodyDef groundDef = new BodyDef();
 		
-		bodyDef.type = BodyType.DynamicBody;
+		circleDef.type = BodyType.DynamicBody;
 		groundDef.type = BodyType.StaticBody;
 		
-		bodyDef.position.set(0, 100f);
+		circleDef.position.set(width / 2, height/2);
 		groundDef.position.set(0, 0);
 		
-		Body body = physWorld.createBody(bodyDef);
+		Body circleBody = physWorld.createBody(circleDef);
 		Body groundBody = physWorld.createBody(groundDef);
 		
 		FixtureDef fixtureDef = new FixtureDef();
-		CircleShape circle = new CircleShape();
-		circle.setRadius(20f);
-		fixtureDef.shape = circle;
-		fixtureDef.density = 2f;
+		CircleShape circleShape = new CircleShape();
+		circleShape.setRadius(.15f/2 * M_TO_PIX);
+		fixtureDef.shape = circleShape;
+		fixtureDef.density = 1f * M_TO_PIX * M_TO_PIX;
 		fixtureDef.friction = 0.4f;
-		fixtureDef.restitution = .7f;
-		body.createFixture(fixtureDef);
+		fixtureDef.restitution = .5f;
+		circleBody.createFixture(fixtureDef);
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth, 10f);
 		groundBody.createFixture(groundBox, 0f);
 		
-		circle.dispose();
+		circleShape.dispose();
 		groundBox.dispose();
 		
 	}
