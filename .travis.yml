@@ -1,7 +1,15 @@
 language: java
 jdk: oraclejdk7
 
-before_install: chmod +x gradlew
+before_install:
+  - chmod +x gradlew
+  - sudo apt-get update -qq
+  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch; fi
+  - wget http://dl.google.com/android/android-sdk_r22.6.2-linux.tgz
+  - tar xzf android-sdk_r22.6.2-linux.tgz
+  - export ANDROID_HOME=$PWD/android-sdk-linux
+  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+  - android update sdk --filter platform-tool,platform,tool --force --no-ui
 install: ./gradlew :desktop:assemble
 script: ./gradlew :desktop:check
 
