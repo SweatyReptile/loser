@@ -18,10 +18,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class TestLevelScreen implements Screen {
-
-	// 1.8 * M_TO_PIX = 720 pixels (screen height)
-	private static final int M_TO_PIX = 400; 
+public class TestLevelScreen implements Screen { 
 	
 	private int width;
 	private int height;
@@ -66,7 +63,7 @@ public class TestLevelScreen implements Screen {
 		
 		resize(width, height);
 		
-		physWorld = new World(new Vector2(0, -9.8f * M_TO_PIX), true);
+		physWorld = new World(new Vector2(-9.8f, 0f), true);
 		physRenderer = new Box2DDebugRenderer();
 		setupWorld();
 	}
@@ -86,9 +83,9 @@ public class TestLevelScreen implements Screen {
 		
 		FixtureDef fixtureDef = new FixtureDef();
 		CircleShape circleShape = new CircleShape();
-		circleShape.setRadius(.15f/2 * M_TO_PIX);
+		circleShape.setRadius(.15f/2);
 		fixtureDef.shape = circleShape;
-		fixtureDef.density = 1f * M_TO_PIX * M_TO_PIX;
+		fixtureDef.density = 1f;
 		fixtureDef.friction = 0.4f;
 		fixtureDef.restitution = .5f;
 		circleBody.createFixture(fixtureDef);
