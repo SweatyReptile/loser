@@ -1,0 +1,8 @@
+branches:
+  only: master
+
+language: java
+jdk: oraclejdk7
+
+before_script: ./gradlew :desktop:assemble
+script: ./gradlew :desktop:check
