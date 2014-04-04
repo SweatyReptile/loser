@@ -1,8 +1,8 @@
+before_script: "chmod +x gradlew"
+script: "./gradlew :desktop:assemble && ./gradlew :desktop:check"
+
 branches:
   only: master
 
 language: java
 jdk: oraclejdk7
-
-before_script: "chmod +x gradlew"
-script: "./gradlew :desktop:assemble && ./gradlew :desktop:check"
