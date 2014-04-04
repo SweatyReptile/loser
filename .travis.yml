@@ -4,5 +4,7 @@ branches:
 language: java
 jdk: oraclejdk7
 
-before_script: ./gradlew :desktop:assemble
+before_script: 
+  - chmod +x gradlew
+  - ./gradlew :desktop:assemble
 script: ./gradlew :desktop:check
