@@ -10,8 +10,8 @@ before_install:
   - export ANDROID_HOME=$PWD/android-sdk-linux
   - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
   - ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --filter platform-tool,platform,tool,android-19,extra-android-support,build-tools --no-ui --force
-install: ./gradlew :desktop:assemble
-script: ./gradlew :desktop:check
+install: ./gradlew assemble
+script: ./gradlew check
 
 branches:
   only: master
