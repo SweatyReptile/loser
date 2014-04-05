@@ -103,7 +103,9 @@ proguard/
 build/
 libs/
 war/
+
 !gradle-wrapper.jar
+!lib/
 
 #Sublime Text project files
 *.sublime-*
