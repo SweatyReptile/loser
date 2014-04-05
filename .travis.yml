@@ -13,7 +13,7 @@ before_install:
   # The '3' in the previous command is the id of Build-Tools.
   # It is only included to get this working, and WILL BREAK
 install: ./gradlew :desktop:assemble :android:assemble
-script: ./gradlew :desktop:check :android:assemble
+script: ./gradlew :desktop:check :android:check
 
 branches:
   only: master
