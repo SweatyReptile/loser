@@ -12,8 +12,8 @@ before_install:
   - ( sleep 5 && while [ 1 ]; do sleep 1; echo y; done ) | android update sdk --all --filter 3,platform-tool,tool,android-19,extra-android-support, --no-ui --force
   # The '3' in the previous command is the id of Build-Tools.
   # It is only included to get this working, and WILL BREAK
-install: ./gradlew assemble
-script: ./gradlew check
+install: ./gradlew :desktop:assemble :android:assemble
+script: ./gradlew :desktop:check :android:assemble
 
 branches:
   only: master
