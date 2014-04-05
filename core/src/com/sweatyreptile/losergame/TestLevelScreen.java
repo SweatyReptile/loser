@@ -22,6 +22,9 @@ public class TestLevelScreen implements Screen {
 	
 	private int width;
 	private int height;
+	private float viewportWidth;
+	private float viewportHeight;
+	
 	
 	private Camera camera;
 	private SpriteBatch spriteRenderer;
@@ -31,11 +34,14 @@ public class TestLevelScreen implements Screen {
 	
 	private World physWorld;
 	
-	public TestLevelScreen(SpriteBatch batch, AssetManager assets, int width, int height){
+	public TestLevelScreen(SpriteBatch batch, AssetManager assets,
+			int width, int height, float viewportWidth, float viewportHeight){
 		spriteRenderer = batch;
 		this.assets = assets;
 		this.width = width;
 		this.height = height;
+		this.viewportWidth = viewportWidth;
+		this.viewportHeight = viewportHeight;
 	}
 	
 	@Override
@@ -50,9 +56,9 @@ public class TestLevelScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		camera.position.set(new Vector3(width / 2, height / 2, 0));
-		camera.viewportHeight = height;
-		camera.viewportWidth = width;
+		camera.position.set(new Vector3(viewportWidth/ 2, viewportHeight/ 2, 0));
+		camera.viewportHeight = viewportHeight;
+		camera.viewportWidth = viewportWidth;
 		camera.update();
 		spriteRenderer.setProjectionMatrix(camera.combined);
 	}
@@ -63,7 +69,7 @@ public class TestLevelScreen implements Screen {
 		
 		resize(width, height);
 		
-		physWorld = new World(new Vector2(-9.8f, 0f), true);
+		physWorld = new World(new Vector2(0f, -9.8f), true);
 		physRenderer = new Box2DDebugRenderer();
 		setupWorld();
 	}
@@ -75,8 +81,8 @@ public class TestLevelScreen implements Screen {
 		circleDef.type = BodyType.DynamicBody;
 		groundDef.type = BodyType.StaticBody;
 		
-		circleDef.position.set(width / 2, height/2);
-		groundDef.position.set(0, 0);
+		circleDef.position.set(viewportWidth / 2, viewportHeight/2);
+		groundDef.position.set(viewportWidth / 2, 0);
 		
 		Body circleBody = physWorld.createBody(circleDef);
 		Body groundBody = physWorld.createBody(groundDef);
@@ -91,7 +97,7 @@ public class TestLevelScreen implements Screen {
 		circleBody.createFixture(fixtureDef);
 		
 		PolygonShape groundBox = new PolygonShape();
-		groundBox.setAsBox(camera.viewportWidth, 10f);
+		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
 		groundBody.createFixture(groundBox, 0f);
 		
 		circleShape.dispose();

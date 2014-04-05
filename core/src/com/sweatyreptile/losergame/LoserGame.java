@@ -17,7 +17,10 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		batch = new SpriteBatch();
 
 		assets.load("badlogic.jpg", Texture.class);
-		Screen testScreen = new TestLevelScreen(batch, assets, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		
+		Screen testScreen = new TestLevelScreen(batch, assets, 
+				Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 3.2f, 1.8f);
+		
 		Screen loadingScreen = new LoadingScreen(this, assets, testScreen);
 		
 		setScreen(loadingScreen);
