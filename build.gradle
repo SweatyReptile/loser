@@ -37,6 +37,7 @@ project(":core") {
     
     dependencies {
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        compile files('lib/bodyeditor-loader-2.9.2.jar')
     }
 }
 
