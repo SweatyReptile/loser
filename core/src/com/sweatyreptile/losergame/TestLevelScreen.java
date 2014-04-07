@@ -85,6 +85,8 @@ public class TestLevelScreen implements Screen {
 		
 		duckDef.type = BodyType.DynamicBody;
 		duckDef.position.set(viewportWidth / 2 + .2f, viewportHeight);
+		duckDef.fixedRotation = true;
+		
 		Body duckBody = physWorld.createBody(duckDef);
 		
 		PolygonShape groundBox = new PolygonShape();
