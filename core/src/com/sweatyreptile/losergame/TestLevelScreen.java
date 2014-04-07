@@ -1,6 +1,6 @@
 package com.sweatyreptile.losergame;
 
-import aurelienribon.bodyeditor.BodyEditorLoader;
+import aurelienribon.bodyeditor.FixedBodyEditorLoader;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -77,23 +77,23 @@ public class TestLevelScreen implements Screen {
 	}
 	
 	private void setupWorld() {
-		//BodyEditorLoader bodyLoader = new BodyEditorLoader(Gdx.files.internal("duck.json"));
+		FixedBodyEditorLoader bodyLoader = new FixedBodyEditorLoader(Gdx.files.internal("duck.json"));
 		
 		BodyDef circleDef = new BodyDef();
 		BodyDef groundDef = new BodyDef();
-		//BodyDef duckDef = new BodyDef();
+		BodyDef duckDef = new BodyDef();
 		
 		circleDef.type = BodyType.DynamicBody;
 		groundDef.type = BodyType.StaticBody;
-		//duckDef.type = BodyType.DynamicBody;
+		duckDef.type = BodyType.DynamicBody;
 		
 		circleDef.position.set(viewportWidth / 2, viewportHeight/2);
 		groundDef.position.set(viewportWidth / 2, 0);
-		//duckDef.position.set(viewportWidth / 2 + .2f, viewportHeight);
+		duckDef.position.set(viewportWidth / 2 + .2f, viewportHeight);
 		
 		Body circleBody = physWorld.createBody(circleDef);
 		Body groundBody = physWorld.createBody(groundDef);
-		//Body duckBody = physWorld.createBody(duckDef);
+		Body duckBody = physWorld.createBody(duckDef);
 		
 		FixtureDef fixtureDef = new FixtureDef();
 		CircleShape circleShape = new CircleShape();
@@ -108,7 +108,7 @@ public class TestLevelScreen implements Screen {
 		duckFixtureDef.density = 0.5f;
 		fixtureDef.friction = 0.4f;
 		fixtureDef.restitution = .5f;
-		//bodyLoader.attachFixture(duckBody, "dummy_duck", duckFixtureDef, .2f);
+		bodyLoader.attachFixture(duckBody, "dummy_duck", duckFixtureDef, .2f);
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
