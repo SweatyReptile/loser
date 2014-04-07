@@ -18,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 
 public class TestLevelScreen implements Screen { 
 	
@@ -82,23 +83,19 @@ public class TestLevelScreen implements Screen {
 		BodyDef duckDef = new BodyDef();
 		
 		groundDef.type = BodyType.StaticBody;
-		duckDef.type = BodyType.DynamicBody;
-		
 		groundDef.position.set(viewportWidth / 2, 0);
-		duckDef.position.set(viewportWidth / 2 + .2f, viewportHeight);
-		
 		Body groundBody = physWorld.createBody(groundDef);
-		Body duckBody = physWorld.createBody(duckDef);
 		
-		FixtureDef duckFixtureDef = new FixtureDef();
-		duckFixtureDef.density = 0.5f;
-		duckFixtureDef.friction = 0.4f;
-		duckFixtureDef.restitution = .5f;
-		bodyLoader.attachFixture(duckBody, "dummy_duck", duckFixtureDef, .2f);
+		duckDef.type = BodyType.DynamicBody;
+		duckDef.position.set(viewportWidth / 2 + .2f, viewportHeight);
+		Body duckBody = physWorld.createBody(duckDef);
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
 		groundBody.createFixture(groundBox, 0f);
+		
+		FixtureDef duckFixtureDef = new DuckFixtureDef();
+		bodyLoader.attachFixture(duckBody, "dummy_duck", duckFixtureDef, .2f);
 		
 		groundBox.dispose();
 		
