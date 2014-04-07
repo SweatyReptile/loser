@@ -79,42 +79,28 @@ public class TestLevelScreen implements Screen {
 	private void setupWorld() {
 		FixedBodyEditorLoader bodyLoader = new FixedBodyEditorLoader(Gdx.files.internal("duck.json"));
 		
-		BodyDef circleDef = new BodyDef();
 		BodyDef groundDef = new BodyDef();
 		BodyDef duckDef = new BodyDef();
 		
-		circleDef.type = BodyType.DynamicBody;
 		groundDef.type = BodyType.StaticBody;
 		duckDef.type = BodyType.DynamicBody;
 		
-		circleDef.position.set(viewportWidth / 2, viewportHeight/2);
 		groundDef.position.set(viewportWidth / 2, 0);
 		duckDef.position.set(viewportWidth / 2 + .2f, viewportHeight);
 		
-		Body circleBody = physWorld.createBody(circleDef);
 		Body groundBody = physWorld.createBody(groundDef);
 		Body duckBody = physWorld.createBody(duckDef);
 		
-		FixtureDef fixtureDef = new FixtureDef();
-		CircleShape circleShape = new CircleShape();
-		circleShape.setRadius(.15f/2);
-		fixtureDef.shape = circleShape;
-		fixtureDef.density = 1f;
-		fixtureDef.friction = 0.4f;
-		fixtureDef.restitution = .5f;
-		circleBody.createFixture(fixtureDef);
-		
 		FixtureDef duckFixtureDef = new FixtureDef();
 		duckFixtureDef.density = 0.5f;
-		fixtureDef.friction = 0.4f;
-		fixtureDef.restitution = .5f;
+		duckFixtureDef.friction = 0.4f;
+		duckFixtureDef.restitution = .5f;
 		bodyLoader.attachFixture(duckBody, "dummy_duck", duckFixtureDef, .2f);
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
 		groundBody.createFixture(groundBox, 0f);
 		
-		circleShape.dispose();
 		groundBox.dispose();
 		
 	}
