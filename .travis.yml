@@ -3,7 +3,7 @@ env:
     - secure: "Hw0U6ZBwZkWMx6QoXC0epLPBUw1YWDwzOAfB1NV0CQMeEVkDVxjjt/kKrpg0YjrTzZo2dVmXmdCpR/it9vKX18fCqxZhyEXEy++NhaQuCmFwKGoLeeORE6iP6F1W3TZLZpoYnI6M+5SxSQwdJb9yhfxmOdPL06MaBmrGuqHvFzg="
     - secure: "XBY6qnA3evV2SZy67ZLs5iowcUe/Qfw6R2B9iv2ruMwI8S481LhKKgxOzGftlvOYSfluf1PgZh/WwyL6/OBKM/iQ6y3OHQaiIbfscszVuj1XgC8o6JaMK//rMDLBHyEyYMT9m83YWcYEzhAVZwKRYCwFh8dcfIOmxhTMHIDLJiw="
     - secure: "GE87rjqmPDq/gn662DhW73LeHbD6gLMZiTRzRQft8xIQdO+sl0/8yku+IGpelErqSpRI8c1vjlcryA6Ob1PweVaGkHn25IxPFe70UD1Xial3tXKfM/vjzyUQhtvD6CO2TdgzASe/SNJ2YZP0Diwhzs62kKsQQ9pkdSIRLSnwZ6U="
-    - secure: "CN04sAdrhNOxA52hpgpw3R9YYFewM+TCz4KXe8ZlzPaWkBRfDIp3ahRHyKBEuHdtQ6No5tyMmcePKxiTgKxd0lZ2qiE3Lf+0nSdQNaJApr0Mcn4S93zh75r2+f37kcczwOnct/Y9Rf2Bb6EA1txCKfu0uAY/4Gg970z9TTeCMpc="
+    - secure: "Yoh94FTnukli0dSk3/sTyTvQyMk9xtzr51L06j2Hgf1/kOb2ao3W3/cMeoNAnrssrW9d8JHnaMU9r1WI7tijsrOP4KAMf5FzAlpohf9N/4NuOnPG+i0VY2QAgohvseufnjRlhw7773Ynj5pyrtEwa1dgKQnuxPtOj9bdRUAr7v0="
 
 language: java
 jdk: oraclejdk7
