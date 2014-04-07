@@ -1,7 +1,5 @@
 package com.sweatyreptile.losergame;
 
-import aurelienribon.bodyeditor.FixedBodyEditorLoader;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -15,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
@@ -77,13 +74,13 @@ public class TestLevelScreen implements Screen {
 	}
 	
 	private void setupWorld() {
-		FixedBodyEditorLoader bodyLoader = new FixedBodyEditorLoader(Gdx.files.internal("duck.json"));
 		
 		BodyDef groundDef = new BodyDef();
 		BodyDef duckDef = new BodyDef();
 		
 		groundDef.type = BodyType.StaticBody;
 		groundDef.position.set(viewportWidth / 2, 0);
+		
 		Body groundBody = physWorld.createBody(groundDef);
 		
 		duckDef.type = BodyType.DynamicBody;
@@ -94,8 +91,8 @@ public class TestLevelScreen implements Screen {
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
 		groundBody.createFixture(groundBox, 0f);
 		
-		FixtureDef duckFixtureDef = new DuckFixtureDef();
-		bodyLoader.attachFixture(duckBody, "dummy_duck", duckFixtureDef, .2f);
+		DuckFixtureDef duckFixtureDef = new DuckFixtureDef();
+		duckFixtureDef.attach(duckBody, .2f);
 		
 		groundBox.dispose();
 		
