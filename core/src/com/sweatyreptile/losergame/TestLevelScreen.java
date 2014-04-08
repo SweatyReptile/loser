@@ -24,7 +24,6 @@ public class TestLevelScreen implements Screen {
 	private float viewportWidth;
 	private float viewportHeight;
 	
-	
 	private Camera camera;
 	private SpriteBatch spriteRenderer;
 	private Box2DDebugRenderer physRenderer;
@@ -32,8 +31,10 @@ public class TestLevelScreen implements Screen {
 	private AssetManager assets;
 	
 	private World physWorld;
+	private Body playerBody;
+	private PlayerInputProcessor playerInputProcessor;
 	
-	public TestLevelScreen(SpriteBatch batch, AssetManager assets,
+	public TestLevelScreen(SpriteBatch batch, AssetManager assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight){
 		spriteRenderer = batch;
 		this.assets = assets;
@@ -41,6 +42,7 @@ public class TestLevelScreen implements Screen {
 		this.height = height;
 		this.viewportWidth = viewportWidth;
 		this.viewportHeight = viewportHeight;
+		this.playerInputProcessor = playerInputProcessor;
 	}
 	
 	@Override
@@ -87,16 +89,18 @@ public class TestLevelScreen implements Screen {
 		duckDef.position.set(viewportWidth / 2 + .2f, viewportHeight);
 		duckDef.fixedRotation = true;
 		
-		Body duckBody = physWorld.createBody(duckDef);
+		playerBody = physWorld.createBody(duckDef);
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
 		groundBody.createFixture(groundBox, 0f);
 		
 		DuckFixtureDef duckFixtureDef = new DuckFixtureDef();
-		duckFixtureDef.attach(duckBody, .2f);
+		duckFixtureDef.attach(playerBody, .2f);
 		
 		groundBox.dispose();
+		
+		playerInputProcessor.setPlayer(playerBody);
 		
 	}
 
