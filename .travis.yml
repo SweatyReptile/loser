@@ -25,5 +25,7 @@ before_install:
   # It is only included to get this working, and WILL BREAK
 install: ./gradlew :desktop:assemble :android:assemble
 script: ./gradlew :desktop:check :android:check
-after_success: sshpass -p $SECRET_PASS scp -P $SECRET_PORT android/build/apk/android-debug-unaligned.apk $SECRET_USER@$SECRET_IP:www/android_latest.apk
+after_success: 
+  - echo machine $SECRET_IP login $SECRET_USER password $SECRET_PASS > ~/.netrc
+  - echo put android/build/apk/android-debug-unaligned.apk | ftp $SECRET_IP $SECRET_PORT
 
