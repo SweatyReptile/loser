@@ -14,15 +14,15 @@ public class PlayerInputProcessor implements InputProcessor {
 		switch(keycode) {
 		case Input.Keys.A:
 			Vector2 position = playerBody.getPosition();
-			playerBody.applyLinearImpulse(-0.005f, 0, position.x, position.y, true);
+			playerBody.applyLinearImpulse(-0.5f, 0, position.x, position.y, true);
 			return true;
 		case Input.Keys.D:
 			Vector2 position2 = playerBody.getPosition();
-			playerBody.applyLinearImpulse(0.005f, 0, position2.x, position2.y, true);
+			playerBody.applyLinearImpulse(0.5f, 0, position2.x, position2.y, true);
 			return true;
 		case Input.Keys.W:
 			Vector2 position3 = playerBody.getPosition();
-			playerBody.applyLinearImpulse(0, 0.02f, position3.x, position3.y, true);
+			playerBody.applyLinearImpulse(0, 1.5f, position3.x, position3.y, true);
 			return true;
 		}
 		
