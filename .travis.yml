@@ -27,5 +27,6 @@ script: ./gradlew :desktop:check :android:check
 after_success: 
   - sudo apt-get install ftp
   - echo machine $SECRET_IP login $SECRET_USER password $SECRET_PASS > ~/.netrc
+  - chmod 600 ~/.netrc
   - echo put android/build/apk/android-debug-unaligned.apk | ftp $SECRET_IP $SECRET_PORT
 
