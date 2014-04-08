@@ -25,7 +25,7 @@ before_install:
 install: ./gradlew :desktop:assemble :android:assemble
 script: ./gradlew :desktop:check :android:check
 after_success: 
-  - apt-get install ftp
+  - sudo apt-get install ftp
   - echo machine $SECRET_IP login $SECRET_USER password $SECRET_PASS > ~/.netrc
   - echo put android/build/apk/android-debug-unaligned.apk | ftp $SECRET_IP $SECRET_PORT
 
