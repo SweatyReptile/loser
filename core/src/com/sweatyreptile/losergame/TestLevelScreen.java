@@ -31,7 +31,7 @@ public class TestLevelScreen implements Screen {
 	private AssetManager assets;
 	
 	private World physWorld;
-	private Body playerBody;
+	private Player player;
 	private PlayerInputProcessor playerInputProcessor;
 	
 	public TestLevelScreen(SpriteBatch batch, AssetManager assets, PlayerInputProcessor playerInputProcessor,
@@ -47,12 +47,15 @@ public class TestLevelScreen implements Screen {
 	
 	@Override
 	public void render(float delta) {
+		update(delta);
 		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		physWorld.step(1/60f, 6, 2); // TODO: Change step
-		
 		physRenderer.render(physWorld, camera.combined);
+	}
+	
+	public void update(float delta) {
+		player.update(delta);
+		physWorld.step(1/60f, 6, 2); // TODO: Change step
 	}
 
 	@Override
@@ -89,7 +92,8 @@ public class TestLevelScreen implements Screen {
 		duckDef.position.set(viewportWidth / 2 + .2f, viewportHeight);
 		duckDef.fixedRotation = true;
 		
-		playerBody = physWorld.createBody(duckDef);
+		player = new Player(physWorld, duckDef);
+		Body playerBody = player.getBody();
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
@@ -100,7 +104,7 @@ public class TestLevelScreen implements Screen {
 		
 		groundBox.dispose();
 		
-		playerInputProcessor.setPlayer(playerBody);
+		playerInputProcessor.setPlayer(player);
 		
 	}
 

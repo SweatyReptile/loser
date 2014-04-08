@@ -2,27 +2,22 @@ package com.sweatyreptile.losergame;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
 
 public class PlayerInputProcessor implements InputProcessor {
 
-	private Body playerBody;
+	private Player player;
 
 	@Override
 	public boolean keyDown(int keycode) {
 		switch(keycode) {
 		case Input.Keys.A:
-			Vector2 position = playerBody.getPosition();
-			playerBody.applyLinearImpulse(-0.5f, 0, position.x, position.y, true);
+			player.moveRight();
 			return true;
 		case Input.Keys.D:
-			Vector2 position2 = playerBody.getPosition();
-			playerBody.applyLinearImpulse(0.5f, 0, position2.x, position2.y, true);
+			player.moveLeft();
 			return true;
 		case Input.Keys.W:
-			Vector2 position3 = playerBody.getPosition();
-			playerBody.applyLinearImpulse(0, 1.5f, position3.x, position3.y, true);
+			player.jump();
 			return true;
 		}
 		
@@ -31,7 +26,12 @@ public class PlayerInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
+		switch(keycode) {
+		case Input.Keys.A:
+		case Input.Keys.D:
+			player.stopMoving();
+			return true;
+		}
 		return false;
 	}
 
@@ -71,8 +71,8 @@ public class PlayerInputProcessor implements InputProcessor {
 		return false;
 	}
 
-	public void setPlayer(Body playerBody) {
-		this.playerBody = playerBody;
+	public void setPlayer(Player player) {
+		this.player = player;
 	}
 
 }
