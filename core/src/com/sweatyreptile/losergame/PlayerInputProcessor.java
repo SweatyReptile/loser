@@ -11,10 +11,10 @@ public class PlayerInputProcessor implements InputProcessor {
 	public boolean keyDown(int keycode) {
 		switch(keycode) {
 		case Input.Keys.A:
-			player.moveRight();
+			player.moveLeft();
 			return true;
 		case Input.Keys.D:
-			player.moveLeft();
+			player.moveRight();
 			return true;
 		case Input.Keys.W:
 			player.jump();
@@ -28,8 +28,10 @@ public class PlayerInputProcessor implements InputProcessor {
 	public boolean keyUp(int keycode) {
 		switch(keycode) {
 		case Input.Keys.A:
+			player.stopMovingLeft();
+			return true;
 		case Input.Keys.D:
-			player.stopMoving();
+			player.stopMovingRight();
 			return true;
 		}
 		return false;

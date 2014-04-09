@@ -33,18 +33,26 @@ public class Player {
 		playerBody.applyLinearImpulse(0, 1.5f, position.x, position.y, true);
 	}
 	
-	public void stopMoving() {
-		movingDirection = Direction.NONE;
+	public void stopMovingLeft() {
+		if (movingDirection == Direction.LEFT){
+			movingDirection = Direction.NONE;
+		}
+	}
+	
+	public void stopMovingRight(){
+		if (movingDirection == Direction.RIGHT){
+			movingDirection = Direction.NONE;
+		}
 	}
 	
 	public void update(float delta) {
 		if (movingDirection != Direction.NONE && Math.abs(playerBody.getLinearVelocity().x) < MAX_VELOCITY) {
 			Vector2 position = playerBody.getPosition();
 			if (movingDirection == Direction.LEFT) {
-				playerBody.applyLinearImpulse(0.1f, 0, position.x, position.y, true);
+				playerBody.applyLinearImpulse(-0.1f, 0, position.x, position.y, true);
 			}
 			else if (movingDirection == Direction.RIGHT) {
-				playerBody.applyLinearImpulse(-0.1f, 0, position.x, position.y, true);
+				playerBody.applyLinearImpulse(0.1f, 0, position.x, position.y, true);
 			}
 		}
 	}
