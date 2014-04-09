@@ -31,7 +31,9 @@ public class Player {
 	
 	public void jump() {
 		Vector2 position = playerBody.getPosition();
-		playerBody.applyLinearImpulse(0, 1f, position.x, position.y, true);
+		Vector2 velocity = playerBody.getLinearVelocity();
+		playerBody.setLinearVelocity(velocity.x, 0f);
+		playerBody.applyLinearImpulse(0, 0.5f, position.x, position.y, true);
 	}
 	
 	public void stopMovingLeft() {
@@ -51,11 +53,11 @@ public class Player {
 			Vector2 position = playerBody.getPosition();
 			Vector2 velocity = playerBody.getLinearVelocity();
 			if (movingDirection == Direction.LEFT && velocity.x > -MAX_VELOCITY) {
-				playerBody.applyLinearImpulse(-0.1f, 0, position.x, position.y, true);
+				playerBody.applyLinearImpulse(-0.05f, 0, position.x, position.y, true);
 				
 			}
 			else if (movingDirection == Direction.RIGHT && velocity.x < MAX_VELOCITY) {
-				playerBody.applyLinearImpulse(0.1f, 0, position.x, position.y, true);
+				playerBody.applyLinearImpulse(0.05f, 0, position.x, position.y, true);
 			}
 		}
 	}

@@ -1,6 +1,5 @@
 package com.sweatyreptile.losergame.fixtures;
 
-import sun.rmi.runtime.Log;
 import aurelienribon.bodyeditor.FixedBodyEditorLoader;
 
 import com.badlogic.gdx.Gdx;
@@ -13,7 +12,7 @@ public class DuckFixtureDef extends FixtureDef {
 	
 	public DuckFixtureDef() {
 		super();
-		density = 40f;
+		density = 15f;
 		friction = 0.4f;
 		restitution = 0f;
 		loader = new FixedBodyEditorLoader(Gdx.files.internal("duck.json"));

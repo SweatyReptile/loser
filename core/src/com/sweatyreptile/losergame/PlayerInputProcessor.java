@@ -17,6 +17,7 @@ public class PlayerInputProcessor implements InputProcessor {
 			player.moveRight();
 			return true;
 		case Input.Keys.W:
+		case Input.Keys.SPACE:
 			player.jump();
 			return true;
 		}
