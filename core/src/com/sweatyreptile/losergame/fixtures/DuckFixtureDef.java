@@ -19,7 +19,7 @@ public class DuckFixtureDef extends FixtureDef {
 	}
 	
 	public void attach(Body duckBody, float scale) {
-		loader.attachFixture(duckBody, "dummy_duck", this, scale);
+		loader.attachFixture(duckBody, "dummy_duck", this, scale, true);
 	}
 	
 }
