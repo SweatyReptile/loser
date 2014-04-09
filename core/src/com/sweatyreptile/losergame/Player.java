@@ -52,12 +52,12 @@ public class Player {
 		if (movingDirection != Direction.NONE) {
 			Vector2 position = playerBody.getPosition();
 			Vector2 velocity = playerBody.getLinearVelocity();
-			if (movingDirection == Direction.LEFT && velocity.x > -MAX_VELOCITY) {
-				playerBody.applyLinearImpulse(-0.05f, 0, position.x, position.y, true);
+			if (movingDirection == Direction.LEFT) {
+				playerBody.setLinearVelocity(-MAX_VELOCITY, velocity.y);
 				
 			}
-			else if (movingDirection == Direction.RIGHT && velocity.x < MAX_VELOCITY) {
-				playerBody.applyLinearImpulse(0.05f, 0, position.x, position.y, true);
+			else if (movingDirection == Direction.RIGHT) {
+				playerBody.setLinearVelocity(MAX_VELOCITY, velocity.y);
 			}
 		}
 	}
