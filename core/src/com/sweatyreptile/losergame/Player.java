@@ -1,5 +1,6 @@
 package com.sweatyreptile.losergame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -30,7 +31,7 @@ public class Player {
 	
 	public void jump() {
 		Vector2 position = playerBody.getPosition();
-		playerBody.applyLinearImpulse(0, 1.5f, position.x, position.y, true);
+		playerBody.applyLinearImpulse(0, 1f, position.x, position.y, true);
 	}
 	
 	public void stopMovingLeft() {
@@ -46,12 +47,14 @@ public class Player {
 	}
 	
 	public void update(float delta) {
-		if (movingDirection != Direction.NONE && Math.abs(playerBody.getLinearVelocity().x) < MAX_VELOCITY) {
+		if (movingDirection != Direction.NONE) {
 			Vector2 position = playerBody.getPosition();
-			if (movingDirection == Direction.LEFT) {
+			Vector2 velocity = playerBody.getLinearVelocity();
+			if (movingDirection == Direction.LEFT && velocity.x > -MAX_VELOCITY) {
 				playerBody.applyLinearImpulse(-0.1f, 0, position.x, position.y, true);
+				
 			}
-			else if (movingDirection == Direction.RIGHT) {
+			else if (movingDirection == Direction.RIGHT && velocity.x < MAX_VELOCITY) {
 				playerBody.applyLinearImpulse(0.1f, 0, position.x, position.y, true);
 			}
 		}
