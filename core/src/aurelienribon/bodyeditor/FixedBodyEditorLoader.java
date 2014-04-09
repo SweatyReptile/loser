@@ -1,5 +1,9 @@
 package aurelienribon.bodyeditor;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -9,8 +13,6 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * http://code.google.com/p/box2d-editor/issues/detail?id=25
@@ -77,12 +79,19 @@ public class FixedBodyEditorLoader {
 	 * @param fd The fixture parameters to apply to the created body fixture.
 	 * @param scale The desired scale of the body. The default width is 1.
 	 */
-	public void attachFixture(Body body, String name, FixtureDef fd, float scale) {
+	
+	public void attachFixture(Body body, String name, FixtureDef fd, float scale){
+		attachFixture(body, name, fd, scale, false);
+	}
+	
+	public void attachFixture(Body body, String name, FixtureDef fd, float scale, boolean flipped) {
 		RigidBodyModel rbModel = model.rigidBodies.get(name);
 		if (rbModel == null) throw new RuntimeException("Name '" + name + "' was not found.");
 
-		Vector2 origin = vec.set(rbModel.origin).scl(scale);
+		if (flipped) flipBody(rbModel);
 
+		Vector2 origin = vec.set(rbModel.origin).scl(scale);
+		
 		for (int i=0, n=rbModel.polygons.size; i<n; i++) {
 			PolygonModel polygon = rbModel.polygons.get(i);
 			Vector2[] vertices = polygon.buffer;
@@ -91,7 +100,7 @@ public class FixedBodyEditorLoader {
 				vertices[ii] = newVec().set(polygon.vertices.get(ii)).scl(scale);
 				vertices[ii].sub(origin);
 			}
-
+			
 			polygonShape.set(vertices);
 			fd.shape = polygonShape;
 			body.createFixture(fd);
@@ -113,6 +122,28 @@ public class FixedBodyEditorLoader {
 
 			free(center);
 		}
+	}
+	
+	private void flipBody(RigidBodyModel rbModel){
+		float max = 0f;
+		for (PolygonModel pgmodel : rbModel.polygons){
+			for (Vector2 vertex : pgmodel.vertices){
+				if (vertex.x > max){
+					max = vertex.x;
+				}
+			}
+		}
+		
+			for (PolygonModel pgmodel : rbModel.polygons){
+				Array<Vector2> vertices = pgmodel.vertices;
+
+				for (int ii = 0; ii < vertices.size; ii++){
+					Vector2 vertex = vertices.get(ii);
+					vertex.x = max - vertex.x;
+				}
+			}
+		
+		
 	}
 	
 	/**
