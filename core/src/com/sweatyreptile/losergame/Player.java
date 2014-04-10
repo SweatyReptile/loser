@@ -29,7 +29,8 @@ public class Player extends Entity{
 		rightBody = world.createBody(def);
 		fixDef.attach(leftBody, .2f, true);
 		fixDef.attach(rightBody, .2f, false);
-		currentBody = leftBody;
+		currentBody = rightBody;
+		leftBody.setActive(false);
 		movingDirection = Direction.NONE;
 		sprite = new Sprite(new Texture(Gdx.files.internal("dummy_duck_sprite.png")));
 		sprite.setSize(.2f, .15f);
