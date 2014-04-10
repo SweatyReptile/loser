@@ -50,11 +50,12 @@ public class TestLevelScreen implements Screen {
 		update(delta);
 		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		physRenderer.render(physWorld, camera.combined);
 		
 		spriteRenderer.begin();
 		player.render(spriteRenderer);
 		spriteRenderer.end();
+		
+		physRenderer.render(physWorld, camera.combined);
 	}
 	
 	public void update(float delta) {
