@@ -21,5 +21,11 @@ public class DuckFixtureDef extends FixtureDef {
 	public void attach(Body duckBody, float scale, boolean flipped) {
 		loader.attachFixture(duckBody, "dummy_duck", this, scale, flipped);
 	}
+
+	public FixedBodyEditorLoader getLoader() {
+		return loader;
+	}
+	
+	
 	
 }

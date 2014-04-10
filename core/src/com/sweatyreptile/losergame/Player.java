@@ -2,6 +2,7 @@ package com.sweatyreptile.losergame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -32,7 +33,11 @@ public class Player extends Entity{
 		currentBody = rightBody;
 		leftBody.setActive(false);
 		movingDirection = Direction.NONE;
-		sprite = new Sprite(new Texture(Gdx.files.internal("dummy_duck_sprite.png")));
+		
+		FileHandle imgFileHandle = Gdx.files.internal(fixDef.getLoader().getImagePath("dummy_duck"));
+		sprite = new Sprite(new Texture(imgFileHandle));
+		
+		
 		sprite.setSize(.2f, .15f);
 	}
 	
