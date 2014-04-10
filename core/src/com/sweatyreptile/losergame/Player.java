@@ -48,6 +48,7 @@ public class Player extends Entity{
 	
 	public void switchBody(Body oldBody, Body newBody){
 		newBody.setTransform(oldBody.getPosition(), 0f);
+		newBody.setLinearVelocity(oldBody.getLinearVelocity());
 		oldBody.setActive(false);
 		newBody.setActive(true);
 		currentBody = newBody;
