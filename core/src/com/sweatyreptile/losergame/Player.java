@@ -37,8 +37,7 @@ public class Player extends Entity{
 		FileHandle imgFileHandle = Gdx.files.internal(fixDef.getLoader().getImagePath("dummy_duck"));
 		sprite = new Sprite(new Texture(imgFileHandle));
 		
-		
-		sprite.setSize(.2f, .15f);
+		sprite.setSize(.2f, .147f);
 	}
 	
 	public void moveLeft() {
