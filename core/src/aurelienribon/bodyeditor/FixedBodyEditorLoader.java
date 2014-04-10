@@ -85,10 +85,20 @@ public class FixedBodyEditorLoader {
 	}
 	
 	public void attachFixture(Body body, String name, FixtureDef fd, float scale, boolean flipped) {
-		RigidBodyModel rbModel = model.rigidBodies.get(name);
+		RigidBodyModel rbModel = null;
+		if (flipped){
+			if (model.rigidBodies.get(name + "_flipped") == null){
+				flipBody(name);
+			}
+			rbModel = model.rigidBodies.get(name + "_flipped");
+		}
+		else{
+			rbModel = model.rigidBodies.get(name);
+		}
+		
 		if (rbModel == null) throw new RuntimeException("Name '" + name + "' was not found.");
 
-		if (flipped) flipBody(rbModel);
+		
 
 		Vector2 origin = vec.set(rbModel.origin).scl(scale);
 		
@@ -124,9 +134,32 @@ public class FixedBodyEditorLoader {
 		}
 	}
 	
-	private void flipBody(RigidBodyModel rbModel){
+	private void flipBody(String name){
 		float max = 0f;
-		for (PolygonModel pgmodel : rbModel.polygons){
+		RigidBodyModel rbModel = model.rigidBodies.get(name);
+		if (rbModel == null) throw new RuntimeException("Name '" + name + "' was not found.");
+		
+		RigidBodyModel newModel = new RigidBodyModel();
+		newModel.name = rbModel.name + "_flipped";
+		newModel.imagePath = rbModel.imagePath + "";
+		newModel.origin.x = rbModel.origin.x;
+		newModel.origin.y = rbModel.origin.y;
+		
+		
+		for (int i = 0; i < rbModel.polygons.size; i++){
+			PolygonModel oldPoly = rbModel.polygons.get(i);
+			PolygonModel newPoly = new PolygonModel();
+			for (int j = 0; j < oldPoly.vertices.size; j++){
+				Vector2 oldVector = oldPoly.vertices.get(j);
+				Vector2 newVector = new Vector2(oldVector);
+				newPoly.vertices.add(newVector);
+				newPoly.buffer = new Vector2[newPoly.vertices.size];
+			}
+			newModel.polygons.add(newPoly);
+		}
+		
+		
+		for (PolygonModel pgmodel : newModel.polygons){
 			for (Vector2 vertex : pgmodel.vertices){
 				if (vertex.x > max){
 					max = vertex.x;
@@ -134,15 +167,16 @@ public class FixedBodyEditorLoader {
 			}
 		}
 		
-			for (PolygonModel pgmodel : rbModel.polygons){
-				Array<Vector2> vertices = pgmodel.vertices;
+		for (PolygonModel pgmodel : newModel.polygons){
+			Array<Vector2> vertices = pgmodel.vertices;
 
-				for (int ii = 0; ii < vertices.size; ii++){
-					Vector2 vertex = vertices.get(ii);
-					vertex.x = max - vertex.x;
-				}
+			for (int ii = 0; ii < vertices.size; ii++){
+				Vector2 vertex = vertices.get(ii);
+				vertex.x = max - vertex.x;
 			}
+		}
 		
+		model.rigidBodies.put(newModel.name, newModel);
 		
 	}
 	
