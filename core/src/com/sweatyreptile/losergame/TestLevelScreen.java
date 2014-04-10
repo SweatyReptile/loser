@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
+import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class TestLevelScreen implements Screen { 
 	
@@ -28,13 +28,13 @@ public class TestLevelScreen implements Screen {
 	private SpriteBatch spriteRenderer;
 	private Box2DDebugRenderer physRenderer;
 	
-	private AssetManager assets;
+	private AssetManagerPlus assets;
 	
 	private World physWorld;
 	private Player player;
 	private PlayerInputProcessor playerInputProcessor;
 	
-	public TestLevelScreen(SpriteBatch batch, AssetManager assets, PlayerInputProcessor playerInputProcessor,
+	public TestLevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight){
 		spriteRenderer = batch;
 		this.assets = assets;

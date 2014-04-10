@@ -1,7 +1,6 @@
 package com.sweatyreptile.losergame;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
+import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class Player extends Entity{
 	
@@ -23,9 +23,9 @@ public class Player extends Entity{
 	private Body rightBody;
 	private Direction movingDirection;
 
-	public Player(World world, BodyDef def, AssetManager assets) {
+	public Player(World world, BodyDef def, AssetManagerPlus assets) {
 		super(world, def);
-		DuckFixtureDef fixDef = new DuckFixtureDef();
+		DuckFixtureDef fixDef = new DuckFixtureDef(assets);
 		leftBody = world.createBody(def);
 		rightBody = world.createBody(def);
 		fixDef.attach(leftBody, .2f, true);

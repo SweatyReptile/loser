@@ -1,22 +1,25 @@
 package com.sweatyreptile.losergame;
 
+import aurelienribon.bodyeditor.FixedBodyEditorLoader;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class LoserGame extends Game implements ScreenFinishedListener{
 	SpriteBatch batch;
-	AssetManager assets;
+	AssetManagerPlus assets;
 	
 	@Override
 	public void create () {
-		assets = new AssetManager();
+		assets = new AssetManagerPlus();
 		batch = new SpriteBatch();
 
 		assets.load("badlogic.jpg", Texture.class);
+		assets.load("duck.json", FixedBodyEditorLoader.class);
 		
 		PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
 		
