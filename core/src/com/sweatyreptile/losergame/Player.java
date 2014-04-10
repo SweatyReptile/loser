@@ -3,6 +3,7 @@ package com.sweatyreptile.losergame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -30,8 +31,8 @@ public class Player extends Entity{
 		fixDef.attach(rightBody, .2f, false);
 		currentBody = leftBody;
 		movingDirection = Direction.NONE;
-		sprite.setTexture(new Texture(Gdx.files.internal("dummy_duck_sprite.png")));
-		sprite.setScale(.2f);
+		sprite = new Sprite(new Texture(Gdx.files.internal("dummy_duck_sprite.png")));
+		sprite.setSize(.2f, .15f);
 	}
 	
 	public void moveLeft() {
