@@ -92,15 +92,14 @@ public class TestLevelScreen implements Screen {
 		duckDef.position.set(viewportWidth / 2 + .2f, viewportHeight);
 		duckDef.fixedRotation = true;
 		
-		player = new Player(physWorld, duckDef);
-		Body playerBody = player.getBody();
+		DuckFixtureDef duckFixtureDef = new DuckFixtureDef();
+		
+		player = new Player(physWorld, duckDef, duckFixtureDef);
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
 		groundBody.createFixture(groundBox, 0f);
 		
-		DuckFixtureDef duckFixtureDef = new DuckFixtureDef();
-		duckFixtureDef.attach(playerBody, .2f);
 		
 		groundBox.dispose();
 		

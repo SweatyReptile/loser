@@ -18,8 +18,8 @@ public class DuckFixtureDef extends FixtureDef {
 		loader = new FixedBodyEditorLoader(Gdx.files.internal("duck.json"));
 	}
 	
-	public void attach(Body duckBody, float scale) {
-		loader.attachFixture(duckBody, "dummy_duck", this, scale, true);
+	public void attach(Body duckBody, float scale, boolean flipped) {
+		loader.attachFixture(duckBody, "dummy_duck", this, scale, flipped);
 	}
 	
 }
