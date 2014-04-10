@@ -51,6 +51,10 @@ public class TestLevelScreen implements Screen {
 		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		physRenderer.render(physWorld, camera.combined);
+		
+		spriteRenderer.begin();
+		player.render(spriteRenderer);
+		spriteRenderer.end();
 	}
 	
 	public void update(float delta) {
@@ -92,9 +96,7 @@ public class TestLevelScreen implements Screen {
 		duckDef.position.set(viewportWidth / 2 + .2f, viewportHeight);
 		duckDef.fixedRotation = true;
 		
-		DuckFixtureDef duckFixtureDef = new DuckFixtureDef();
-		
-		player = new Player(physWorld, duckDef, duckFixtureDef);
+		player = new Player(physWorld, duckDef, assets);
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
