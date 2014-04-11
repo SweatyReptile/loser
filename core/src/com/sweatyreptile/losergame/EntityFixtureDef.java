@@ -2,6 +2,7 @@ package com.sweatyreptile.losergame;
 
 import aurelienribon.bodyeditor.FixedBodyEditorLoader;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
@@ -9,15 +10,31 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 public class EntityFixtureDef extends FixtureDef {
 
 	private FixedBodyEditorLoader loader;
+	private String loaderName = "duck.json";
 	private String name;
+	private AssetManagerPlus assets;
 	
 	public EntityFixtureDef(AssetManagerPlus assets, String name) {
-		loader = assets.get("duck.json", FixedBodyEditorLoader.class);
+		loader = assets.get(loaderName, FixedBodyEditorLoader.class);
 		this.name = name;
 	}
 	
 	public void attach(Body body, float scale, boolean flipped) {
 		loader.attachFixture(body, name, this, scale, flipped);
 	}
+
+	public String getLoaderName() {
+		return loaderName;
+	}
+
+	public String getName() {
+		return name;
+	}
+	
+	public Texture getTexture() {
+		return new Texture(loader.getImagePath(name));
+	}
+	
+	
 	
 }

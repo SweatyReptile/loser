@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class TestLevelScreen implements Screen { 
@@ -33,6 +34,8 @@ public class TestLevelScreen implements Screen {
 	private World physWorld;
 	private Player player;
 	private PlayerInputProcessor playerInputProcessor;
+	
+	private Entity deadDuck;
 	
 	public TestLevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight){
@@ -53,6 +56,7 @@ public class TestLevelScreen implements Screen {
 		
 		spriteRenderer.begin();
 		player.render(spriteRenderer);
+		deadDuck.render(spriteRenderer);
 		spriteRenderer.end();
 		
 		physRenderer.render(physWorld, camera.combined);
@@ -60,6 +64,7 @@ public class TestLevelScreen implements Screen {
 	
 	public void update(float delta) {
 		player.update(delta);
+		deadDuck.update(delta);
 		physWorld.step(1/60f, 6, 2); // TODO: Change step
 	}
 
@@ -87,6 +92,7 @@ public class TestLevelScreen implements Screen {
 		
 		BodyDef groundDef = new BodyDef();
 		BodyDef duckDef = new BodyDef();
+		BodyDef deadDuckDef = new BodyDef();
 		
 		groundDef.type = BodyType.StaticBody;
 		groundDef.position.set(viewportWidth / 2, 0);
@@ -97,11 +103,16 @@ public class TestLevelScreen implements Screen {
 		duckDef.position.set(viewportWidth / 2 + .2f, viewportHeight);
 		duckDef.fixedRotation = true;
 		
+		deadDuckDef.type = BodyType.DynamicBody;
+		deadDuckDef.position.set(viewportWidth/2, viewportHeight/2);
+		
 		player = new Player(physWorld, duckDef, assets);
+		deadDuck = new Entity(physWorld, deadDuckDef, new DuckFixtureDef(assets), .2f, false);
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
 		groundBody.createFixture(groundBox, 0f);
+		
 		
 		
 		groundBox.dispose();

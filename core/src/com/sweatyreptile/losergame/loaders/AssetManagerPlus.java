@@ -10,6 +10,7 @@ import aurelienribon.bodyeditor.FixedBodyEditorLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.files.FileHandle;
 
 /**
  * 
@@ -34,7 +35,11 @@ public class AssetManagerPlus extends AssetManager {
 		loaderPaths = new ArrayList<String>();
 		bodyEditorLoaders = new HashMap<String, FixedBodyEditorLoader>();
 	}
-
+	
+	public FileHandle getBodyImage(String loaderName, String bodyName) {
+		return Gdx.files.internal(bodyEditorLoaders.get(loaderName).getImagePath(bodyName));
+	}
+	
 	@Override
 	public synchronized <T> void load(String fileName, Class<T> type) {
 		if (type.equals(FixedBodyEditorLoader.class)) {

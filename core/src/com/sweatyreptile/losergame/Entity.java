@@ -1,5 +1,7 @@
 package com.sweatyreptile.losergame;
 
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
@@ -7,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class Entity {
 
@@ -17,6 +20,26 @@ public class Entity {
 		this.sprite = new Sprite();
 		currentBody = world.createBody(bodyDef);
 	}
+	
+	public Entity(World world, BodyDef bodyDef, 
+			EntityFixtureDef fixtureDef, float scale, 
+			boolean flipped) {
+		
+		currentBody = world.createBody(bodyDef);
+		fixtureDef.attach(currentBody, scale, flipped);
+		Texture spriteTexture = fixtureDef.getTexture();
+		float width = 1f;
+		float height = spriteTexture.getHeight() / spriteTexture.getWidth();
+		
+		sprite = new Sprite(spriteTexture);
+		sprite.setSize(width, height);
+	}
+	
+	public Entity(World world, BodyDef bodyDef, 
+			EntityFixtureDef fixtureDef, AssetManagerPlus assets, 
+			String bodyName, float scale) {
+		this(world, bodyDef, fixtureDef, scale, false);
+	} 
 	
 	public void render(SpriteBatch renderer){
 		sprite.draw(renderer);
