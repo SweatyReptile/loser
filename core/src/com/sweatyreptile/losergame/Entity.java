@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
@@ -30,7 +31,13 @@ public class Entity {
 			boolean flipped) {
 		
 		float spriteScale = scale;
-		float bodyScale = 0.92f * scale;
+		float bodyScale = 0f;
+		if (bodyDef.type == BodyType.DynamicBody){
+			bodyScale = 0.85f * scale;
+		}
+		else {
+			bodyScale = scale;
+		}
 		
 		currentBody = world.createBody(bodyDef);
 		fixtureDef.attach(currentBody, bodyScale, flipped);
