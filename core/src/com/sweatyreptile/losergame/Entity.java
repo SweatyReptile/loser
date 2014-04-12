@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
@@ -20,6 +21,9 @@ public class Entity {
 	protected float bodyWidth;
 	protected float bodyHeight;
 	
+	protected float spriteOriginX;
+	protected float spriteOriginY;
+	
 	public Entity(World world, BodyDef bodyDef){
 		this.sprite = new Sprite();
 		currentBody = world.createBody(bodyDef);
@@ -30,20 +34,30 @@ public class Entity {
 			boolean flipped) {
 		
 		float spriteScale = scale;
-		float bodyScale = 0.92f * scale;
+		float bodyScale = 0f;
+		if (bodyDef.type == BodyType.DynamicBody){
+			bodyScale = 0.88f * scale;
+		}
+		else {
+			bodyScale = scale;
+		}
 		
 		currentBody = world.createBody(bodyDef);
 		fixtureDef.attach(currentBody, bodyScale, flipped);
 		Texture spriteTexture = fixtureDef.getTexture();
 		
 		bodyWidth = 1f * bodyScale;
-		bodyHeight = (float) spriteTexture.getHeight() * scale / spriteTexture.getWidth();
+		bodyHeight = (float) spriteTexture.getHeight() * bodyScale / spriteTexture.getWidth();
 		spriteWidth = 1f * spriteScale;
 		spriteHeight = (float) spriteTexture.getHeight() * spriteScale / spriteTexture.getWidth();
 		
 		sprite = new Sprite(spriteTexture);
 		sprite.setSize(spriteWidth, spriteHeight);
-		sprite.setOrigin(0f, 0f);
+		
+		spriteOriginX = (spriteWidth - bodyWidth) / 2;
+		spriteOriginY = (spriteHeight - bodyHeight) / 2;
+		
+		sprite.setOrigin(spriteOriginX, spriteOriginY);
 	}
 	
 	public Entity(World world, BodyDef bodyDef, 
@@ -63,8 +77,8 @@ public class Entity {
 	private void updateSprite(float delta){
 		Vector2 position = currentBody.getPosition();
 		
-		float spritex = position.x - (spriteWidth - bodyWidth) / 2;
-		float spritey = position.y - (spriteHeight - bodyHeight) / 2;
+		float spritex = position.x - spriteOriginX;
+		float spritey = position.y - spriteOriginY;
 		
 		sprite.setPosition(spritex, spritey);
 		sprite.setRotation(MathUtils.radiansToDegrees * currentBody.getAngle());
