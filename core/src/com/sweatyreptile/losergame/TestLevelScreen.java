@@ -1,5 +1,8 @@
 package com.sweatyreptile.losergame;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
@@ -12,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
@@ -35,10 +37,7 @@ public class TestLevelScreen implements Screen {
 	private Player player;
 	private PlayerInputProcessor playerInputProcessor;
 	
-	private Entity deadDuck;
-	private Entity washMachine;
-	private Entity cereal;
-	private Entity table;
+	private Map<String, Entity> entities;
 	
 	public TestLevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight){
@@ -49,6 +48,7 @@ public class TestLevelScreen implements Screen {
 		this.viewportWidth = viewportWidth;
 		this.viewportHeight = viewportHeight;
 		this.playerInputProcessor = playerInputProcessor;
+		this.entities = new HashMap<String, Entity>();
 	}
 	
 	@Override
@@ -58,23 +58,23 @@ public class TestLevelScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		spriteRenderer.begin();
+		
 		player.render(spriteRenderer);
-		deadDuck.render(spriteRenderer);
-		washMachine.render(spriteRenderer);
-		cereal.render(spriteRenderer);
-		table.render(spriteRenderer);
+		for (Entity entity : entities.values()){
+			entity.render(spriteRenderer);
+		}
 		spriteRenderer.end();
 		
 		physRenderer.render(physWorld, camera.combined);
 	}
 	
 	public void update(float delta) {
-		player.update(delta);
-		deadDuck.update(delta);
 		physWorld.step(1/60f, 6, 2); // TODO: Change step
-		washMachine.update(delta);
-		cereal.update(delta);
-		table.update(delta);
+		
+		player.update(delta);
+		for (Entity entity : entities.values()){
+			entity.update(delta);
+		}
 	}
 
 	@Override
@@ -109,8 +109,6 @@ public class TestLevelScreen implements Screen {
 		groundDef.type = BodyType.StaticBody;
 		groundDef.position.set(viewportWidth / 2, 0);
 		
-		Body groundBody = physWorld.createBody(groundDef);
-		
 		duckDef.type = BodyType.DynamicBody;
 		duckDef.position.set(.6f, viewportHeight/2);
 		duckDef.fixedRotation = true;
@@ -129,16 +127,15 @@ public class TestLevelScreen implements Screen {
 		tableDef.position.set(1.25f, .1f);
 		
 		player = new Player(physWorld, duckDef, assets);
-		deadDuck = new Entity(physWorld, deadDuckDef, new DuckFixtureDef(assets), .2f, false);
-		washMachine = new Entity(physWorld, washMachineDef, new EntityFixtureDef(assets, "wash_machine"), .35f, false);
-		cereal = new Entity(physWorld, cerealDef, new EntityFixtureDef(assets, "cereal"), .15f, false);
-		table = new Entity(physWorld, tableDef, new EntityFixtureDef(assets, "table"), 1.25f, false);
+		entities.put("dead_duck", new Entity(physWorld, deadDuckDef, new DuckFixtureDef(assets), .2f, false));
+		entities.put("wash_machine", new Entity(physWorld, washMachineDef, new EntityFixtureDef(assets, "wash_machine"), .35f, false));
+		entities.put("cereal", new Entity(physWorld, cerealDef, new EntityFixtureDef(assets, "cereal"), .15f, false));
+		entities.put("table", new Entity(physWorld, tableDef, new EntityFixtureDef(assets, "table"), 1.25f, false));
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
+		Body groundBody = physWorld.createBody(groundDef);
 		groundBody.createFixture(groundBox, 0f);
-		
-		
 		
 		groundBox.dispose();
 		
