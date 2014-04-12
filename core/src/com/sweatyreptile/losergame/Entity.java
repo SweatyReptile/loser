@@ -37,7 +37,7 @@ public class Entity {
 		Texture spriteTexture = fixtureDef.getTexture();
 		
 		bodyWidth = 1f * bodyScale;
-		bodyHeight = (float) spriteTexture.getHeight() * scale / spriteTexture.getWidth();
+		bodyHeight = (float) spriteTexture.getHeight() * bodyScale / spriteTexture.getWidth();
 		spriteWidth = 1f * spriteScale;
 		spriteHeight = (float) spriteTexture.getHeight() * spriteScale / spriteTexture.getWidth();
 		
