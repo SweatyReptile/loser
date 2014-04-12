@@ -28,6 +28,8 @@ public class Player extends Entity{
 		DuckFixtureDef fixDef = new DuckFixtureDef(assets);
 		leftBody = world.createBody(def);
 		rightBody = world.createBody(def);
+		leftBody.setGravityScale(0.5f);
+		rightBody.setGravityScale(0.5f);
 		fixDef.attach(leftBody, .2f, true);
 		fixDef.attach(rightBody, .2f, false);
 		currentBody = rightBody;
@@ -63,7 +65,7 @@ public class Player extends Entity{
 		Vector2 position = currentBody.getPosition();
 		Vector2 velocity = currentBody.getLinearVelocity();
 		currentBody.setLinearVelocity(velocity.x, 0f);
-		currentBody.applyLinearImpulse(0, 0.5f, position.x, position.y, true);
+		currentBody.applyLinearImpulse(0, 0.25f, position.x, position.y, true);
 	}
 	
 	public void stopMovingLeft() {
