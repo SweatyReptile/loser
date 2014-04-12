@@ -69,12 +69,16 @@ public class Player extends Entity{
 	public void stopMovingLeft() {
 		if (movingDirection == Direction.LEFT){
 			movingDirection = Direction.NONE;
+			Vector2 velocity = currentBody.getLinearVelocity();
+			currentBody.setLinearVelocity(velocity.x*2/3, velocity.y);
 		}
 	}
 	
 	public void stopMovingRight(){
 		if (movingDirection == Direction.RIGHT){
 			movingDirection = Direction.NONE;
+			Vector2 velocity = currentBody.getLinearVelocity();
+			currentBody.setLinearVelocity(velocity.x*2/3, velocity.y);
 		}
 	}
 	
