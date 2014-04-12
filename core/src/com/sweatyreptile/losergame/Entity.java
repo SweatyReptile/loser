@@ -21,6 +21,9 @@ public class Entity {
 	protected float bodyWidth;
 	protected float bodyHeight;
 	
+	protected float spriteOriginX;
+	protected float spriteOriginY;
+	
 	public Entity(World world, BodyDef bodyDef){
 		this.sprite = new Sprite();
 		currentBody = world.createBody(bodyDef);
@@ -33,7 +36,7 @@ public class Entity {
 		float spriteScale = scale;
 		float bodyScale = 0f;
 		if (bodyDef.type == BodyType.DynamicBody){
-			bodyScale = 0.85f * scale;
+			bodyScale = 0.88f * scale;
 		}
 		else {
 			bodyScale = scale;
@@ -50,7 +53,11 @@ public class Entity {
 		
 		sprite = new Sprite(spriteTexture);
 		sprite.setSize(spriteWidth, spriteHeight);
-		sprite.setOrigin(0f, 0f);
+		
+		spriteOriginX = (spriteWidth - bodyWidth) / 2;
+		spriteOriginY = (spriteHeight - bodyHeight) / 2;
+		
+		sprite.setOrigin(spriteOriginX, spriteOriginY);
 	}
 	
 	public Entity(World world, BodyDef bodyDef, 
@@ -70,8 +77,8 @@ public class Entity {
 	private void updateSprite(float delta){
 		Vector2 position = currentBody.getPosition();
 		
-		float spritex = position.x - (spriteWidth - bodyWidth) / 2;
-		float spritey = position.y - (spriteHeight - bodyHeight) / 2;
+		float spritex = position.x - spriteOriginX;
+		float spritey = position.y - spriteOriginY;
 		
 		sprite.setPosition(spritex, spritey);
 		sprite.setRotation(MathUtils.radiansToDegrees * currentBody.getAngle());
