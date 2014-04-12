@@ -1,7 +1,5 @@
 package com.sweatyreptile.losergame;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,6 +15,11 @@ public class Entity {
 	protected Sprite sprite;
 	protected Body currentBody;
 	
+	protected float spriteWidth;
+	protected float spriteHeight;
+	protected float bodyWidth;
+	protected float bodyHeight;
+	
 	public Entity(World world, BodyDef bodyDef){
 		this.sprite = new Sprite();
 		currentBody = world.createBody(bodyDef);
@@ -26,15 +29,20 @@ public class Entity {
 			EntityFixtureDef fixtureDef, float scale, 
 			boolean flipped) {
 		
+		float spriteScale = scale;
+		float bodyScale = 0.92f * scale;
+		
 		currentBody = world.createBody(bodyDef);
-		fixtureDef.attach(currentBody, scale, flipped);
+		fixtureDef.attach(currentBody, bodyScale, flipped);
 		Texture spriteTexture = fixtureDef.getTexture();
-		float width = 1f * scale;
-		float height = (float) spriteTexture.getHeight() * scale / spriteTexture.getWidth();
-		Gdx.app.log("Height: ", height + "");
+		
+		bodyWidth = 1f * bodyScale;
+		bodyHeight = (float) spriteTexture.getHeight() * scale / spriteTexture.getWidth();
+		spriteWidth = 1f * spriteScale;
+		spriteHeight = (float) spriteTexture.getHeight() * spriteScale / spriteTexture.getWidth();
 		
 		sprite = new Sprite(spriteTexture);
-		sprite.setSize(width, height);
+		sprite.setSize(spriteWidth, spriteHeight);
 		sprite.setOrigin(0f, 0f);
 	}
 	
@@ -54,7 +62,11 @@ public class Entity {
 	
 	private void updateSprite(float delta){
 		Vector2 position = currentBody.getPosition();
-		sprite.setPosition(position.x, position.y);
+		
+		float spritex = position.x - (spriteWidth - bodyWidth) / 2;
+		float spritey = position.y - (spriteHeight - bodyHeight) / 2;
+		
+		sprite.setPosition(spritex, spritey);
 		sprite.setRotation(MathUtils.radiansToDegrees * currentBody.getAngle());
 	}
 	
