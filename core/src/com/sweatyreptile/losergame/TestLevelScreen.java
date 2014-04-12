@@ -1,6 +1,7 @@
 package com.sweatyreptile.losergame;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -14,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
@@ -37,7 +37,7 @@ public class TestLevelScreen implements Screen {
 	private Player player;
 	private PlayerInputProcessor playerInputProcessor;
 	
-	private ArrayList<Entity> entities;
+	private Map<String, Entity> entities;
 	
 	public TestLevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight){
@@ -48,7 +48,7 @@ public class TestLevelScreen implements Screen {
 		this.viewportWidth = viewportWidth;
 		this.viewportHeight = viewportHeight;
 		this.playerInputProcessor = playerInputProcessor;
-		this.entities = new ArrayList<Entity>();
+		this.entities = new HashMap<String, Entity>();
 	}
 	
 	@Override
@@ -60,7 +60,7 @@ public class TestLevelScreen implements Screen {
 		spriteRenderer.begin();
 		
 		player.render(spriteRenderer);
-		for (Entity entity : entities){
+		for (Entity entity : entities.values()){
 			entity.render(spriteRenderer);
 		}
 		spriteRenderer.end();
@@ -72,7 +72,7 @@ public class TestLevelScreen implements Screen {
 		physWorld.step(1/60f, 6, 2); // TODO: Change step
 		
 		player.update(delta);
-		for (Entity entity : entities){
+		for (Entity entity : entities.values()){
 			entity.update(delta);
 		}
 	}
@@ -123,9 +123,9 @@ public class TestLevelScreen implements Screen {
 		cerealDef.fixedRotation = false;
 		
 		player = new Player(physWorld, duckDef, assets);
-		entities.add(new Entity(physWorld, deadDuckDef, new DuckFixtureDef(assets), .2f, false));
-		entities.add(new Entity(physWorld, washMachineDef, new EntityFixtureDef(assets, "wash_machine"), .2f, false));
-		entities.add(new Entity(physWorld, cerealDef, new EntityFixtureDef(assets, "cereal"), .2f, false));
+		entities.put("dead_duck", new Entity(physWorld, deadDuckDef, new DuckFixtureDef(assets), .2f, false));
+		entities.put("wash_machine", new Entity(physWorld, washMachineDef, new EntityFixtureDef(assets, "wash_machine"), .2f, false));
+		entities.put("cereal", new Entity(physWorld, cerealDef, new EntityFixtureDef(assets, "cereal"), .2f, false));
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
