@@ -1,5 +1,6 @@
 package com.sweatyreptile.losergame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -28,11 +29,13 @@ public class Entity {
 		currentBody = world.createBody(bodyDef);
 		fixtureDef.attach(currentBody, scale, flipped);
 		Texture spriteTexture = fixtureDef.getTexture();
-		float width = 1f;
-		float height = spriteTexture.getHeight() / spriteTexture.getWidth();
+		float width = 1f * scale;
+		float height = (float) spriteTexture.getHeight() * scale / spriteTexture.getWidth();
+		Gdx.app.log("Height: ", height + "");
 		
 		sprite = new Sprite(spriteTexture);
 		sprite.setSize(width, height);
+		sprite.setOrigin(0f, 0f);
 	}
 	
 	public Entity(World world, BodyDef bodyDef, 
