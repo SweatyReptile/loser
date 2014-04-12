@@ -104,28 +104,33 @@ public class TestLevelScreen implements Screen {
 		BodyDef deadDuckDef = new BodyDef();
 		BodyDef washMachineDef = new BodyDef();
 		BodyDef cerealDef = new BodyDef();
+		BodyDef tableDef = new BodyDef();
 		
 		groundDef.type = BodyType.StaticBody;
 		groundDef.position.set(viewportWidth / 2, 0);
 		
 		duckDef.type = BodyType.DynamicBody;
-		duckDef.position.set(viewportWidth / 2 + .2f, viewportHeight);
+		duckDef.position.set(.6f, viewportHeight/2);
 		duckDef.fixedRotation = true;
 		
 		deadDuckDef.type = BodyType.DynamicBody;
-		deadDuckDef.position.set(viewportWidth/2, viewportHeight/2);
+		deadDuckDef.position.set(1.4f, .5f);
 		
 		washMachineDef.type = BodyType.StaticBody;
 		washMachineDef.position.set(.5f, .1f);
 		
 		cerealDef.type = BodyType.DynamicBody;
-		cerealDef.position.set(.5f, 2f);
+		cerealDef.position.set(1.8f, 0.7f);
 		cerealDef.fixedRotation = false;
+		
+		tableDef.type = BodyType.StaticBody;
+		tableDef.position.set(1.25f, .1f);
 		
 		player = new Player(physWorld, duckDef, assets);
 		entities.put("dead_duck", new Entity(physWorld, deadDuckDef, new DuckFixtureDef(assets), .2f, false));
-		entities.put("wash_machine", new Entity(physWorld, washMachineDef, new EntityFixtureDef(assets, "wash_machine"), .2f, false));
-		entities.put("cereal", new Entity(physWorld, cerealDef, new EntityFixtureDef(assets, "cereal"), .2f, false));
+		entities.put("wash_machine", new Entity(physWorld, washMachineDef, new EntityFixtureDef(assets, "wash_machine"), .35f, false));
+		entities.put("cereal", new Entity(physWorld, cerealDef, new EntityFixtureDef(assets, "cereal"), .15f, false));
+		entities.put("table", new Entity(physWorld, tableDef, new EntityFixtureDef(assets, "table"), 1.25f, false));
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);

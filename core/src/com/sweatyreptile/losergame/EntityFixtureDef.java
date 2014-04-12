@@ -17,6 +17,9 @@ public class EntityFixtureDef extends FixtureDef {
 	public EntityFixtureDef(AssetManagerPlus assets, String name) {
 		loader = assets.get(loaderName, FixedBodyEditorLoader.class);
 		this.name = name;
+		density = 2f;
+		friction = 0.4f;
+		restitution = 0f;
 	}
 	
 	public void attach(Body body, float scale, boolean flipped) {
