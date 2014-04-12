@@ -2,7 +2,6 @@ package com.sweatyreptile.losergame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
@@ -36,6 +36,8 @@ public class TestLevelScreen implements Screen {
 	private PlayerInputProcessor playerInputProcessor;
 	
 	private Entity deadDuck;
+	private Entity washMachine;
+	private Entity cereal;
 	
 	public TestLevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight){
@@ -57,6 +59,8 @@ public class TestLevelScreen implements Screen {
 		spriteRenderer.begin();
 		player.render(spriteRenderer);
 		deadDuck.render(spriteRenderer);
+		washMachine.render(spriteRenderer);
+		cereal.render(spriteRenderer);
 		spriteRenderer.end();
 		
 		physRenderer.render(physWorld, camera.combined);
@@ -66,6 +70,8 @@ public class TestLevelScreen implements Screen {
 		player.update(delta);
 		deadDuck.update(delta);
 		physWorld.step(1/60f, 6, 2); // TODO: Change step
+		washMachine.update(delta);
+		cereal.update(delta);
 	}
 
 	@Override
@@ -93,6 +99,8 @@ public class TestLevelScreen implements Screen {
 		BodyDef groundDef = new BodyDef();
 		BodyDef duckDef = new BodyDef();
 		BodyDef deadDuckDef = new BodyDef();
+		BodyDef washMachineDef = new BodyDef();
+		BodyDef cerealDef = new BodyDef();
 		
 		groundDef.type = BodyType.StaticBody;
 		groundDef.position.set(viewportWidth / 2, 0);
@@ -106,8 +114,17 @@ public class TestLevelScreen implements Screen {
 		deadDuckDef.type = BodyType.DynamicBody;
 		deadDuckDef.position.set(viewportWidth/2, viewportHeight/2);
 		
+		washMachineDef.type = BodyType.StaticBody;
+		washMachineDef.position.set(.5f, .1f);
+		
+		cerealDef.type = BodyType.DynamicBody;
+		cerealDef.position.set(.5f, 2f);
+		cerealDef.fixedRotation = false;
+		
 		player = new Player(physWorld, duckDef, assets);
 		deadDuck = new Entity(physWorld, deadDuckDef, new DuckFixtureDef(assets), .2f, false);
+		washMachine = new Entity(physWorld, washMachineDef, new EntityFixtureDef(assets, "wash_machine"), .2f, false);
+		cereal = new Entity(physWorld, cerealDef, new EntityFixtureDef(assets, "cereal"), .2f, false);
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
