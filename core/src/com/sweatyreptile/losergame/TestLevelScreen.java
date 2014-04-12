@@ -123,8 +123,8 @@ public class TestLevelScreen implements Screen {
 		
 		player = new Player(physWorld, duckDef, assets);
 		deadDuck = new Entity(physWorld, deadDuckDef, new DuckFixtureDef(assets), .2f, false);
-		washMachine = new Entity(physWorld, washMachineDef, new EntityFixtureDef(assets, "wash_machine"), .2f, false);
-		cereal = new Entity(physWorld, cerealDef, new EntityFixtureDef(assets, "cereal"), .2f, false);
+		washMachine = new Entity(physWorld, washMachineDef, new EntityFixtureDef(assets, "wash_machine"), .4f, false);
+		cereal = new Entity(physWorld, cerealDef, new EntityFixtureDef(assets, "cereal"), .15f, false);
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
