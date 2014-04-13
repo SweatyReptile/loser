@@ -28,27 +28,27 @@ public class Player extends Entity{
 		DuckFixtureDef fixDef = new DuckFixtureDef(assets);
 		leftBody = world.createBody(def);
 		rightBody = world.createBody(def);
-		fixDef.attach(leftBody, .2f, true);
-		fixDef.attach(rightBody, .2f, false);
+		fixDef.attach(leftBody, .2f, false);
+		fixDef.attach(rightBody, .2f, true);
 		currentBody = rightBody;
 		leftBody.setActive(false);
 		movingDirection = Direction.NONE;
 		
 		sprite = new Sprite(fixDef.getTexture());
 		
-		sprite.setSize(.2f, .147f);
+		sprite.setSize(.2f, .2f);
 	}
 	
 	public void moveLeft() {
 		movingDirection = Direction.LEFT;
 		switchBody(currentBody, leftBody);
-		sprite.setFlip(true, false);
+		sprite.setFlip(false, false);
 	}
 	
 	public void moveRight() {
 		movingDirection = Direction.RIGHT;
 		switchBody(currentBody, rightBody);
-		sprite.setFlip(false, false);
+		sprite.setFlip(true, false);
 	}
 	
 	public void switchBody(Body oldBody, Body newBody){

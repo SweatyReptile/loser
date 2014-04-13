@@ -10,7 +10,7 @@ public class DuckFixtureDef extends EntityFixtureDef {
 	private FixedBodyEditorLoader loader;
 	
 	public DuckFixtureDef(AssetManagerPlus assets) {
-		super(assets, "dummy_duck");
+		super(assets, "duck");
 		density = 15f;
 		friction = 0.4f;
 		restitution = 0f;
