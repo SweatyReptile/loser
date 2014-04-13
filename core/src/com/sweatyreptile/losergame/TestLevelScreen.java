@@ -8,6 +8,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -49,6 +50,7 @@ public class TestLevelScreen implements Screen {
 		this.viewportHeight = viewportHeight;
 		this.playerInputProcessor = playerInputProcessor;
 		this.entities = new HashMap<String, Entity>();
+		
 	}
 	
 	@Override
@@ -58,7 +60,7 @@ public class TestLevelScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		spriteRenderer.begin();
-		
+				
 		player.render(spriteRenderer);
 		for (Entity entity : entities.values()){
 			entity.render(spriteRenderer);
@@ -105,12 +107,16 @@ public class TestLevelScreen implements Screen {
 		BodyDef washMachineDef = new BodyDef();
 		BodyDef cerealDef = new BodyDef();
 		BodyDef tableDef = new BodyDef();
+		BodyDef shelfDef = new BodyDef();
+		BodyDef bookBlueDef = new BodyDef();
+		BodyDef bookRedDef = new BodyDef();
+		BodyDef bookYellowDef = new BodyDef();
 		
 		groundDef.type = BodyType.StaticBody;
 		groundDef.position.set(viewportWidth / 2, 0);
 		
 		duckDef.type = BodyType.DynamicBody;
-		duckDef.position.set(.6f, viewportHeight/2);
+		duckDef.position.set(2f, viewportHeight/2);
 		duckDef.fixedRotation = true;
 		
 		deadDuckDef.type = BodyType.DynamicBody;
@@ -121,16 +127,31 @@ public class TestLevelScreen implements Screen {
 		
 		cerealDef.type = BodyType.DynamicBody;
 		cerealDef.position.set(1.8f, 0.7f);
-		cerealDef.fixedRotation = false;
 		
 		tableDef.type = BodyType.StaticBody;
 		tableDef.position.set(1.25f, .1f);
+		
+		shelfDef.type = BodyType.StaticBody;
+		shelfDef.position.set(1f, 1f);
+		
+		bookBlueDef.type = BodyType.DynamicBody;
+		bookBlueDef.position.set(1.1f, 1.1f);
+		
+		bookRedDef.type = BodyType.DynamicBody;
+		bookRedDef.position.set(1.15f, 1.1f);
+		
+		bookYellowDef.type = BodyType.DynamicBody;
+		bookYellowDef.position.set(1.2f, 1.1f);
 		
 		player = new Player(physWorld, duckDef, assets);
 		entities.put("dead_duck", new Entity(physWorld, deadDuckDef, new DuckFixtureDef(assets), .2f, false));
 		entities.put("wash_machine", new Entity(physWorld, washMachineDef, new EntityFixtureDef(assets, "wash_machine"), .35f, false));
 		entities.put("cereal", new Entity(physWorld, cerealDef, new EntityFixtureDef(assets, "cereal"), .15f, false));
 		entities.put("table", new Entity(physWorld, tableDef, new EntityFixtureDef(assets, "table"), 1.25f, false));
+		entities.put("shelf", new Entity(physWorld, shelfDef, new EntityFixtureDef(assets, "shelf"), .5f, false));
+		entities.put("book_blue", new Entity(physWorld, bookBlueDef, new EntityFixtureDef(assets, "book_blue"), .05f, false));
+		entities.put("book_red", new Entity(physWorld, bookRedDef, new EntityFixtureDef(assets, "book_red"), .035f, false));
+		entities.put("book_yellow", new Entity(physWorld, bookYellowDef, new EntityFixtureDef(assets, "book_yellow"), .08f, false));
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
