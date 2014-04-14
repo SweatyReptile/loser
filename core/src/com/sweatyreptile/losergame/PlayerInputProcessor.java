@@ -10,6 +10,10 @@ public class PlayerInputProcessor implements InputProcessor {
 	@Override
 	public boolean keyDown(int keycode) {
 		switch(keycode) {
+		case Input.Keys.SHIFT_LEFT:
+		case Input.Keys.SHIFT_RIGHT:
+			player.duck();
+			return true;
 		case Input.Keys.A:
 			player.moveLeft();
 			return true;

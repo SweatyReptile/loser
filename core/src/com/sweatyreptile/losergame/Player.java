@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
+import com.sweatyreptile.losergame.fixtures.DuckTopFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class Player extends Entity{
@@ -19,36 +20,67 @@ public class Player extends Entity{
 	
 	private static final float MAX_VELOCITY = 1f;
 	
+	private Sprite standingSprite;
+	private Sprite duckingSprite;
+	
 	private Body leftBody;
 	private Body rightBody;
+	private Body leftDuckingBody;
+	private Body rightDuckingBody;
+	
 	private Direction movingDirection;
+	private boolean ducking;
 
 	public Player(World world, BodyDef def, AssetManagerPlus assets) {
 		super(world, def);
 		DuckFixtureDef fixDef = new DuckFixtureDef(assets);
+		DuckTopFixtureDef topFixDef = new DuckTopFixtureDef(assets);
+		
 		leftBody = world.createBody(def);
 		rightBody = world.createBody(def);
+		leftDuckingBody = world.createBody(def);
+		rightDuckingBody = world.createBody(def);
+		
 		fixDef.attach(leftBody, .2f, false);
 		fixDef.attach(rightBody, .2f, true);
+		topFixDef.attach(leftDuckingBody, .2f, false);
+		topFixDef.attach(rightDuckingBody, .2f, true);
+		
 		currentBody = rightBody;
 		leftBody.setActive(false);
+		leftDuckingBody.setActive(false);
+		rightDuckingBody.setActive(false);
 		movingDirection = Direction.NONE;
 		
-		sprite = new Sprite(fixDef.getTexture());
+		standingSprite = new Sprite(fixDef.getTexture());
+		duckingSprite = new Sprite(topFixDef.getTexture());
+		standingSprite.setSize(.2f, .2f);
+		duckingSprite.setSize(.2f, .16f);
 		
-		sprite.setSize(.2f, .2f);
+		sprite = standingSprite;
+	}
+	
+	public void duck() {
+		if (currentBody.equals(leftBody)) {
+			switchBody(currentBody, leftDuckingBody);
+		}
+		else if (currentBody.equals(rightBody)) {
+			switchBody(currentBody, rightDuckingBody);
+		}
+		ducking = true;
+		sprite = duckingSprite;
 	}
 	
 	public void moveLeft() {
 		movingDirection = Direction.LEFT;
 		switchBody(currentBody, leftBody);
-		sprite.setFlip(false, false);
+		flipSprites(false);
 	}
 	
 	public void moveRight() {
 		movingDirection = Direction.RIGHT;
 		switchBody(currentBody, rightBody);
-		sprite.setFlip(true, false);
+		flipSprites(true);
 	}
 	
 	public void switchBody(Body oldBody, Body newBody){
@@ -57,6 +89,11 @@ public class Player extends Entity{
 		oldBody.setActive(false);
 		newBody.setActive(true);
 		currentBody = newBody;
+	}
+	
+	public void flipSprites(boolean horizontal) {
+		sprite.setFlip(horizontal, false);
+		duckingSprite.setFlip(horizontal, false);
 	}
 	
 	public void jump() {
