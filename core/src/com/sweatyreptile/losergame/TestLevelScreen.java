@@ -23,6 +23,8 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class TestLevelScreen implements Screen { 
 	
+	
+	
 	private int width;
 	private int height;
 	private float viewportWidth;
@@ -151,7 +153,7 @@ public class TestLevelScreen implements Screen {
 		entities.put("shelf", new Entity(physWorld, shelfDef, new EntityFixtureDef(assets, "shelf"), .5f, false));
 		entities.put("book_blue", new Entity(physWorld, bookBlueDef, new EntityFixtureDef(assets, "book_blue"), .05f, false));
 		entities.put("book_red", new Entity(physWorld, bookRedDef, new EntityFixtureDef(assets, "book_red"), .035f, false));
-		entities.put("book_yellow", new Entity(physWorld, bookYellowDef, new EntityFixtureDef(assets, "book_yellow"), .08f, false));
+		entities.put("book_yellow", new Entity(physWorld, bookYellowDef, new EntityFixtureDef(assets, "book_yellow"), false, width, viewportWidth));
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);

@@ -33,6 +33,9 @@ public class Entity {
 			EntityFixtureDef fixtureDef, float scale, 
 			boolean flipped) {
 		
+		currentBody = world.createBody(bodyDef);
+		Texture spriteTexture = fixtureDef.getTexture();
+		
 		float spriteScale = scale;
 		float bodyScale = 0f;
 		if (bodyDef.type == BodyType.DynamicBody){
@@ -41,10 +44,7 @@ public class Entity {
 		else {
 			bodyScale = scale;
 		}
-		
-		currentBody = world.createBody(bodyDef);
 		fixtureDef.attach(currentBody, bodyScale, flipped);
-		Texture spriteTexture = fixtureDef.getTexture();
 		
 		bodyWidth = 1f * bodyScale;
 		bodyHeight = (float) spriteTexture.getHeight() * bodyScale / spriteTexture.getWidth();
@@ -58,6 +58,14 @@ public class Entity {
 		spriteOriginY = (spriteHeight - bodyHeight) / 2;
 		
 		sprite.setOrigin(spriteOriginX, spriteOriginY);
+	}
+	
+	public Entity(World world, BodyDef bodyDef, 
+			EntityFixtureDef fixtureDef, boolean flipped,
+			float screenWidth, float viewportWidth) {
+		this(world, bodyDef, fixtureDef, 
+				fixtureDef.getTexture().getWidth() * viewportWidth / screenWidth,
+				flipped);
 	}
 	
 	public Entity(World world, BodyDef bodyDef, 
