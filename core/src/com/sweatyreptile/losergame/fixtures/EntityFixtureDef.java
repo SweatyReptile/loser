@@ -12,7 +12,6 @@ public class EntityFixtureDef extends FixtureDef {
 	private FixedBodyEditorLoader loader;
 	private String loaderName = "duck.json";
 	private String name;
-	private AssetManagerPlus assets;
 	
 	public EntityFixtureDef(AssetManagerPlus assets, String name) {
 		loader = assets.get(loaderName, FixedBodyEditorLoader.class);

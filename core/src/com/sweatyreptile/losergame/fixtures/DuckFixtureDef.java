@@ -1,12 +1,8 @@
 package com.sweatyreptile.losergame.fixtures;
 
-import aurelienribon.bodyeditor.FixedBodyEditorLoader;
-
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class DuckFixtureDef extends EntityFixtureDef {
-
-	private FixedBodyEditorLoader loader;
 	
 	public DuckFixtureDef(AssetManagerPlus assets) {
 		super(assets, "duck");
