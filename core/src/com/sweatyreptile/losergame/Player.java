@@ -46,8 +46,8 @@ public class Player extends Entity{
 		topFixDef.attach(leftDuckingBody, .2f, false);
 		topFixDef.attach(rightDuckingBody, .2f, true);
 		
-		currentBody = rightBody;
-		leftBody.setActive(false);
+		currentBody = leftBody;
+		rightBody.setActive(false);
 		leftDuckingBody.setActive(false);
 		rightDuckingBody.setActive(false);
 		movingDirection = Direction.NONE;
