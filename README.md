@@ -5,6 +5,8 @@ Building
 
 [**How to build**](https://github.com/SweatyReptile/loser/wiki/Building)
 
+Latest automated builds can be found [here](ftp://67.185.188.226:5577/).
+
 License
 =======
 
