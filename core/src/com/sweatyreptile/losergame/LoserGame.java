@@ -8,6 +8,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
+import com.sweatyreptile.losergame.screens.FinishableScreen;
+import com.sweatyreptile.losergame.screens.LoadingScreen;
+import com.sweatyreptile.losergame.screens.ScreenFinishedListener;
+import com.sweatyreptile.losergame.screens.TestLevelScreen;
 
 public class LoserGame extends Game implements ScreenFinishedListener{
 	SpriteBatch batch;

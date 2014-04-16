@@ -1,4 +1,4 @@
-package com.sweatyreptile.losergame;
+package com.sweatyreptile.losergame.screens;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +18,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.sweatyreptile.losergame.Entity;
+import com.sweatyreptile.losergame.Player;
+import com.sweatyreptile.losergame.PlayerInputProcessor;
+import com.sweatyreptile.losergame.fixtures.BookFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
+import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class TestLevelScreen implements Screen { 
