@@ -32,6 +32,10 @@ public class PlayerInputProcessor implements InputProcessor {
 	@Override
 	public boolean keyUp(int keycode) {
 		switch(keycode) {
+		case Input.Keys.SHIFT_LEFT:
+		case Input.Keys.SHIFT_RIGHT:
+			player.standUp();
+			return true;
 		case Input.Keys.A:
 			player.stopMovingLeft();
 			return true;

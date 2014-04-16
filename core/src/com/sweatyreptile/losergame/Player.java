@@ -71,15 +71,28 @@ public class Player extends Entity{
 		sprite = duckingSprite;
 	}
 	
+	public void standUp() {
+		if (currentBody.equals(leftDuckingBody)) {
+			switchBody(currentBody, leftBody);
+		}
+		else if (currentBody.equals(rightDuckingBody)) {
+			switchBody(currentBody, rightBody);
+		}
+		ducking = false;
+		sprite = standingSprite;
+	}
+	
 	public void moveLeft() {
 		movingDirection = Direction.LEFT;
-		switchBody(currentBody, leftBody);
+		if (!ducking) switchBody(currentBody, leftBody);
+		else switchBody(currentBody, leftDuckingBody);
 		flipSprites(false);
 	}
 	
 	public void moveRight() {
 		movingDirection = Direction.RIGHT;
-		switchBody(currentBody, rightBody);
+		if (!ducking) switchBody(currentBody, rightBody);
+		else switchBody(currentBody, rightDuckingBody);
 		flipSprites(true);
 	}
 	
@@ -92,7 +105,7 @@ public class Player extends Entity{
 	}
 	
 	public void flipSprites(boolean horizontal) {
-		sprite.setFlip(horizontal, false);
+		standingSprite.setFlip(horizontal, false);
 		duckingSprite.setFlip(horizontal, false);
 	}
 	
