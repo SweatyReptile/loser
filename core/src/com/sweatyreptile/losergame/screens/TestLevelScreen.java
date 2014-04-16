@@ -8,7 +8,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -19,6 +18,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
+import com.sweatyreptile.losergame.EntityFactory;
 import com.sweatyreptile.losergame.Player;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.fixtures.BookFixtureDef;
@@ -47,6 +47,8 @@ public class TestLevelScreen implements Screen {
 	
 	private Map<String, Entity> entities;
 	
+	private EntityFactory entityFactory;
+	
 	public TestLevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight){
 		spriteRenderer = batch;
@@ -57,7 +59,6 @@ public class TestLevelScreen implements Screen {
 		this.viewportHeight = viewportHeight;
 		this.playerInputProcessor = playerInputProcessor;
 		this.entities = new HashMap<String, Entity>();
-		
 	}
 	
 	@Override
@@ -103,64 +104,38 @@ public class TestLevelScreen implements Screen {
 		
 		physWorld = new World(new Vector2(0f, -9.8f), true);
 		physRenderer = new Box2DDebugRenderer();
+		
+		entityFactory = new EntityFactory(assets, entities, physWorld, viewportWidth, width);
 		setupWorld();
 	}
 	
 	private void setupWorld() {
 		
-		BodyDef groundDef = new BodyDef();
-		BodyDef duckDef = new BodyDef();
-		BodyDef deadDuckDef = new BodyDef();
-		BodyDef washMachineDef = new BodyDef();
-		BodyDef cerealDef = new BodyDef();
-		BodyDef tableDef = new BodyDef();
-		BodyDef shelfDef = new BodyDef();
-		BodyDef bookBlueDef = new BodyDef();
-		BodyDef bookRedDef = new BodyDef();
-		BodyDef bookYellowDef = new BodyDef();
+		EntityFactory ef = entityFactory;
 		
-		groundDef.type = BodyType.StaticBody;
-		groundDef.position.set(viewportWidth / 2, 0);
+		BodyDef duckDef = new BodyDef();
 		
 		duckDef.type = BodyType.DynamicBody;
 		duckDef.position.set(2f, viewportHeight/2);
 		duckDef.fixedRotation = true;
 		
-		deadDuckDef.type = BodyType.DynamicBody;
-		deadDuckDef.position.set(1.4f, .5f);
-		
-		washMachineDef.type = BodyType.StaticBody;
-		washMachineDef.position.set(.5f, .1f);
-		
-		cerealDef.type = BodyType.DynamicBody;
-		cerealDef.position.set(1.8f, 0.7f);
-		
-		tableDef.type = BodyType.StaticBody;
-		tableDef.position.set(1.25f, .1f);
-		
-		shelfDef.type = BodyType.StaticBody;
-		shelfDef.position.set(1f, 1f);
-		
-		bookBlueDef.type = BodyType.DynamicBody;
-		bookBlueDef.position.set(1.1f, 1.1f);
-		
-		bookRedDef.type = BodyType.DynamicBody;
-		bookRedDef.position.set(1.15f, 1.1f);
-		
-		bookYellowDef.type = BodyType.DynamicBody;
-		bookYellowDef.position.set(1.2f, 1.1f);
-		
 		player = new Player(physWorld, duckDef, assets);
-		entities.put("dead_duck", new Entity(physWorld, deadDuckDef, new DuckFixtureDef(assets), .2f, false));
-		entities.put("wash_machine", new Entity(physWorld, washMachineDef, new EntityFixtureDef(assets, "wash_machine"), .35f, false));
-		entities.put("cereal", new Entity(physWorld, cerealDef, new EntityFixtureDef(assets, "cereal"), .15f, false));
-		entities.put("table", new Entity(physWorld, tableDef, new EntityFixtureDef(assets, "table"), 1.25f, false));
-		entities.put("shelf", new Entity(physWorld, shelfDef, new EntityFixtureDef(assets, "shelf"), .5f, false));
-		entities.put("book_blue", new Entity(physWorld, bookBlueDef, new BookFixtureDef(assets, "book_blue"), .05f, false));
-		entities.put("book_red", new Entity(physWorld, bookRedDef, new BookFixtureDef(assets, "book_red"), .035f, false));
-		entities.put("book_yellow", new Entity(physWorld, bookYellowDef, new BookFixtureDef(assets, "book_yellow"), false, width, viewportWidth));
 		
+		ef.create("dead_duck", BodyType.DynamicBody, 1.4f, .5f, new DuckFixtureDef(assets), false);
+		ef.create("wash_machine", BodyType.StaticBody, .5f, .1f, new EntityFixtureDef(assets, "wash_machine"), false);
+		ef.create("cereal", BodyType.DynamicBody, 1.8f, 0.7f, new EntityFixtureDef(assets, "cereal"), false);
+		ef.create("table", BodyType.StaticBody, 1.25f, .1f, new EntityFixtureDef(assets, "table"), false);
+		ef.create("book_blue", BodyType.DynamicBody, 1.1f, 1.1f, new BookFixtureDef(assets, "book_blue"), false);
+		ef.create("book_red", BodyType.DynamicBody, 1.15f, 1.1f, new BookFixtureDef(assets, "book_red"), false);
+		ef.create("book_yellow", BodyType.DynamicBody, 1.2f, 1.1f, new BookFixtureDef(assets, "book_yellow"), false);
+		ef.create("shelf", BodyType.StaticBody, 1f, 1f, new EntityFixtureDef(assets, "shelf"), false);
+
+		
+		BodyDef groundDef = new BodyDef();
+		groundDef.type = BodyType.StaticBody;
+		groundDef.position.set(viewportWidth / 2, 0);
 		PolygonShape groundBox = new PolygonShape();
+		
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
 		Body groundBody = physWorld.createBody(groundDef);
 		groundBody.createFixture(groundBox, 0f);
