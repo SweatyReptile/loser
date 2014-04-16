@@ -6,6 +6,7 @@ Building
 [**How to build**](https://github.com/SweatyReptile/loser/wiki/Building)
 
 Latest automated android builds can be found here: ftp://67.185.188.226:5577/.
+
 Unfortunately, desktop builds are not automated yet.
 
 License
