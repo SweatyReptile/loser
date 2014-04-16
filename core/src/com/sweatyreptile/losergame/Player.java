@@ -138,11 +138,14 @@ public class Player extends Entity{
 			Vector2 position = currentBody.getPosition();
 			Vector2 velocity = currentBody.getLinearVelocity();
 			if (movingDirection == Direction.LEFT) {
-				currentBody.setLinearVelocity(-MAX_VELOCITY, velocity.y);
+				if (!ducking) currentBody.setLinearVelocity(-MAX_VELOCITY, velocity.y);
+				else currentBody.setLinearVelocity(-MAX_VELOCITY/2, velocity.y);
 				
 			}
 			else if (movingDirection == Direction.RIGHT) {
-				currentBody.setLinearVelocity(MAX_VELOCITY, velocity.y);
+				if (!ducking) currentBody.setLinearVelocity(MAX_VELOCITY, velocity.y);
+				else currentBody.setLinearVelocity(MAX_VELOCITY/2, velocity.y);
+
 			}
 		}
 	}
