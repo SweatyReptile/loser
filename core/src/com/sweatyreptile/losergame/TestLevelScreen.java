@@ -151,9 +151,9 @@ public class TestLevelScreen implements Screen {
 		entities.put("cereal", new Entity(physWorld, cerealDef, new EntityFixtureDef(assets, "cereal"), .15f, false));
 		entities.put("table", new Entity(physWorld, tableDef, new EntityFixtureDef(assets, "table"), 1.25f, false));
 		entities.put("shelf", new Entity(physWorld, shelfDef, new EntityFixtureDef(assets, "shelf"), .5f, false));
-		entities.put("book_blue", new Entity(physWorld, bookBlueDef, new EntityFixtureDef(assets, "book_blue"), .05f, false));
-		entities.put("book_red", new Entity(physWorld, bookRedDef, new EntityFixtureDef(assets, "book_red"), .035f, false));
-		entities.put("book_yellow", new Entity(physWorld, bookYellowDef, new EntityFixtureDef(assets, "book_yellow"), false, width, viewportWidth));
+		entities.put("book_blue", new Entity(physWorld, bookBlueDef, new BookFixtureDef(assets, "book_blue"), .05f, false));
+		entities.put("book_red", new Entity(physWorld, bookRedDef, new BookFixtureDef(assets, "book_red"), .035f, false));
+		entities.put("book_yellow", new Entity(physWorld, bookYellowDef, new BookFixtureDef(assets, "book_yellow"), false, width, viewportWidth));
 		
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
