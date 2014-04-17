@@ -56,6 +56,10 @@ public class PlayerInputProcessor implements InputProcessor {
 		case Input.Keys.RIGHT:
 			player.stopMovingRight();
 			return true;
+		case Input.Keys.W:
+		case Input.Keys.UP:
+		case Input.Keys.SPACE:
+			return true;
 		//case Input.Keys.E:
 		//case Input.Keys.ENTER:
 		default:
