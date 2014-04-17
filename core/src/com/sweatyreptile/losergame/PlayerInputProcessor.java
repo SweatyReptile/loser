@@ -12,23 +12,31 @@ public class PlayerInputProcessor implements InputProcessor {
 		switch(keycode) {
 		case Input.Keys.SHIFT_LEFT:
 		case Input.Keys.SHIFT_RIGHT:
+		case Input.Keys.S:
+		case Input.Keys.DOWN:
 			player.duck();
 			return true;
 		case Input.Keys.A:
+		case Input.Keys.LEFT:
 			player.moveLeft();
 			return true;
 		case Input.Keys.D:
+		case Input.Keys.RIGHT:
 			player.moveRight();
 			return true;
 		case Input.Keys.W:
+		case Input.Keys.UP:
+		case Input.Keys.SPACE:
 			player.jump();
 			return true;
-		case Input.Keys.SPACE:
+		//case Input.Keys.E:
+		//case Input.Keys.ENTER:
+		default:
 			player.quack();
 			return true;
 		}
 		
-		return false;
+		//return false;
 	}
 
 	@Override
@@ -36,19 +44,25 @@ public class PlayerInputProcessor implements InputProcessor {
 		switch(keycode) {
 		case Input.Keys.SHIFT_LEFT:
 		case Input.Keys.SHIFT_RIGHT:
+		case Input.Keys.S:
+		case Input.Keys.DOWN:
 			player.standUp();
 			return true;
 		case Input.Keys.A:
+		case Input.Keys.LEFT:
 			player.stopMovingLeft();
 			return true;
 		case Input.Keys.D:
+		case Input.Keys.RIGHT:
 			player.stopMovingRight();
 			return true;
-		case Input.Keys.SPACE:
+		//case Input.Keys.E:
+		//case Input.Keys.ENTER:
+		default:
 			player.stopQuacking();
 			return true;
 		}
-		return false;
+		//return false;
 	}
 
 	@Override
