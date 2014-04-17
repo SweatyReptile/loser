@@ -1,13 +1,16 @@
 package com.sweatyreptile.losergame.screens;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -28,8 +31,6 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class TestLevelScreen implements Screen { 
 	
-	
-	
 	private int width;
 	private int height;
 	private float viewportWidth;
@@ -40,6 +41,7 @@ public class TestLevelScreen implements Screen {
 	private Box2DDebugRenderer physRenderer;
 	
 	private AssetManagerPlus assets;
+	private Texture background;
 	
 	private World physWorld;
 	private Player player;
@@ -69,6 +71,7 @@ public class TestLevelScreen implements Screen {
 		
 		spriteRenderer.begin();
 				
+		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight);
 		player.render(spriteRenderer);
 		for (Entity entity : entities.values()){
 			entity.render(spriteRenderer);
@@ -106,6 +109,7 @@ public class TestLevelScreen implements Screen {
 		physRenderer = new Box2DDebugRenderer();
 		
 		entityFactory = new EntityFactory(assets, entities, physWorld, viewportWidth, width);
+		background = assets.get("background.png", Texture.class);
 		setupWorld();
 	}
 	

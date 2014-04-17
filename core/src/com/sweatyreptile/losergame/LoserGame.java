@@ -24,6 +24,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 
 		assets.load("badlogic.jpg", Texture.class);
 		assets.load("duck.json", FixedBodyEditorLoader.class);
+		assets.load("background.png", Texture.class);
 		
 		PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
 		
