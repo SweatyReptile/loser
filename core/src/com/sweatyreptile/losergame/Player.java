@@ -21,6 +21,7 @@ public class Player extends Entity{
 	private Sprite standingSprite;
 	private Sprite duckingSprite;
 	private Sprite quackingSprite;
+	private Sprite quackingDuckingSprite;
 	
 	private Body leftBody;
 	private Body rightBody;
@@ -28,6 +29,8 @@ public class Player extends Entity{
 	private Body rightDuckingBody;
 	private Body leftQuackingBody;
 	private Body rightQuackingBody;
+	private Body leftQuackingDuckingBody;
+	private Body rightQuackingDuckingBody;
 	
 	private Direction movingDirection;
 	private boolean ducking;
@@ -38,6 +41,7 @@ public class Player extends Entity{
 		DuckFixtureDef fixDef = new DuckFixtureDef(assets);
 		DuckTopFixtureDef topFixDef = new DuckTopFixtureDef(assets);
 		DuckQuackFixtureDef quackFixDef = new DuckQuackFixtureDef(assets);
+		DuckQuackTopFixtureDef quackTopFixDef = new DuckQuackTopFixtureDef(assets);
 		
 		leftBody = world.createBody(def);
 		rightBody = world.createBody(def);
@@ -45,6 +49,8 @@ public class Player extends Entity{
 		rightDuckingBody = world.createBody(def);
 		leftQuackingBody = world.createBody(def);
 		rightQuackingBody = world.createBody(def);
+		leftQuackingDuckingBody = world.createBody(def);
+		rightQuackingDuckingBody = world.createBody(def);
 		
 		fixDef.attach(leftBody, .2f, false);
 		fixDef.attach(rightBody, .2f, true);
@@ -52,6 +58,8 @@ public class Player extends Entity{
 		topFixDef.attach(rightDuckingBody, .2f, true);
 		quackFixDef.attach(leftQuackingBody, .2f, false);
 		quackFixDef.attach(rightQuackingBody, .2f, true);
+		quackTopFixDef.attach(leftQuackingDuckingBody, .2f, false);
+		quackTopFixDef.attach(rightQuackingDuckingBody, .2f, true);
 		
 		currentBody = leftBody;
 		rightBody.setActive(false);
@@ -59,14 +67,18 @@ public class Player extends Entity{
 		rightDuckingBody.setActive(false);
 		leftQuackingBody.setActive(false);
 		rightQuackingBody.setActive(false);
+		leftQuackingDuckingBody.setActive(false);
+		rightQuackingDuckingBody.setActive(false);
 		movingDirection = Direction.NONE;
 		
 		standingSprite = new Sprite(fixDef.getTexture());
 		duckingSprite = new Sprite(topFixDef.getTexture());
 		quackingSprite = new Sprite(quackFixDef.getTexture());
+		quackingDuckingSprite = new Sprite(quackTopFixDef.getTexture());
 		standingSprite.setSize(.2f, .2f);
 		duckingSprite.setSize(.2f, .16f);
 		quackingSprite.setSize(.2f, .2f);
+		quackingDuckingSprite.setSize(.2f, .16f);
 		
 		sprite = standingSprite;
 	}
@@ -74,50 +86,87 @@ public class Player extends Entity{
 	public void quack() {
 		if (currentBody.equals(leftBody)) {
 			switchBody(currentBody, leftQuackingBody);
+			sprite = quackingSprite;
 		}
 		else if (currentBody.equals(rightBody)) {
 			switchBody(currentBody, rightQuackingBody);
+			sprite = quackingSprite;
+		}
+		else if (currentBody.equals(leftDuckingBody)){
+			switchBody(currentBody, leftQuackingDuckingBody);
+			sprite = quackingDuckingSprite;
+		}
+		else if (currentBody.equals(rightDuckingBody)){
+			switchBody(currentBody, rightQuackingDuckingBody);
+			sprite = quackingDuckingSprite;
 		}
 		quacking = true;
-		sprite = quackingSprite;
 	}
 	
 	public void stopQuacking() {
 		if (currentBody.equals(leftQuackingBody)) {
 			switchBody(currentBody, leftBody);
+			sprite = standingSprite;
 		}
 		else if (currentBody.equals(rightQuackingBody)) {
 			switchBody(currentBody, rightBody);
+			sprite = standingSprite;
+		}
+		else if (currentBody.equals(leftQuackingDuckingBody)){
+			switchBody(currentBody, leftDuckingBody);
+			sprite = duckingSprite;
+		}
+		else if (currentBody.equals(rightQuackingDuckingBody)){
+			switchBody(currentBody, rightDuckingBody);
+			sprite = duckingSprite;
 		}
 		quacking = false;
-		sprite = standingSprite;
 	}
 	
 	public void duck() {
 		if (currentBody.equals(leftBody)) {
 			switchBody(currentBody, leftDuckingBody);
+			sprite = duckingSprite;
 		}
 		else if (currentBody.equals(rightBody)) {
 			switchBody(currentBody, rightDuckingBody);
+			sprite = duckingSprite;
+		}
+		else if (currentBody.equals(leftQuackingBody)){
+			switchBody(currentBody, leftQuackingDuckingBody);
+			sprite = quackingDuckingSprite;
+		}
+		else if (currentBody.equals(rightQuackingBody)){
+			switchBody(currentBody, rightQuackingDuckingBody);
+			sprite = quackingDuckingSprite;
 		}
 		ducking = true;
-		sprite = duckingSprite;
 	}
 	
 	public void standUp() {
 		if (currentBody.equals(leftDuckingBody)) {
 			switchBody(currentBody, leftBody);
+			sprite = standingSprite;
 		}
 		else if (currentBody.equals(rightDuckingBody)) {
 			switchBody(currentBody, rightBody);
+			sprite = standingSprite;
+		}
+		else if (currentBody.equals(leftQuackingDuckingBody)){
+			switchBody(currentBody, leftQuackingBody);
+			sprite = quackingSprite;
+		}
+		else if (currentBody.equals(rightQuackingDuckingBody)){
+			switchBody(currentBody, rightQuackingBody);
+			sprite = quackingSprite;
 		}
 		ducking = false;
-		sprite = standingSprite;
 	}
 	
 	public void moveLeft() {
 		movingDirection = Direction.LEFT;
-		if (ducking) switchBody(currentBody, leftDuckingBody);
+		if (quacking && ducking) switchBody(currentBody, leftQuackingDuckingBody);
+		else if (ducking) switchBody(currentBody, leftDuckingBody);
 		else if (quacking) switchBody(currentBody, leftQuackingBody);
 		else switchBody(currentBody, leftBody);
 		flipSprites(false);
@@ -125,7 +174,8 @@ public class Player extends Entity{
 	
 	public void moveRight() {
 		movingDirection = Direction.RIGHT;
-		if (ducking) switchBody(currentBody, rightDuckingBody);
+		if (quacking && ducking) switchBody(currentBody, rightQuackingDuckingBody);
+		else if (ducking) switchBody(currentBody, rightDuckingBody);
 		else if (quacking) switchBody (currentBody, rightQuackingBody);
 		else switchBody(currentBody, rightBody);
 		flipSprites(true);
@@ -143,6 +193,7 @@ public class Player extends Entity{
 		standingSprite.setFlip(horizontal, false);
 		duckingSprite.setFlip(horizontal, false);
 		quackingSprite.setFlip(horizontal, false);
+		quackingDuckingSprite.setFlip(horizontal, false);
 	}
 	
 	public void jump() {
