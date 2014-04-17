@@ -7,6 +7,7 @@ public class DuckQuackTopFixtureDef extends EntityFixtureDef{
 
 	public DuckQuackTopFixtureDef(AssetManagerPlus assets) {
 		super(assets, "duck_quack_top");
+		density = 15f;
 	}
 
 }
