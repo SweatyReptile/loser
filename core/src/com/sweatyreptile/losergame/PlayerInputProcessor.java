@@ -21,8 +21,10 @@ public class PlayerInputProcessor implements InputProcessor {
 			player.moveRight();
 			return true;
 		case Input.Keys.W:
-		case Input.Keys.SPACE:
 			player.jump();
+			return true;
+		case Input.Keys.SPACE:
+			player.quack();
 			return true;
 		}
 		
@@ -41,6 +43,9 @@ public class PlayerInputProcessor implements InputProcessor {
 			return true;
 		case Input.Keys.D:
 			player.stopMovingRight();
+			return true;
+		case Input.Keys.SPACE:
+			player.stopQuacking();
 			return true;
 		}
 		return false;
