@@ -214,7 +214,7 @@ public class Player extends Entity{
 	
 	public void weldSensor(Body newBody) {
 		Vector2 bodyPosition = newBody.getPosition();
-		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y, newBody.getAngle());
+		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - sprite.getHeight(), newBody.getAngle()); //TODO: subtract height of sensor form y position
 		WeldJointDef weld = new WeldJointDef();
 		weld.bodyA = currentBody;
 		weld.bodyB = flightSensorBody;
