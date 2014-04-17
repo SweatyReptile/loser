@@ -14,6 +14,7 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class Entity {
 
+	protected World world;
 	protected Sprite sprite;
 	protected Body currentBody;
 	
@@ -28,6 +29,7 @@ public class Entity {
 	public Entity(World world, BodyDef bodyDef){
 		this.sprite = new Sprite();
 		currentBody = world.createBody(bodyDef);
+		this.world = world;
 	}
 	
 	public Entity(World world, BodyDef bodyDef, 

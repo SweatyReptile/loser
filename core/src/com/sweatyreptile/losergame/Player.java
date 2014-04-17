@@ -4,10 +4,17 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
+import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckQuackFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckTopFixtureDef;
+import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class Player extends Entity{
@@ -32,6 +39,9 @@ public class Player extends Entity{
 	private Body leftQuackingDuckingBody;
 	private Body rightQuackingDuckingBody;
 	
+	private Body flightSensorBody;
+	private WeldJoint flightSensorWeld;
+	
 	private Direction movingDirection;
 	private boolean ducking;
 	private boolean quacking;
@@ -51,6 +61,7 @@ public class Player extends Entity{
 		rightQuackingBody = world.createBody(def);
 		leftQuackingDuckingBody = world.createBody(def);
 		rightQuackingDuckingBody = world.createBody(def);
+		flightSensorBody = world.createBody(def);
 		
 		fixDef.attach(leftBody, .2f, false);
 		fixDef.attach(rightBody, .2f, true);
@@ -81,6 +92,17 @@ public class Player extends Entity{
 		quackingDuckingSprite.setSize(.2f, .16f);
 		
 		sprite = standingSprite;
+		
+		BodyDef flightSensorBodyDef = new BodyDef();
+		flightSensorBodyDef.type = BodyType.DynamicBody;
+		flightSensorBodyDef.position.set(def.position.x, def.position.y); //TODO move down
+		flightSensorBody = world.createBody(flightSensorBodyDef);
+		
+		EntityFixtureDef flightSensorDef = new EntityFixtureDef(assets, "duck_flight_sensor");
+		flightSensorDef.isSensor = true;
+		flightSensorDef.attach(flightSensorBody, .2f, false);
+		
+		weldSensor(currentBody);
 	}
 	
 	public void quack() {
@@ -187,6 +209,20 @@ public class Player extends Entity{
 		oldBody.setActive(false);
 		newBody.setActive(true);
 		currentBody = newBody;
+		weldSensor(currentBody);
+	}
+	
+	public void weldSensor(Body newBody) {
+		Vector2 bodyPosition = newBody.getPosition();
+		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y, newBody.getAngle());
+		WeldJointDef weld = new WeldJointDef();
+		weld.bodyA = currentBody;
+		weld.bodyB = flightSensorBody;
+		weld.initialize(currentBody, flightSensorBody, currentBody.getWorldCenter());
+		if (flightSensorWeld != null) {
+			world.destroyJoint(flightSensorWeld);
+		}
+		flightSensorWeld = (WeldJoint) world.createJoint(weld);
 	}
 	
 	public void flipSprites(boolean horizontal) {
