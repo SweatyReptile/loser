@@ -1,4 +1,4 @@
-package com.sweatyreptile.losergame;
+package com.sweatyreptile.losergame.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;

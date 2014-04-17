@@ -1,8 +1,5 @@
 package com.sweatyreptile.losergame;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -172,7 +169,6 @@ public class Player extends Entity{
 	public void update(float delta) {
 		super.update(delta);
 		if (movingDirection != Direction.NONE) {
-			Vector2 position = currentBody.getPosition();
 			Vector2 velocity = currentBody.getLinearVelocity();
 			if (movingDirection == Direction.LEFT) {
 				if (!ducking) currentBody.setLinearVelocity(-MAX_VELOCITY, velocity.y);

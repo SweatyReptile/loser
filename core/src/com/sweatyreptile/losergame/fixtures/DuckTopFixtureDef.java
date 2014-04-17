@@ -1,6 +1,5 @@
 package com.sweatyreptile.losergame.fixtures;
 
-import com.sweatyreptile.losergame.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class DuckTopFixtureDef extends EntityFixtureDef {
