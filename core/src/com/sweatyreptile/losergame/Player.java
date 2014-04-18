@@ -4,11 +4,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
@@ -213,8 +212,14 @@ public class Player extends Entity{
 	}
 	
 	public void weldSensor(Body newBody) {
+		Vector2 vertex1 = new Vector2();
+		Vector2 vertex2 = new Vector2();
+		PolygonShape sensorShape = (PolygonShape) flightSensorBody.getFixtureList().get(0).getShape();
+		sensorShape.getVertex(0, vertex1);
+		sensorShape.getVertex(2, vertex2);
+		float sensorHeight = vertex1.y - vertex2.y;
 		Vector2 bodyPosition = newBody.getPosition();
-		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - sprite.getHeight(), newBody.getAngle()); //TODO: subtract height of sensor form y position
+		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - sensorHeight, newBody.getAngle()); //TODO: subtract height of sensor from y position
 		WeldJointDef weld = new WeldJointDef();
 		weld.bodyA = currentBody;
 		weld.bodyB = flightSensorBody;
