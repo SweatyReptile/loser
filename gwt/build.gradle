@@ -9,11 +9,11 @@ gwt {
     src = files(file("src/")) // Needs to be in front of "modules" below.
     modules 'com.sweatyreptile.losergame.GdxDefinition'
     devModules 'com.sweatyreptile.losergame.GdxDefinitionSuperdev'
+    project.webAppDirName = 'webapp'
 
     compiler {
         strict = true;
         enableClosureCompiler = true;
-        disableClassMetadata = true;
         disableCastChecking = true;
     }
 }
