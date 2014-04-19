@@ -18,7 +18,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
-import com.sweatyreptile.losergame.DuckFlightListener;
+import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
 import com.sweatyreptile.losergame.Player;
@@ -49,7 +49,7 @@ public class TestLevelScreen implements Screen {
 	private Map<String, Entity> entities;
 	
 	private EntityFactory entityFactory;
-	private DuckFlightListener duckFlightListener;
+	private LoserContactListener contactListener;
 	
 	public TestLevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight){
@@ -88,8 +88,8 @@ public class TestLevelScreen implements Screen {
 	public void update(float delta) {
 		physWorld.step(1/60f, 6, 2); // TODO: Change step
 		
-		if (!duckFlightListener.isContacting() && !player.isFlying()) player.fly();
-		else if (duckFlightListener.isContacting() && player.isFlying()) player.land();
+		if (!contactListener.isFlightSensorContacting() && !player.isFlying()) player.fly();
+		else if (contactListener.isLandingSensorContacting() && player.isFlying()) player.land();
 		player.update(delta);
 		for (Entity entity : entities.values()){
 			entity.update(delta);
@@ -121,8 +121,8 @@ public class TestLevelScreen implements Screen {
 	
 	private void setupWorld() {
 		
-		duckFlightListener = new DuckFlightListener();
-		physWorld.setContactListener(duckFlightListener);
+		contactListener = new LoserContactListener();
+		physWorld.setContactListener(contactListener);
 		
 		EntityFactory ef = entityFactory;
 		
