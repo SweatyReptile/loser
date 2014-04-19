@@ -5,6 +5,7 @@ import aurelienribon.bodyeditor.FixedBodyEditorLoader;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
@@ -25,6 +26,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		assets.load("badlogic.jpg", Texture.class);
 		assets.load("duck.json", FixedBodyEditorLoader.class);
 		assets.load("background.png", Texture.class);
+		assets.load("quack_dummy.ogg", Sound.class);
 		
 		PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
 		

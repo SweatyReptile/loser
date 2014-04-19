@@ -1,5 +1,6 @@
 package com.sweatyreptile.losergame;
 
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -49,6 +50,8 @@ public class Player extends Entity{
 	private boolean flying;
 	private boolean ducking;
 	private boolean quacking;
+	
+	private Sound quackSound;
 
 	public Player(World world, BodyDef def, AssetManagerPlus assets) {
 		super(world, def);
@@ -118,6 +121,8 @@ public class Player extends Entity{
 		
 		weldSensors(currentBody);
 		
+		quackSound = assets.get("quack_dummy.ogg");
+		
 	}
 	
 	public void update(float delta) {
@@ -155,6 +160,7 @@ public class Player extends Entity{
 			sprite = quackingDuckingSprite;
 		}
 		quacking = true;
+		quackSound.play();
 	}
 	
 	public void stopQuacking() {
