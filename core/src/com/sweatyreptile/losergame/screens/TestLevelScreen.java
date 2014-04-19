@@ -1,12 +1,10 @@
 package com.sweatyreptile.losergame.screens;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,8 +16,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.sweatyreptile.losergame.DuckFlightListener;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
 import com.sweatyreptile.losergame.Player;
@@ -50,6 +50,7 @@ public class TestLevelScreen implements Screen {
 	private Map<String, Entity> entities;
 	
 	private EntityFactory entityFactory;
+	private DuckFlightListener duckFlightListener;
 	
 	public TestLevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight){
@@ -85,6 +86,8 @@ public class TestLevelScreen implements Screen {
 		physWorld.step(1/60f, 6, 2); // TODO: Change step
 		
 		player.update(delta);
+		if (!duckFlightListener.isContacting() && !player.isFlying()) player.fly();
+		else if (duckFlightListener.isContacting() && player.isFlying()) player.land();
 		for (Entity entity : entities.values()){
 			entity.update(delta);
 		}
@@ -114,6 +117,9 @@ public class TestLevelScreen implements Screen {
 	}
 	
 	private void setupWorld() {
+		
+		duckFlightListener = new DuckFlightListener();
+		physWorld.setContactListener(duckFlightListener);
 		
 		EntityFactory ef = entityFactory;
 		

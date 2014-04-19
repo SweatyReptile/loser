@@ -42,6 +42,7 @@ public class Player extends Entity{
 	private WeldJoint flightSensorWeld;
 	
 	private Direction movingDirection;
+	private boolean flying;
 	private boolean ducking;
 	private boolean quacking;
 
@@ -100,6 +101,7 @@ public class Player extends Entity{
 		EntityFixtureDef flightSensorDef = new EntityFixtureDef(assets, "duck_flight_sensor");
 		flightSensorDef.isSensor = true;
 		flightSensorDef.attach(flightSensorBody, .2f, false);
+		flightSensorBody.setUserData("flight_sensor");
 		
 		weldSensor(currentBody);
 	}
@@ -164,22 +166,66 @@ public class Player extends Entity{
 		ducking = true;
 	}
 	
+	public void fly() {
+		if (currentBody.equals(leftBody)) {
+			switchBody(currentBody, leftDuckingBody);
+			sprite = duckingSprite;
+		}
+		else if (currentBody.equals(rightBody)) {
+			switchBody(currentBody, rightDuckingBody);
+			sprite = duckingSprite;
+		}
+		else if (currentBody.equals(leftQuackingBody)){
+			switchBody(currentBody, leftQuackingDuckingBody);
+			sprite = quackingDuckingSprite;
+		}
+		else if (currentBody.equals(rightQuackingBody)){
+			switchBody(currentBody, rightQuackingDuckingBody);
+			sprite = quackingDuckingSprite;
+		}
+		flying = true;
+	}
+	
+	public void land() {
+		if (!ducking){
+			if (currentBody.equals(leftDuckingBody)) {
+				switchBody(currentBody, leftBody);
+				sprite = standingSprite;
+			}
+			else if (currentBody.equals(rightDuckingBody)) {
+				switchBody(currentBody, rightBody);
+				sprite = standingSprite;
+			}
+			else if (currentBody.equals(leftQuackingDuckingBody)){
+				switchBody(currentBody, leftQuackingBody);
+				sprite = quackingSprite;
+			}
+			else if (currentBody.equals(rightQuackingDuckingBody)){
+				switchBody(currentBody, rightQuackingBody);
+				sprite = quackingSprite;
+			}
+		}
+		flying = false;
+	}
+	
 	public void standUp() {
-		if (currentBody.equals(leftDuckingBody)) {
-			switchBody(currentBody, leftBody);
-			sprite = standingSprite;
-		}
-		else if (currentBody.equals(rightDuckingBody)) {
-			switchBody(currentBody, rightBody);
-			sprite = standingSprite;
-		}
-		else if (currentBody.equals(leftQuackingDuckingBody)){
-			switchBody(currentBody, leftQuackingBody);
-			sprite = quackingSprite;
-		}
-		else if (currentBody.equals(rightQuackingDuckingBody)){
-			switchBody(currentBody, rightQuackingBody);
-			sprite = quackingSprite;
+		if (!flying){
+			if (currentBody.equals(leftDuckingBody)) {
+				switchBody(currentBody, leftBody);
+				sprite = standingSprite;
+			}
+			else if (currentBody.equals(rightDuckingBody)) {
+				switchBody(currentBody, rightBody);
+				sprite = standingSprite;
+			}
+			else if (currentBody.equals(leftQuackingDuckingBody)){
+				switchBody(currentBody, leftQuackingBody);
+				sprite = quackingSprite;
+			}
+			else if (currentBody.equals(rightQuackingDuckingBody)){
+				switchBody(currentBody, rightQuackingBody);
+				sprite = quackingSprite;
+			}
 		}
 		ducking = false;
 	}
@@ -279,6 +325,14 @@ public class Player extends Entity{
 	
 	public Body getBody() {
 		return currentBody;
+	}
+	
+	public boolean isFlying(){
+		return flying;
+	}
+	
+	public boolean isDucking(){
+		return ducking;
 	}
 	
 }

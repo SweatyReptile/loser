@@ -47,8 +47,8 @@ public class DuckFlightListener implements ContactListener {
 
 	}
 	
-	public boolean isFlying(){
-		if (contacts == 0) return true;
+	public boolean isContacting(){
+		if (contacts > 0) return true;
 		return false;
 	}
 
