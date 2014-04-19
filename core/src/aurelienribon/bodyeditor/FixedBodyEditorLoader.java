@@ -1,6 +1,8 @@
 package aurelienribon.bodyeditor;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.files.FileHandle;
@@ -246,6 +248,20 @@ public class FixedBodyEditorLoader {
 		if (rbModel == null) throw new RuntimeException("Name '" + name + "' was not found.");
 
 		return rbModel.imagePath;
+	}
+	
+	public List<String> getImagePaths(){
+		ArrayList<String> paths = new ArrayList<String>();
+		for (RigidBodyModel rbModel : model.rigidBodies.values()){
+			if (rbModel != null){
+				String imagePath = rbModel.imagePath;
+				if (imagePath != null && !imagePath.isEmpty() &&
+						!imagePath.equals("")){
+					paths.add(imagePath);
+				}
+			}
+		}
+		return paths;
 	}
 
 	/**
