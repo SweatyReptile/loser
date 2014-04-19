@@ -232,8 +232,8 @@ public class Player extends Entity{
 	
 	public void moveLeft() {
 		movingDirection = Direction.LEFT;
-		if (quacking && ducking) switchBody(currentBody, leftQuackingDuckingBody);
-		else if (ducking) switchBody(currentBody, leftDuckingBody);
+		if (quacking && (ducking || flying)) switchBody(currentBody, leftQuackingDuckingBody);
+		else if (ducking || flying) switchBody(currentBody, leftDuckingBody);
 		else if (quacking) switchBody(currentBody, leftQuackingBody);
 		else switchBody(currentBody, leftBody);
 		flipSprites(false);
@@ -241,8 +241,8 @@ public class Player extends Entity{
 	
 	public void moveRight() {
 		movingDirection = Direction.RIGHT;
-		if (quacking && ducking) switchBody(currentBody, rightQuackingDuckingBody);
-		else if (ducking) switchBody(currentBody, rightDuckingBody);
+		if (quacking && (ducking || flying)) switchBody(currentBody, rightQuackingDuckingBody);
+		else if (ducking || flying) switchBody(currentBody, rightDuckingBody);
 		else if (quacking) switchBody (currentBody, rightQuackingBody);
 		else switchBody(currentBody, rightBody);
 		flipSprites(true);
