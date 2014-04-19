@@ -2,6 +2,8 @@ package com.sweatyreptile.losergame.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 
 public class LoadingScreen extends FinishableScreen{
 
@@ -9,6 +11,7 @@ public class LoadingScreen extends FinishableScreen{
 	
 	public LoadingScreen(ScreenFinishedListener listener, AssetManager loader, Screen nextScreen) {
 		super(listener, nextScreen);
+		new World(new Vector2(0, 0), false);
 		this.loader = loader;
 	}
 
