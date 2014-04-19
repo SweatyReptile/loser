@@ -14,9 +14,9 @@ public class DuckFlightListener implements ContactListener {
 	public void beginContact(Contact contact) {	
 		Fixture fixtureA = contact.getFixtureA();
 		Fixture fixtureB = contact.getFixtureB();
-		if ((fixtureA != null && fixtureA.getBody() != null && fixtureA.getBody().getUserData() != null &&
+		if ((userDataNotNull(fixtureA) &&
 				fixtureA.getBody().getUserData().equals("flight_sensor"))
-			|| (fixtureB != null && fixtureB.getBody() != null && fixtureB.getBody().getUserData() != null &&
+			|| (userDataNotNull(fixtureB) &&
 				fixtureB.getBody().getUserData().equals("flight_sensor"))){
 			contacts++;
 		}
@@ -27,12 +27,18 @@ public class DuckFlightListener implements ContactListener {
 	public void endContact(Contact contact) {
 		Fixture fixtureA = contact.getFixtureA();
 		Fixture fixtureB = contact.getFixtureB();
-		if ((fixtureA != null && fixtureA.getBody() != null && fixtureA.getBody().getUserData() != null &&
+		if ((userDataNotNull(fixtureA) &&
 				fixtureA.getBody().getUserData().equals("flight_sensor"))
-			|| (fixtureB != null && fixtureB.getBody() != null && fixtureB.getBody().getUserData() != null &&
+			|| (userDataNotNull(fixtureB) &&
 				fixtureB.getBody().getUserData().equals("flight_sensor"))){
 			contacts--;
 		}
+	}
+	
+	private boolean userDataNotNull(Fixture fixture){
+		return fixture != null 
+				&& fixture.getBody() != null 
+				&& fixture.getBody().getUserData() != null;
 	}
 
 	@Override
