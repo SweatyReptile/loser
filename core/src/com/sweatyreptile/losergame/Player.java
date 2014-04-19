@@ -40,7 +40,8 @@ public class Player extends Entity{
 	
 	private Body flightSensorBody;
 	private WeldJoint flightSensorWeld;
-	
+	private float sensorHeight;
+
 	private Direction movingDirection;
 	private boolean flying;
 	private boolean ducking;
@@ -103,6 +104,7 @@ public class Player extends Entity{
 		flightSensorDef.attach(flightSensorBody, .2f, false);
 		flightSensorBody.setUserData("flight_sensor");
 		
+		extractSensorHeight();
 		weldSensor(currentBody);
 	}
 	
@@ -298,12 +300,6 @@ public class Player extends Entity{
 	}
 
 	private void weldSensor(Body newBody) {
-		Vector2 vertex1 = new Vector2();
-		Vector2 vertex2 = new Vector2();
-		PolygonShape sensorShape = (PolygonShape) flightSensorBody.getFixtureList().get(0).getShape();
-		sensorShape.getVertex(0, vertex1);
-		sensorShape.getVertex(2, vertex2);
-		float sensorHeight = vertex1.y - vertex2.y;
 		Vector2 bodyPosition = newBody.getPosition();
 		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - sensorHeight, newBody.getAngle());
 		WeldJointDef weld = new WeldJointDef();
@@ -314,6 +310,15 @@ public class Player extends Entity{
 			world.destroyJoint(flightSensorWeld);
 		}
 		flightSensorWeld = (WeldJoint) world.createJoint(weld);
+	}
+	
+	private void extractSensorHeight(){
+		Vector2 vertex1 = new Vector2();
+		Vector2 vertex2 = new Vector2();
+		PolygonShape sensorShape = (PolygonShape) flightSensorBody.getFixtureList().get(0).getShape();
+		sensorShape.getVertex(0, vertex1);
+		sensorShape.getVertex(2, vertex2);
+		sensorHeight = vertex1.y - vertex2.y;
 	}
 
 	private void flipSprites(boolean horizontal) {
