@@ -16,7 +16,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.DuckFlightListener;
@@ -71,12 +70,16 @@ public class TestLevelScreen implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
 		spriteRenderer.begin();
-				
+		
+		spriteRenderer.disableBlending();		
 		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight);
+		spriteRenderer.enableBlending();
+		
 		player.render(spriteRenderer);
 		for (Entity entity : entities.values()){
 			entity.render(spriteRenderer);
 		}
+		
 		spriteRenderer.end();
 		
 		physRenderer.render(physWorld, camera.combined);
