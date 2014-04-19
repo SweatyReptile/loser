@@ -11,6 +11,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Texture;
 
 /**
  * 
@@ -53,13 +54,23 @@ public class AssetManagerPlus extends AssetManager {
 	@Override
 	public synchronized boolean update() {
 		if (!bodiesLoaded) {
-			for (String loaderNameString : loaderPaths) {
-				bodyEditorLoaders.put(loaderNameString,
-						new FixedBodyEditorLoader(Gdx.files.internal(loaderNameString)));
-			}
-			bodiesLoaded = true;
+			loadBodies();
 		}
 		return super.update();
+	}
+	
+	private void loadBodies(){
+		for (String loaderNameString : loaderPaths) {
+			
+			FixedBodyEditorLoader loader = new FixedBodyEditorLoader(Gdx.files.internal(loaderNameString));
+			bodyEditorLoaders.put(loaderNameString,loader);
+			
+			List<String> images = loader.getImagePaths();
+			for (String image : images){
+				load(image, Texture.class);
+			}
+		}
+		bodiesLoaded = true;
 	}
 
 	@SuppressWarnings("unchecked")
