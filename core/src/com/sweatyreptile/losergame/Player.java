@@ -6,7 +6,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
@@ -40,7 +39,8 @@ public class Player extends Entity{
 	
 	private Body flightSensorBody;
 	private WeldJoint flightSensorWeld;
-	
+	private float sensorHeight;
+
 	private Direction movingDirection;
 	private boolean flying;
 	private boolean ducking;
@@ -103,9 +103,27 @@ public class Player extends Entity{
 		flightSensorDef.attach(flightSensorBody, .2f, false);
 		flightSensorBody.setUserData("flight_sensor");
 		
+		extractSensorHeight();
 		weldSensor(currentBody);
 	}
 	
+	public void update(float delta) {
+		super.update(delta);
+		if (movingDirection != Direction.NONE) {
+			Vector2 velocity = currentBody.getLinearVelocity();
+			if (movingDirection == Direction.LEFT) {
+				if (!ducking) currentBody.setLinearVelocity(-MAX_VELOCITY, velocity.y);
+				else currentBody.setLinearVelocity(-MAX_VELOCITY/2, velocity.y);
+				
+			}
+			else if (movingDirection == Direction.RIGHT) {
+				if (!ducking) currentBody.setLinearVelocity(MAX_VELOCITY, velocity.y);
+				else currentBody.setLinearVelocity(MAX_VELOCITY/2, velocity.y);
+	
+			}
+		}
+	}
+
 	public void quack() {
 		if (currentBody.equals(leftBody)) {
 			switchBody(currentBody, leftQuackingBody);
@@ -248,41 +266,6 @@ public class Player extends Entity{
 		flipSprites(true);
 	}
 	
-	public void switchBody(Body oldBody, Body newBody){
-		newBody.setTransform(oldBody.getPosition(), 0f);
-		newBody.setLinearVelocity(oldBody.getLinearVelocity());
-		oldBody.setActive(false);
-		newBody.setActive(true);
-		currentBody = newBody;
-		weldSensor(currentBody);
-	}
-	
-	public void weldSensor(Body newBody) {
-		Vector2 vertex1 = new Vector2();
-		Vector2 vertex2 = new Vector2();
-		PolygonShape sensorShape = (PolygonShape) flightSensorBody.getFixtureList().get(0).getShape();
-		sensorShape.getVertex(0, vertex1);
-		sensorShape.getVertex(2, vertex2);
-		float sensorHeight = vertex1.y - vertex2.y;
-		Vector2 bodyPosition = newBody.getPosition();
-		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - sensorHeight, newBody.getAngle()); //TODO: subtract height of sensor from y position
-		WeldJointDef weld = new WeldJointDef();
-		weld.bodyA = currentBody;
-		weld.bodyB = flightSensorBody;
-		weld.initialize(currentBody, flightSensorBody, currentBody.getWorldCenter());
-		if (flightSensorWeld != null) {
-			world.destroyJoint(flightSensorWeld);
-		}
-		flightSensorWeld = (WeldJoint) world.createJoint(weld);
-	}
-	
-	public void flipSprites(boolean horizontal) {
-		standingSprite.setFlip(horizontal, false);
-		duckingSprite.setFlip(horizontal, false);
-		quackingSprite.setFlip(horizontal, false);
-		quackingDuckingSprite.setFlip(horizontal, false);
-	}
-	
 	public void jump() {
 		Vector2 position = currentBody.getPosition();
 		Vector2 velocity = currentBody.getLinearVelocity();
@@ -306,23 +289,44 @@ public class Player extends Entity{
 		}
 	}
 	
-	public void update(float delta) {
-		super.update(delta);
-		if (movingDirection != Direction.NONE) {
-			Vector2 velocity = currentBody.getLinearVelocity();
-			if (movingDirection == Direction.LEFT) {
-				if (!ducking) currentBody.setLinearVelocity(-MAX_VELOCITY, velocity.y);
-				else currentBody.setLinearVelocity(-MAX_VELOCITY/2, velocity.y);
-				
-			}
-			else if (movingDirection == Direction.RIGHT) {
-				if (!ducking) currentBody.setLinearVelocity(MAX_VELOCITY, velocity.y);
-				else currentBody.setLinearVelocity(MAX_VELOCITY/2, velocity.y);
+	private void switchBody(Body oldBody, Body newBody){
+		newBody.setTransform(oldBody.getPosition(), 0f);
+		newBody.setLinearVelocity(oldBody.getLinearVelocity());
+		oldBody.setActive(false);
+		newBody.setActive(true);
+		currentBody = newBody;
+		weldSensor(currentBody);
+	}
 
-			}
+	private void weldSensor(Body newBody) {
+		Vector2 bodyPosition = newBody.getPosition();
+		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - sensorHeight, newBody.getAngle());
+		WeldJointDef weld = new WeldJointDef();
+		weld.bodyA = currentBody;
+		weld.bodyB = flightSensorBody;
+		weld.initialize(currentBody, flightSensorBody, currentBody.getWorldCenter());
+		if (flightSensorWeld != null) {
+			world.destroyJoint(flightSensorWeld);
 		}
+		flightSensorWeld = (WeldJoint) world.createJoint(weld);
 	}
 	
+	private void extractSensorHeight(){
+		Vector2 vertex1 = new Vector2();
+		Vector2 vertex2 = new Vector2();
+		PolygonShape sensorShape = (PolygonShape) flightSensorBody.getFixtureList().get(0).getShape();
+		sensorShape.getVertex(0, vertex1);
+		sensorShape.getVertex(2, vertex2);
+		sensorHeight = vertex1.y - vertex2.y;
+	}
+
+	private void flipSprites(boolean horizontal) {
+		standingSprite.setFlip(horizontal, false);
+		duckingSprite.setFlip(horizontal, false);
+		quackingSprite.setFlip(horizontal, false);
+		quackingDuckingSprite.setFlip(horizontal, false);
+	}
+
 	public Body getBody() {
 		return currentBody;
 	}
