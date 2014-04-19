@@ -39,7 +39,11 @@ public class Player extends Entity{
 	
 	private Body flightSensorBody;
 	private WeldJoint flightSensorWeld;
-	private float sensorHeight;
+	private float flyingSensorHeight;
+	
+	private Body landingSensorBody;
+	private WeldJoint landingSensorWeld;
+	private float landingSensorHeight;
 
 	private Direction movingDirection;
 	private boolean flying;
@@ -61,7 +65,6 @@ public class Player extends Entity{
 		rightQuackingBody = world.createBody(def);
 		leftQuackingDuckingBody = world.createBody(def);
 		rightQuackingDuckingBody = world.createBody(def);
-		flightSensorBody = world.createBody(def);
 		
 		fixDef.attach(leftBody, .2f, false);
 		fixDef.attach(rightBody, .2f, true);
@@ -95,16 +98,26 @@ public class Player extends Entity{
 		
 		BodyDef flightSensorBodyDef = new BodyDef();
 		flightSensorBodyDef.type = BodyType.DynamicBody;
-		flightSensorBodyDef.position.set(def.position.x, def.position.y); //TODO move down
+		flightSensorBodyDef.position.set(def.position.x, def.position.y);
 		flightSensorBody = world.createBody(flightSensorBodyDef);
-		
 		EntityFixtureDef flightSensorDef = new EntityFixtureDef(assets, "duck_flight_sensor");
 		flightSensorDef.isSensor = true;
 		flightSensorDef.attach(flightSensorBody, .2f, false);
 		flightSensorBody.setUserData("flight_sensor");
+		flyingSensorHeight = extractSensorHeight(flightSensorBody);
 		
-		extractSensorHeight();
-		weldSensor(currentBody);
+		BodyDef landingSensorBodyDef = new BodyDef();
+		landingSensorBodyDef.type = BodyType.DynamicBody;
+		landingSensorBodyDef.position.set(def.position.x, def.position.y);
+		landingSensorBody = world.createBody(landingSensorBodyDef);
+		EntityFixtureDef landingSensorDef = new EntityFixtureDef(assets, "duck_landing_sensor");
+		landingSensorDef.isSensor = true;
+		landingSensorDef.attach(landingSensorBody, .2f, false);
+		landingSensorBody.setUserData("landing_sensor");
+		landingSensorHeight = extractSensorHeight(landingSensorBody);
+		
+		weldSensors(currentBody);
+		
 	}
 	
 	public void update(float delta) {
@@ -295,29 +308,41 @@ public class Player extends Entity{
 		oldBody.setActive(false);
 		newBody.setActive(true);
 		currentBody = newBody;
-		weldSensor(currentBody);
+		weldSensors(currentBody);
 	}
 
-	private void weldSensor(Body newBody) {
+	private void weldSensors(Body newBody) {
 		Vector2 bodyPosition = newBody.getPosition();
-		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - sensorHeight, newBody.getAngle());
-		WeldJointDef weld = new WeldJointDef();
-		weld.bodyA = currentBody;
-		weld.bodyB = flightSensorBody;
-		weld.initialize(currentBody, flightSensorBody, currentBody.getWorldCenter());
+		
+		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - flyingSensorHeight, newBody.getAngle());
+		WeldJointDef flightWeld = new WeldJointDef();
+		flightWeld.bodyA = currentBody;
+		flightWeld.bodyB = flightSensorBody;
+		flightWeld.initialize(currentBody, flightSensorBody, currentBody.getWorldCenter());
 		if (flightSensorWeld != null) {
 			world.destroyJoint(flightSensorWeld);
 		}
-		flightSensorWeld = (WeldJoint) world.createJoint(weld);
+		flightSensorWeld = (WeldJoint) world.createJoint(flightWeld);
+		
+		landingSensorBody.setTransform(bodyPosition.x, bodyPosition.y - landingSensorHeight, newBody.getAngle());
+		WeldJointDef landWeld = new WeldJointDef();
+		landWeld.bodyA = currentBody;
+		landWeld.bodyB = landingSensorBody;
+		landWeld.initialize(currentBody, landingSensorBody, currentBody.getWorldCenter());
+		if (landingSensorWeld != null) {
+			world.destroyJoint(landingSensorWeld);
+		}
+		landingSensorWeld = (WeldJoint) world.createJoint(landWeld);
 	}
 	
-	private void extractSensorHeight(){
+	private float extractSensorHeight(Body sensorBody){
 		Vector2 vertex1 = new Vector2();
 		Vector2 vertex2 = new Vector2();
-		PolygonShape sensorShape = (PolygonShape) flightSensorBody.getFixtureList().get(0).getShape();
+		PolygonShape sensorShape = (PolygonShape) sensorBody.getFixtureList().get(0).getShape();
 		sensorShape.getVertex(0, vertex1);
 		sensorShape.getVertex(2, vertex2);
-		sensorHeight = vertex1.y - vertex2.y;
+		float sensorHeight = vertex1.y - vertex2.y;
+		return sensorHeight;
 	}
 
 	private void flipSprites(boolean horizontal) {
