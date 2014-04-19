@@ -88,9 +88,9 @@ public class TestLevelScreen implements Screen {
 	public void update(float delta) {
 		physWorld.step(1/60f, 6, 2); // TODO: Change step
 		
-		player.update(delta);
 		if (!duckFlightListener.isContacting() && !player.isFlying()) player.fly();
 		else if (duckFlightListener.isContacting() && player.isFlying()) player.land();
+		player.update(delta);
 		for (Entity entity : entities.values()){
 			entity.update(delta);
 		}
