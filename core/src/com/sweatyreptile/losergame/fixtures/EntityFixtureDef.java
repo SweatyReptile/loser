@@ -21,7 +21,7 @@ public class EntityFixtureDef extends FixtureDef {
 		
 		density = 0.0001f;
 		friction = 0.4f;
-		restitution = 0.2f;
+		restitution = 0f;
 	}
 	
 	public void attach(Body body, float scale, boolean flipped) {
