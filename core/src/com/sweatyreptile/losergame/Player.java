@@ -40,11 +40,12 @@ public class Player extends Entity{
 	
 	private Body flightSensorBody;
 	private WeldJoint flightSensorWeld;
-	private float flyingSensorHeight;
+	private float flightSensorHeight;
 	
 	private Body landingSensorBody;
 	private WeldJoint landingSensorWeld;
 	private float landingSensorHeight;
+
 
 	private Direction movingDirection;
 	private boolean flying;
@@ -98,31 +99,28 @@ public class Player extends Entity{
 		quackingDuckingSprite.setSize(.2f, .16f);
 		
 		sprite = standingSprite;
-		
-		BodyDef flightSensorBodyDef = new BodyDef();
-		flightSensorBodyDef.type = BodyType.DynamicBody;
-		flightSensorBodyDef.position.set(def.position.x, def.position.y);
-		flightSensorBody = world.createBody(flightSensorBodyDef);
-		EntityFixtureDef flightSensorDef = new EntityFixtureDef(assets, "duck_flight_sensor");
-		flightSensorDef.isSensor = true;
-		flightSensorDef.attach(flightSensorBody, .2f, false);
-		flightSensorBody.setUserData("flight_sensor");
-		flyingSensorHeight = extractSensorHeight(flightSensorBody);
-		
-		BodyDef landingSensorBodyDef = new BodyDef();
-		landingSensorBodyDef.type = BodyType.DynamicBody;
-		landingSensorBodyDef.position.set(def.position.x, def.position.y);
-		landingSensorBody = world.createBody(landingSensorBodyDef);
-		EntityFixtureDef landingSensorDef = new EntityFixtureDef(assets, "duck_landing_sensor");
-		landingSensorDef.isSensor = true;
-		landingSensorDef.attach(landingSensorBody, .2f, false);
-		landingSensorBody.setUserData("landing_sensor");
+
+		flightSensorBody = setupSensor(def, assets, "duck_flight_sensor", .2f, "flight_sensor");
+		flightSensorHeight = extractSensorHeight(flightSensorBody);
+		landingSensorBody = setupSensor(def, assets, "duck_landing_sensor", .2f, "landing_sensor");
 		landingSensorHeight = extractSensorHeight(landingSensorBody);
 		
 		weldSensors();
 		
 		quackSound = assets.get("quack_dummy.ogg");
 		
+	}
+	
+	public Body setupSensor(BodyDef def, AssetManagerPlus assets, String name, float scale, Object userData){
+		BodyDef sensorBodyDef = new BodyDef();
+		sensorBodyDef.type = BodyType.DynamicBody;
+		sensorBodyDef.position.set(def.position.x, def.position.y);
+		Body sensorBody = world.createBody(sensorBodyDef);
+		EntityFixtureDef sensorDef = new EntityFixtureDef(assets, name);
+		sensorDef.isSensor = true;
+		sensorDef.attach(sensorBody, scale, false);
+		sensorBody.setUserData(userData);
+		return sensorBody;
 	}
 	
 	public void update(float delta) {
@@ -140,6 +138,48 @@ public class Player extends Entity{
 	
 			}
 		}
+	}
+	
+	public void duck() {
+		if (currentBody.equals(leftBody)) {
+			switchBody(currentBody, leftDuckingBody);
+			sprite = duckingSprite;
+		}
+		else if (currentBody.equals(rightBody)) {
+			switchBody(currentBody, rightDuckingBody);
+			sprite = duckingSprite;
+		}
+		else if (currentBody.equals(leftQuackingBody)){
+			switchBody(currentBody, leftQuackingDuckingBody);
+			sprite = quackingDuckingSprite;
+		}
+		else if (currentBody.equals(rightQuackingBody)){
+			switchBody(currentBody, rightQuackingDuckingBody);
+			sprite = quackingDuckingSprite;
+		}
+		ducking = true;
+	}
+	
+	public void standUp() {
+		if (!flying){
+			if (currentBody.equals(leftDuckingBody)) {
+				switchBody(currentBody, leftBody);
+				sprite = standingSprite;
+			}
+			else if (currentBody.equals(rightDuckingBody)) {
+				switchBody(currentBody, rightBody);
+				sprite = standingSprite;
+			}
+			else if (currentBody.equals(leftQuackingDuckingBody)){
+				switchBody(currentBody, leftQuackingBody);
+				sprite = quackingSprite;
+			}
+			else if (currentBody.equals(rightQuackingDuckingBody)){
+				switchBody(currentBody, rightQuackingBody);
+				sprite = quackingSprite;
+			}
+		}
+		ducking = false;
 	}
 
 	public void quack() {
@@ -183,26 +223,6 @@ public class Player extends Entity{
 		quacking = false;
 	}
 	
-	public void duck() {
-		if (currentBody.equals(leftBody)) {
-			switchBody(currentBody, leftDuckingBody);
-			sprite = duckingSprite;
-		}
-		else if (currentBody.equals(rightBody)) {
-			switchBody(currentBody, rightDuckingBody);
-			sprite = duckingSprite;
-		}
-		else if (currentBody.equals(leftQuackingBody)){
-			switchBody(currentBody, leftQuackingDuckingBody);
-			sprite = quackingDuckingSprite;
-		}
-		else if (currentBody.equals(rightQuackingBody)){
-			switchBody(currentBody, rightQuackingDuckingBody);
-			sprite = quackingDuckingSprite;
-		}
-		ducking = true;
-	}
-	
 	public void fly() {
 		if (currentBody.equals(leftBody)) {
 			switchBody(currentBody, leftDuckingBody);
@@ -243,28 +263,6 @@ public class Player extends Entity{
 			}
 		}
 		flying = false;
-	}
-	
-	public void standUp() {
-		if (!flying){
-			if (currentBody.equals(leftDuckingBody)) {
-				switchBody(currentBody, leftBody);
-				sprite = standingSprite;
-			}
-			else if (currentBody.equals(rightDuckingBody)) {
-				switchBody(currentBody, rightBody);
-				sprite = standingSprite;
-			}
-			else if (currentBody.equals(leftQuackingDuckingBody)){
-				switchBody(currentBody, leftQuackingBody);
-				sprite = quackingSprite;
-			}
-			else if (currentBody.equals(rightQuackingDuckingBody)){
-				switchBody(currentBody, rightQuackingBody);
-				sprite = quackingSprite;
-			}
-		}
-		ducking = false;
 	}
 	
 	public void moveLeft() {
@@ -320,7 +318,7 @@ public class Player extends Entity{
 	private void weldSensors() {
 		Vector2 bodyPosition = currentBody.getPosition();
 		
-		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - flyingSensorHeight, currentBody.getAngle());
+		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - flightSensorHeight, currentBody.getAngle());
 		WeldJointDef flightWeld = new WeldJointDef();
 		flightWeld.bodyA = currentBody;
 		flightWeld.bodyB = flightSensorBody;
