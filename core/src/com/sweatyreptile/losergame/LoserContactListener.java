@@ -16,12 +16,22 @@ public class LoserContactListener implements ContactListener {
 		Fixture fixtureA = contact.getFixtureA();
 		Fixture fixtureB = contact.getFixtureB();
 		
-		if (checkForFlightSensor(fixtureA, fixtureB) && !checkForLandingSensor(fixtureA, fixtureB)){
+		if (checkForFlightSensor(fixtureA, fixtureB) &&
+				!checkForLandingSensor(fixtureA, fixtureB) &&
+				!checkForGrabSensor(fixtureA, fixtureB)){
 			flightContacts++;
 		}
 		
-		if (checkForLandingSensor(fixtureA, fixtureB) && !checkForFlightSensor(fixtureA, fixtureB)){
+		if (checkForLandingSensor(fixtureA, fixtureB) &&
+				!checkForFlightSensor(fixtureA, fixtureB) &&
+				!checkForGrabSensor(fixtureA, fixtureB)){
 			landingContacts++;
+		}
+		
+		if (checkForGrabSensor(fixtureA, fixtureB) &&
+				!checkForFlightSensor(fixtureA, fixtureB) &&
+				!checkForLandingSensor(fixtureA, fixtureB)){
+			//TODO
 		}
 		
 	}
@@ -31,13 +41,23 @@ public class LoserContactListener implements ContactListener {
 		Fixture fixtureA = contact.getFixtureA();
 		Fixture fixtureB = contact.getFixtureB();
 		
-		if (checkForFlightSensor(fixtureA, fixtureB) && !checkForLandingSensor(fixtureA, fixtureB)){
+		if (checkForFlightSensor(fixtureA, fixtureB) &&
+			!checkForLandingSensor(fixtureA, fixtureB) &&
+			!checkForGrabSensor(fixtureA, fixtureB)){
 			flightContacts--;
 		}
 		
-		if (checkForLandingSensor(fixtureA, fixtureB) && !checkForFlightSensor(fixtureA, fixtureB)){
+		if (checkForLandingSensor(fixtureA, fixtureB) &&
+				!checkForFlightSensor(fixtureA, fixtureB) &&
+				!checkForGrabSensor(fixtureA, fixtureB)){
 			landingContacts--;
 		}
+		
+		if (checkForGrabSensor(fixtureA, fixtureB) &&
+				!checkForFlightSensor(fixtureA, fixtureB) &&
+				!checkForLandingSensor(fixtureA, fixtureB)){
+			//TODO
+		} 
 	}
 	
 	private boolean userDataExists(Fixture fixture){
@@ -61,6 +81,16 @@ public class LoserContactListener implements ContactListener {
 			return true;
 		}
 		else if (userDataExists(fixtureB) && fixtureB.getBody().getUserData().equals("landing_sensor")){
+			return true;
+		}
+		return false;
+	}
+	
+	private boolean checkForGrabSensor(Fixture fixtureA, Fixture fixtureB){
+		if (userDataExists(fixtureA) && fixtureA.getBody().getUserData().equals("grab_sensor")){
+			return true;
+		}
+		else if (userDataExists(fixtureB) && fixtureB.getBody().getUserData().equals("grab_sensor")){
 			return true;
 		}
 		return false;
