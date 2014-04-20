@@ -45,7 +45,10 @@ public class Player extends Entity{
 	private Body landingSensorBody;
 	private WeldJoint landingSensorWeld;
 	private float landingSensorHeight;
-
+	
+	private Body grabSensorBody;
+	private WeldJoint grabSensorWeld;
+	private float grabSensorHeight;
 
 	private Direction movingDirection;
 	private boolean flying;
@@ -101,26 +104,16 @@ public class Player extends Entity{
 		sprite = standingSprite;
 
 		flightSensorBody = setupSensor(def, assets, "duck_flight_sensor", .2f, "flight_sensor");
-		flightSensorHeight = extractSensorHeight(flightSensorBody);
+		flightSensorHeight = extractSensorHeight(flightSensorBody, 0, 2);
 		landingSensorBody = setupSensor(def, assets, "duck_landing_sensor", .2f, "landing_sensor");
-		landingSensorHeight = extractSensorHeight(landingSensorBody);
+		landingSensorHeight = extractSensorHeight(landingSensorBody, 0, 2);
+		grabSensorBody = setupSensor(def, assets, "duck_grab_sensor", .2f, "grab_sensor");
+		grabSensorHeight = extractSensorHeight(grabSensorBody, 2, 0);
 		
 		weldSensors();
 		
 		quackSound = assets.get("quack_dummy.ogg");
 		
-	}
-	
-	public Body setupSensor(BodyDef def, AssetManagerPlus assets, String name, float scale, Object userData){
-		BodyDef sensorBodyDef = new BodyDef();
-		sensorBodyDef.type = BodyType.DynamicBody;
-		sensorBodyDef.position.set(def.position.x, def.position.y);
-		Body sensorBody = world.createBody(sensorBodyDef);
-		EntityFixtureDef sensorDef = new EntityFixtureDef(assets, name);
-		sensorDef.isSensor = true;
-		sensorDef.attach(sensorBody, scale, false);
-		sensorBody.setUserData(userData);
-		return sensorBody;
 	}
 	
 	public void update(float delta) {
@@ -138,6 +131,52 @@ public class Player extends Entity{
 	
 			}
 		}
+	}
+	
+	public Body setupSensor(BodyDef def, AssetManagerPlus assets, String name, float scale, Object userData){
+		BodyDef sensorBodyDef = new BodyDef();
+		sensorBodyDef.type = BodyType.DynamicBody;
+		sensorBodyDef.position.set(def.position.x, def.position.y);
+		Body sensorBody = world.createBody(sensorBodyDef);
+		EntityFixtureDef sensorDef = new EntityFixtureDef(assets, name);
+		sensorDef.isSensor = true;
+		sensorDef.attach(sensorBody, scale, false);
+		sensorBody.setUserData(userData);
+		return sensorBody;
+	}
+	
+	private void weldSensors() {
+		Vector2 bodyPosition = currentBody.getPosition();
+		
+		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - flightSensorHeight, currentBody.getAngle());
+		WeldJointDef flightWeld = new WeldJointDef();
+		flightWeld.bodyA = currentBody;
+		flightWeld.bodyB = flightSensorBody;
+		flightWeld.initialize(currentBody, flightSensorBody, currentBody.getWorldCenter());
+		if (flightSensorWeld != null) {
+			world.destroyJoint(flightSensorWeld);
+		}
+		flightSensorWeld = (WeldJoint) world.createJoint(flightWeld);
+		
+		landingSensorBody.setTransform(bodyPosition.x, bodyPosition.y - landingSensorHeight, currentBody.getAngle());
+		WeldJointDef landWeld = new WeldJointDef();
+		landWeld.bodyA = currentBody;
+		landWeld.bodyB = landingSensorBody;
+		landWeld.initialize(currentBody, landingSensorBody, currentBody.getWorldCenter());
+		if (landingSensorWeld != null) {
+			world.destroyJoint(landingSensorWeld);
+		}
+		landingSensorWeld = (WeldJoint) world.createJoint(landWeld);
+		
+		grabSensorBody.setTransform(bodyPosition.x, bodyPosition.y - grabSensorHeight, currentBody.getAngle());
+		WeldJointDef grabWeld = new WeldJointDef();
+		grabWeld.bodyA = currentBody;
+		grabWeld.bodyB = grabSensorBody;
+		grabWeld.initialize(currentBody, grabSensorBody, currentBody.getWorldCenter());
+		if (grabSensorWeld != null) {
+			world.destroyJoint(grabSensorWeld);
+		}
+		grabSensorWeld = (WeldJoint) world.createJoint(grabWeld);
 	}
 	
 	public void duck() {
@@ -314,37 +353,13 @@ public class Player extends Entity{
 		currentBody = newBody;
 		weldSensors();
 	}
-
-	private void weldSensors() {
-		Vector2 bodyPosition = currentBody.getPosition();
-		
-		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - flightSensorHeight, currentBody.getAngle());
-		WeldJointDef flightWeld = new WeldJointDef();
-		flightWeld.bodyA = currentBody;
-		flightWeld.bodyB = flightSensorBody;
-		flightWeld.initialize(currentBody, flightSensorBody, currentBody.getWorldCenter());
-		if (flightSensorWeld != null) {
-			world.destroyJoint(flightSensorWeld);
-		}
-		flightSensorWeld = (WeldJoint) world.createJoint(flightWeld);
-		
-		landingSensorBody.setTransform(bodyPosition.x, bodyPosition.y - landingSensorHeight, currentBody.getAngle());
-		WeldJointDef landWeld = new WeldJointDef();
-		landWeld.bodyA = currentBody;
-		landWeld.bodyB = landingSensorBody;
-		landWeld.initialize(currentBody, landingSensorBody, currentBody.getWorldCenter());
-		if (landingSensorWeld != null) {
-			world.destroyJoint(landingSensorWeld);
-		}
-		landingSensorWeld = (WeldJoint) world.createJoint(landWeld);
-	}
 	
-	private float extractSensorHeight(Body sensorBody){
+	private float extractSensorHeight(Body sensorBody, int index1, int index2){
 		Vector2 vertex1 = new Vector2();
 		Vector2 vertex2 = new Vector2();
 		PolygonShape sensorShape = (PolygonShape) sensorBody.getFixtureList().get(0).getShape();
-		sensorShape.getVertex(0, vertex1);
-		sensorShape.getVertex(2, vertex2);
+		sensorShape.getVertex(index1, vertex1);
+		sensorShape.getVertex(index2, vertex2);
 		float sensorHeight = vertex1.y - vertex2.y;
 		return sensorHeight;
 	}
