@@ -1,5 +1,6 @@
 package com.sweatyreptile.losergame;
 
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -10,6 +11,7 @@ public class LoserContactListener implements ContactListener {
 
 	private int flightContacts;
 	private int landingContacts;
+	private Body currentGrabBody;
 	
 	@Override
 	public void beginContact(Contact contact) {	
@@ -31,7 +33,10 @@ public class LoserContactListener implements ContactListener {
 		if (checkForGrabSensor(fixtureA, fixtureB) &&
 				!checkForFlightSensor(fixtureA, fixtureB) &&
 				!checkForLandingSensor(fixtureA, fixtureB)){
-			//TODO
+			Fixture contactFixture = getFixtureInGrab(fixtureA, fixtureB);
+			if (bodyExists(contactFixture)){
+				currentGrabBody = contactFixture.getBody();
+			}
 		}
 		
 	}
@@ -56,8 +61,16 @@ public class LoserContactListener implements ContactListener {
 		if (checkForGrabSensor(fixtureA, fixtureB) &&
 				!checkForFlightSensor(fixtureA, fixtureB) &&
 				!checkForLandingSensor(fixtureA, fixtureB)){
-			//TODO
+			Fixture contactFixture = getFixtureInGrab(fixtureA, fixtureB);
+			if (bodyExists(contactFixture) &&
+					currentGrabBody.equals(contactFixture.getBody())){
+				currentGrabBody = null;
+			}
 		} 
+	}
+	
+	private boolean bodyExists(Fixture fixture){
+		return fixture != null && fixture.getBody() != null;
 	}
 	
 	private boolean userDataExists(Fixture fixture){
@@ -95,6 +108,16 @@ public class LoserContactListener implements ContactListener {
 		}
 		return false;
 	}
+	
+	private Fixture getFixtureInGrab(Fixture fixtureA, Fixture fixtureB){
+		if (userDataExists(fixtureA) && fixtureA.getBody().getUserData().equals("grab_sensor")){
+			return fixtureB;
+		}
+		else if (userDataExists(fixtureB) && fixtureB.getBody().getUserData().equals("grab_sensor")){
+			return fixtureA;
+		}
+		return null;
+	}
 
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
@@ -116,6 +139,10 @@ public class LoserContactListener implements ContactListener {
 	public boolean isLandingSensorContacting(){
 		if (landingContacts > 0) return true;
 		return false;
+	}
+	
+	public Body getCurrentGrabBody(){
+		return currentGrabBody;
 	}
 
 }
