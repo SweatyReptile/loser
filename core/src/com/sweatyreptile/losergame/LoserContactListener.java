@@ -62,7 +62,7 @@ public class LoserContactListener implements ContactListener {
 				!checkForFlightSensor(fixtureA, fixtureB) &&
 				!checkForLandingSensor(fixtureA, fixtureB)){
 			Fixture contactFixture = getFixtureInGrab(fixtureA, fixtureB);
-			if (bodyExists(contactFixture) &&
+			if (bodyExists(contactFixture) && currentGrabBody != null &&
 					currentGrabBody.equals(contactFixture.getBody())){
 				currentGrabBody = null;
 			}
