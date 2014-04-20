@@ -76,11 +76,11 @@ public class TestLevelScreen implements Screen {
 		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight);
 		spriteRenderer.enableBlending();
 		
-		player.render(spriteRenderer);
 		for (Entity entity : entities.values()){
 			entity.render(spriteRenderer);
 		}
-		
+		player.render(spriteRenderer);
+
 		spriteRenderer.end();
 		
 		physRenderer.render(physWorld, camera.combined);
