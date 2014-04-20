@@ -185,11 +185,7 @@ public class Player extends Entity{
 		grabSensorWeld = (WeldJoint) world.createJoint(grabWeld);
 	}
 	
-	public void pickUp(Body object){
-		weldToDuck(object);
-	}
-	
-	public void weldToDuck(Body object){
+	private void weldToDuck(Body object){
 		WeldJointDef grabObjectWeld = new WeldJointDef();
 		grabObjectWeld.bodyA = currentBody;
 		grabObjectWeld.bodyB = object;
@@ -198,6 +194,14 @@ public class Player extends Entity{
 			world.destroyJoint(grabWeld);
 		}
 		grabWeld = (WeldJoint) world.createJoint(grabObjectWeld);
+	}
+	
+	private void destroyGrabWeld(){
+		if (grabWeld != null) {
+			world.destroyJoint(grabWeld);
+			grabWeld = null;
+			grabObject = null;
+		}
 	}
 	
 	public void duck() {
@@ -246,6 +250,7 @@ public class Player extends Entity{
 			}
 		}
 		ducking = false;
+		if (grabObject != null) destroyGrabWeld();
 	}
 
 	public void quack() {
