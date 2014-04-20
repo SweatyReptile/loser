@@ -1,6 +1,7 @@
 package com.sweatyreptile.losergame;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
@@ -34,7 +35,7 @@ public class LoserContactListener implements ContactListener {
 				!checkForFlightSensor(fixtureA, fixtureB) &&
 				!checkForLandingSensor(fixtureA, fixtureB)){
 			Fixture contactFixture = getFixtureInGrab(fixtureA, fixtureB);
-			if (bodyExists(contactFixture)){
+			if (bodyExists(contactFixture) && contactFixture.getBody().getType().equals(BodyType.DynamicBody)){
 				currentGrabBody = contactFixture.getBody();
 			}
 		}
