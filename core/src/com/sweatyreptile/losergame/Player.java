@@ -1,19 +1,20 @@
 package com.sweatyreptile.losergame;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckQuackFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckTopFixtureDef;
-import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class Player extends Entity{
@@ -38,17 +39,8 @@ public class Player extends Entity{
 	private Body leftQuackingDuckingBody;
 	private Body rightQuackingDuckingBody;
 	
-	private Body flightSensorBody;
-	private WeldJoint flightSensorWeld;
-	private float flightSensorHeight;
-	
-	private Body landingSensorBody;
-	private WeldJoint landingSensorWeld;
-	private float landingSensorHeight;
-	
-	private Body grabSensorBody;
-	private WeldJoint grabSensorWeld;
-	private float grabSensorHeight;
+	private ArrayList<Sensor> sensors;
+
 	private Body grabbedObject;
 	private WeldJoint grabWeld;
 
@@ -108,15 +100,13 @@ public class Player extends Entity{
 		quackingDuckingSprite.setSize(.2f, .16f);
 		
 		sprite = standingSprite;
-
-		flightSensorBody = setupSensor(def, assets, "duck_flight_sensor", .2f, "flight_sensor");
-		flightSensorHeight = extractSensorHeight(flightSensorBody, 0, 2);
-		landingSensorBody = setupSensor(def, assets, "duck_landing_sensor", .2f, "landing_sensor");
-		landingSensorHeight = extractSensorHeight(landingSensorBody, 0, 2);
-		grabSensorBody = setupSensor(def, assets, "duck_grab_sensor", .2f, "grab_sensor");
-		grabSensorHeight = extractSensorHeight(grabSensorBody, 2, 0);
 		
-		weldSensors();
+		sensors = new ArrayList<Sensor>();
+		Sensor flightSensor = new Sensor(world, def, assets, "duck_flight_sensor", .2f, "flight_sensor", 0, 2);
+		Sensor landingSensor = new Sensor(world, def, assets, "duck_landing_sensor", .2f, "landing_sensor", 0, 2);
+		Sensor grabSensor = new Sensor(world, def, assets, "duck_grab_sensor", .2f, "grab_sensor", 2, 0);
+		Collections.addAll(sensors, flightSensor, landingSensor, grabSensor);
+		for (Sensor sensor : sensors) sensor.weld(world, currentBody);
 		
 		quackSound = assets.get("quack_dummy.ogg");
 		
@@ -137,52 +127,6 @@ public class Player extends Entity{
 	
 			}
 		}
-	}
-	
-	public Body setupSensor(BodyDef def, AssetManagerPlus assets, String name, float scale, Object userData){
-		BodyDef sensorBodyDef = new BodyDef();
-		sensorBodyDef.type = BodyType.DynamicBody;
-		sensorBodyDef.position.set(def.position.x, def.position.y);
-		Body sensorBody = world.createBody(sensorBodyDef);
-		EntityFixtureDef sensorDef = new EntityFixtureDef(assets, name);
-		sensorDef.isSensor = true;
-		sensorDef.attach(sensorBody, scale, false);
-		sensorBody.setUserData(userData);
-		return sensorBody;
-	}
-	
-	private void weldSensors() {
-		Vector2 bodyPosition = currentBody.getPosition();
-		
-		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - flightSensorHeight, currentBody.getAngle());
-		WeldJointDef flightWeld = new WeldJointDef();
-		flightWeld.bodyA = currentBody;
-		flightWeld.bodyB = flightSensorBody;
-		flightWeld.initialize(currentBody, flightSensorBody, currentBody.getWorldCenter());
-		if (flightSensorWeld != null) {
-			world.destroyJoint(flightSensorWeld);
-		}
-		flightSensorWeld = (WeldJoint) world.createJoint(flightWeld);
-		
-		landingSensorBody.setTransform(bodyPosition.x, bodyPosition.y - landingSensorHeight, currentBody.getAngle());
-		WeldJointDef landWeld = new WeldJointDef();
-		landWeld.bodyA = currentBody;
-		landWeld.bodyB = landingSensorBody;
-		landWeld.initialize(currentBody, landingSensorBody, currentBody.getWorldCenter());
-		if (landingSensorWeld != null) {
-			world.destroyJoint(landingSensorWeld);
-		}
-		landingSensorWeld = (WeldJoint) world.createJoint(landWeld);
-		
-		grabSensorBody.setTransform(bodyPosition.x, bodyPosition.y - grabSensorHeight, currentBody.getAngle());
-		WeldJointDef grabWeld = new WeldJointDef();
-		grabWeld.bodyA = currentBody;
-		grabWeld.bodyB = grabSensorBody;
-		grabWeld.initialize(currentBody, grabSensorBody, currentBody.getWorldCenter());
-		if (grabSensorWeld != null) {
-			world.destroyJoint(grabSensorWeld);
-		}
-		grabSensorWeld = (WeldJoint) world.createJoint(grabWeld);
 	}
 	
 	private void weldToDuck(Body object){
@@ -390,18 +334,8 @@ public class Player extends Entity{
 		oldBody.setActive(false);
 		newBody.setActive(true);
 		currentBody = newBody;
-		weldSensors();
+		for (Sensor sensor : sensors) sensor.weld(world, currentBody);
 		if (grabbedObject != null) weldToDuck(grabbedObject);
-	}
-	
-	private float extractSensorHeight(Body sensorBody, int index1, int index2){
-		Vector2 vertex1 = new Vector2();
-		Vector2 vertex2 = new Vector2();
-		PolygonShape sensorShape = (PolygonShape) sensorBody.getFixtureList().get(0).getShape();
-		sensorShape.getVertex(index1, vertex1);
-		sensorShape.getVertex(index2, vertex2);
-		float sensorHeight = vertex1.y - vertex2.y;
-		return sensorHeight;
 	}
 
 	private void flipSprites(boolean horizontal) {
