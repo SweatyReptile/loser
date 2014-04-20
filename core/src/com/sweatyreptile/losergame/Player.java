@@ -322,9 +322,9 @@ public class Player extends Entity{
 		
 		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - flyingSensorHeight, newBody.getAngle());
 		WeldJointDef flightWeld = new WeldJointDef();
-		flightWeld.bodyA = currentBody;
+		flightWeld.bodyA = newBody;
 		flightWeld.bodyB = flightSensorBody;
-		flightWeld.initialize(currentBody, flightSensorBody, currentBody.getWorldCenter());
+		flightWeld.initialize(newBody, flightSensorBody, newBody.getWorldCenter());
 		if (flightSensorWeld != null) {
 			world.destroyJoint(flightSensorWeld);
 		}
@@ -332,9 +332,9 @@ public class Player extends Entity{
 		
 		landingSensorBody.setTransform(bodyPosition.x, bodyPosition.y - landingSensorHeight, newBody.getAngle());
 		WeldJointDef landWeld = new WeldJointDef();
-		landWeld.bodyA = currentBody;
+		landWeld.bodyA = newBody;
 		landWeld.bodyB = landingSensorBody;
-		landWeld.initialize(currentBody, landingSensorBody, currentBody.getWorldCenter());
+		landWeld.initialize(newBody, landingSensorBody, newBody.getWorldCenter());
 		if (landingSensorWeld != null) {
 			world.destroyJoint(landingSensorWeld);
 		}
