@@ -132,7 +132,7 @@ public class TestLevelScreen implements Screen {
 		duckDef.position.set(2f, viewportHeight/2);
 		duckDef.fixedRotation = true;
 		
-		player = new Player(physWorld, duckDef, assets);
+		player = new Player(physWorld, duckDef, assets, contactListener);
 		
 		ef.create("dead_duck", BodyType.DynamicBody, 1.4f, .5f, new DuckFixtureDef(assets), false);
 		ef.create("wash_machine", BodyType.StaticBody, .5f, .1f, new EntityFixtureDef(assets, "wash_machine"), false);
