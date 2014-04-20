@@ -49,6 +49,8 @@ public class Player extends Entity{
 	private Body grabSensorBody;
 	private WeldJoint grabSensorWeld;
 	private float grabSensorHeight;
+	private Body grabObject;
+	private WeldJoint grabWeld;
 
 	private Direction movingDirection;
 	private boolean flying;
@@ -56,9 +58,13 @@ public class Player extends Entity{
 	private boolean quacking;
 	
 	private Sound quackSound;
+	
+	private LoserContactListener contactListener;
 
-	public Player(World world, BodyDef def, AssetManagerPlus assets) {
+	public Player(World world, BodyDef def, AssetManagerPlus assets, LoserContactListener contactListener) {
 		super(world, def);
+		this.contactListener = contactListener;
+		
 		DuckFixtureDef fixDef = new DuckFixtureDef(assets);
 		DuckTopFixtureDef topFixDef = new DuckTopFixtureDef(assets);
 		DuckQuackFixtureDef quackFixDef = new DuckQuackFixtureDef(assets);
@@ -179,6 +185,21 @@ public class Player extends Entity{
 		grabSensorWeld = (WeldJoint) world.createJoint(grabWeld);
 	}
 	
+	public void pickUp(Body object){
+		weldToDuck(object);
+	}
+	
+	public void weldToDuck(Body object){
+		WeldJointDef grabObjectWeld = new WeldJointDef();
+		grabObjectWeld.bodyA = currentBody;
+		grabObjectWeld.bodyB = object;
+		grabObjectWeld.initialize(currentBody, object, currentBody.getWorldCenter());
+		if (grabWeld != null) {
+			world.destroyJoint(grabWeld);
+		}
+		grabWeld = (WeldJoint) world.createJoint(grabObjectWeld);
+	}
+	
 	public void duck() {
 		if (currentBody.equals(leftBody)) {
 			switchBody(currentBody, leftDuckingBody);
@@ -197,6 +218,12 @@ public class Player extends Entity{
 			sprite = quackingDuckingSprite;
 		}
 		ducking = true;
+		
+		Body currentGrabBody = contactListener.getCurrentGrabBody();
+		if (currentGrabBody != null && currentGrabBody.getType().equals(BodyType.DynamicBody)){
+			grabObject = currentGrabBody;
+			weldToDuck(grabObject);
+		}
 	}
 	
 	public void standUp() {
@@ -352,6 +379,7 @@ public class Player extends Entity{
 		newBody.setActive(true);
 		currentBody = newBody;
 		weldSensors();
+		if (grabObject != null) weldToDuck(grabObject);
 	}
 	
 	private float extractSensorHeight(Body sensorBody, int index1, int index2){
