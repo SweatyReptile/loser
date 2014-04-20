@@ -49,7 +49,7 @@ public class Player extends Entity{
 	private Body grabSensorBody;
 	private WeldJoint grabSensorWeld;
 	private float grabSensorHeight;
-	private Body grabObject;
+	private Body grabbedObject;
 	private WeldJoint grabWeld;
 
 	private Direction movingDirection;
@@ -200,7 +200,7 @@ public class Player extends Entity{
 		if (grabWeld != null) {
 			world.destroyJoint(grabWeld);
 			grabWeld = null;
-			grabObject = null;
+			grabbedObject = null;
 		}
 	}
 	
@@ -225,8 +225,8 @@ public class Player extends Entity{
 		
 		Body currentGrabBody = contactListener.getCurrentGrabBody();
 		if (currentGrabBody != null && currentGrabBody.getType().equals(BodyType.DynamicBody)){
-			grabObject = currentGrabBody;
-			weldToDuck(grabObject);
+			grabbedObject = currentGrabBody;
+			weldToDuck(grabbedObject);
 		}
 	}
 	
@@ -250,7 +250,7 @@ public class Player extends Entity{
 			}
 		}
 		ducking = false;
-		if (grabObject != null) destroyGrabWeld();
+		if (grabbedObject != null) destroyGrabWeld();
 	}
 
 	public void quack() {
@@ -359,6 +359,11 @@ public class Player extends Entity{
 		Vector2 velocity = currentBody.getLinearVelocity();
 		currentBody.setLinearVelocity(velocity.x, 0f);
 		currentBody.applyLinearImpulse(0, 0.5f, position.x, position.y, true);
+		
+		if (grabbedObject != null){
+			Vector2 grabPos = grabbedObject.getPosition();
+			grabbedObject.applyLinearImpulse(0, grabbedObject.getMass(), grabPos.x, grabPos.y, true);
+		}
 	}
 	
 	public void stopMovingLeft() {
@@ -384,7 +389,7 @@ public class Player extends Entity{
 		newBody.setActive(true);
 		currentBody = newBody;
 		weldSensors();
-		if (grabObject != null) weldToDuck(grabObject);
+		if (grabbedObject != null) weldToDuck(grabbedObject);
 	}
 	
 	private float extractSensorHeight(Body sensorBody, int index1, int index2){
