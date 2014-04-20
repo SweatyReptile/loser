@@ -362,7 +362,9 @@ public class Player extends Entity{
 		
 		if (grabbedObject != null){
 			Vector2 grabPos = grabbedObject.getPosition();
-			grabbedObject.applyLinearImpulse(0, grabbedObject.getMass(), grabPos.x, grabPos.y, true);
+			Vector2 grabVelocity = grabbedObject.getLinearVelocity();
+			grabbedObject.setLinearVelocity(grabVelocity.x, 0f);
+			grabbedObject.applyLinearImpulse(0, grabbedObject.getMass()*2, grabPos.x, grabPos.y, true);
 		}
 	}
 	
