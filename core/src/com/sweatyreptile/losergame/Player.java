@@ -119,7 +119,7 @@ public class Player extends Entity{
 		landingSensorBody.setUserData("landing_sensor");
 		landingSensorHeight = extractSensorHeight(landingSensorBody);
 		
-		weldSensors(currentBody);
+		weldSensors();
 		
 		quackSound = assets.get("quack_dummy.ogg");
 		
@@ -314,27 +314,27 @@ public class Player extends Entity{
 		oldBody.setActive(false);
 		newBody.setActive(true);
 		currentBody = newBody;
-		weldSensors(currentBody);
+		weldSensors();
 	}
 
-	private void weldSensors(Body newBody) {
-		Vector2 bodyPosition = newBody.getPosition();
+	private void weldSensors() {
+		Vector2 bodyPosition = currentBody.getPosition();
 		
-		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - flyingSensorHeight, newBody.getAngle());
+		flightSensorBody.setTransform(bodyPosition.x, bodyPosition.y - flyingSensorHeight, currentBody.getAngle());
 		WeldJointDef flightWeld = new WeldJointDef();
-		flightWeld.bodyA = newBody;
+		flightWeld.bodyA = currentBody;
 		flightWeld.bodyB = flightSensorBody;
-		flightWeld.initialize(newBody, flightSensorBody, newBody.getWorldCenter());
+		flightWeld.initialize(currentBody, flightSensorBody, currentBody.getWorldCenter());
 		if (flightSensorWeld != null) {
 			world.destroyJoint(flightSensorWeld);
 		}
 		flightSensorWeld = (WeldJoint) world.createJoint(flightWeld);
 		
-		landingSensorBody.setTransform(bodyPosition.x, bodyPosition.y - landingSensorHeight, newBody.getAngle());
+		landingSensorBody.setTransform(bodyPosition.x, bodyPosition.y - landingSensorHeight, currentBody.getAngle());
 		WeldJointDef landWeld = new WeldJointDef();
-		landWeld.bodyA = newBody;
+		landWeld.bodyA = currentBody;
 		landWeld.bodyB = landingSensorBody;
-		landWeld.initialize(newBody, landingSensorBody, newBody.getWorldCenter());
+		landWeld.initialize(currentBody, landingSensorBody, currentBody.getWorldCenter());
 		if (landingSensorWeld != null) {
 			world.destroyJoint(landingSensorWeld);
 		}
