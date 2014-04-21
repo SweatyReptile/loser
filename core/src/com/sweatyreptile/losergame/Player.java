@@ -71,6 +71,15 @@ public class Player extends Entity{
 		leftQuackingDuckingBody = world.createBody(def);
 		rightQuackingDuckingBody = world.createBody(def);
 		
+		leftBody.setUserData(new String[]{"left"});
+		rightBody.setUserData(new String[]{"right"});
+		leftDuckingBody.setUserData(new String[]{"left", "duck"});
+		rightDuckingBody.setUserData(new String[]{"right", "duck"});
+		leftQuackingBody.setUserData(new String[]{"left", "quack"});
+		rightQuackingBody.setUserData(new String[]{"right", "quack"});
+		rightQuackingDuckingBody.setUserData(new String[]{"right", "quack", "duck"});
+		leftQuackingDuckingBody.setUserData(new String[]{"left", "quack", "duck"});
+
 		fixDef.attach(leftBody, .2f, false);
 		fixDef.attach(rightBody, .2f, true);
 		topFixDef.attach(leftDuckingBody, .2f, false);

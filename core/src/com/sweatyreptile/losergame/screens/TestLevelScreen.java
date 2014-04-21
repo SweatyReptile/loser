@@ -23,6 +23,7 @@ import com.sweatyreptile.losergame.EntityFactory;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.Player;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
+import com.sweatyreptile.losergame.entities.MusicPlayer;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.fixtures.MetalFixtureDef;
@@ -52,6 +53,8 @@ public class TestLevelScreen implements Screen {
 	private EntityFactory entityFactory;
 	private LoserContactListener contactListener;
 	
+	MusicPlayer radio;
+	
 	public TestLevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight){
 		spriteRenderer = batch;
@@ -79,6 +82,9 @@ public class TestLevelScreen implements Screen {
 		for (Entity entity : entities.values()){
 			entity.render(spriteRenderer);
 		}
+		
+		radio.render(spriteRenderer);
+		
 		player.render(spriteRenderer);
 
 		spriteRenderer.end();
@@ -89,12 +95,17 @@ public class TestLevelScreen implements Screen {
 	public void update(float delta) {
 		physWorld.step(1/60f, 6, 2); // TODO: Change step
 		
+		//need to be moved
+		radio.decideVolume(player.getBody());
 		if (!contactListener.isFlightSensorContacting() && !player.isFlying()) player.fly();
 		else if (contactListener.isLandingSensorContacting() && player.isFlying()) player.land();
+		//end
+		
 		player.update(delta);
 		for (Entity entity : entities.values()){
 			entity.update(delta);
 		}
+		radio.update(delta);
 	}
 
 	@Override
@@ -144,18 +155,20 @@ public class TestLevelScreen implements Screen {
 		ef.create("book_yellow", BodyType.DynamicBody, 1.2f, 1.1f, new WoodFixtureDef(assets, "book_yellow"), false);
 		ef.create("shelf", BodyType.StaticBody, 1f, 1f, new EntityFixtureDef(assets, "shelf"), false);
 		ef.create("pencil", BodyType.DynamicBody, 1.6f, 0.7f, new WoodFixtureDef(assets, "pencil"), false);
-		ef.create("radio", BodyType.DynamicBody, 1.4f, 1.1f, new MetalFixtureDef(assets, "radio"), false);
-
+		//ef.create("radio", BodyType.DynamicBody, 1.4f, 1.1f, new MetalFixtureDef(assets, "radio"), false);
+		
+		BodyDef radioBodyDef = new BodyDef();
+		radioBodyDef.type = BodyType.DynamicBody;
+		radioBodyDef.position.set(new Vector2(1.4f, 1.1f));
+		radio = new MusicPlayer(physWorld, radioBodyDef, assets, new MetalFixtureDef(assets, "radio"), false, width, viewportWidth, "baby_come_back.ogg", true);
 		
 		BodyDef groundDef = new BodyDef();
 		groundDef.type = BodyType.StaticBody;
 		groundDef.position.set(viewportWidth / 2, 0);
 		PolygonShape groundBox = new PolygonShape();
-		
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
 		Body groundBody = physWorld.createBody(groundDef);
 		groundBody.createFixture(groundBox, 0f);
-		
 		groundBox.dispose();
 		
 		playerInputProcessor.setPlayer(player);

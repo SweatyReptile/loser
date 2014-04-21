@@ -3,11 +3,12 @@ package com.sweatyreptile.losergame;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
-import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
@@ -46,11 +47,20 @@ public class Sensor {
 	private float extractHeight(int index1, int index2){
 		Vector2 vertex1 = new Vector2();
 		Vector2 vertex2 = new Vector2();
-		PolygonShape sensorShape = (PolygonShape) sensorBody.getFixtureList().get(0).getShape();
-		sensorShape.getVertex(index1, vertex1);
-		sensorShape.getVertex(index2, vertex2);
-		float sensorHeight = vertex1.y - vertex2.y;
-		return sensorHeight;
+		
+		try {
+			PolygonShape sensorShape = (PolygonShape) sensorBody.getFixtureList().get(0).getShape();
+			sensorShape.getVertex(index1, vertex1);
+			sensorShape.getVertex(index2, vertex2);
+			float sensorHeight = vertex1.y - vertex2.y;
+			return sensorHeight;
+		}
+		catch (ClassCastException e){
+			CircleShape sensorShape = (CircleShape) sensorBody.getFixtureList().get(0).getShape();
+			float sensorHeight = sensorShape.getRadius()*2;
+			return sensorHeight;
+		}
+		
 	}
 	
 }
