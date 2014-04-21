@@ -160,7 +160,7 @@ public class TestLevelScreen implements Screen {
 		BodyDef radioBodyDef = new BodyDef();
 		radioBodyDef.type = BodyType.DynamicBody;
 		radioBodyDef.position.set(new Vector2(1.4f, 1.1f));
-		radio = new MusicPlayer(physWorld, radioBodyDef, assets, new MetalFixtureDef(assets, "radio"), false, width, viewportWidth, "baby_come_back.ogg", true);
+		radio = new MusicPlayer(physWorld, radioBodyDef, assets, new MetalFixtureDef(assets, "radio"), false, width, viewportWidth, "baby_come_back.ogg", false);
 		
 		BodyDef groundDef = new BodyDef();
 		groundDef.type = BodyType.StaticBody;
