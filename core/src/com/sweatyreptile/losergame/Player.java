@@ -51,9 +51,9 @@ public class Player extends Entity{
 	
 	private Sound quackSound;
 	
-	private LoserContactListener contactListener;
+	private SensorContactListener contactListener;
 
-	public Player(World world, BodyDef def, AssetManagerPlus assets, LoserContactListener contactListener) {
+	public Player(World world, BodyDef def, AssetManagerPlus assets, SensorContactListener contactListener) {
 		super(world, def);
 		this.contactListener = contactListener;
 		
@@ -110,11 +110,26 @@ public class Player extends Entity{
 		
 		sprite = standingSprite;
 		
+		CountingSensorListener flightSensorListener = new CountingSensorListener() {
+			@Override public void contactAdded(int totalContacts){}
+			@Override public void contactRemoved(int totalContacts) {
+				if (totalContacts == 0 && !isFlying()) fly();
+			}
+		};
+		
+		CountingSensorListener landingSensorListener = new CountingSensorListener() {
+			@Override public void contactRemoved(int totalContacts) {}
+			@Override public void contactAdded(int totalContacts) {
+				if (totalContacts != 0 && isFlying()) land();
+			}
+		};
+		
+		
 		sensors = new ArrayList<Sensor>();
-		Sensor flightSensor = new Sensor(world, def, assets, "duck_flight_sensor", .2f, "flight_sensor", 0, 2);
-		Sensor landingSensor = new Sensor(world, def, assets, "duck_landing_sensor", .2f, "landing_sensor", 0, 2);
-		Sensor grabSensor = new Sensor(world, def, assets, "duck_grab_sensor", .2f, "grab_sensor", 2, 0);
-		Collections.addAll(sensors, flightSensor, landingSensor, grabSensor);
+		Sensor flightSensor = new CountingSensor(contactListener, flightSensorListener, world, assets, "duck_flight_sensor", .2f, 0, 2);
+		Sensor landingSensor = new CountingSensor(contactListener, landingSensorListener, world, assets, "duck_landing_sensor", .2f, 0, 2);
+		//TODO: Sensor grabSensor = new Sensor(world, assets, "duck_grab_sensor", .2f, "grab_sensor", 2, 0);
+		Collections.addAll(sensors, flightSensor, landingSensor);//, grabSensor);
 		for (Sensor sensor : sensors) sensor.weld(world, currentBody);
 		
 		quackSound = assets.get("quack_dummy.ogg");

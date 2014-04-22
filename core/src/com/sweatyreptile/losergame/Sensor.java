@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
@@ -13,7 +14,7 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
-public class Sensor {
+public abstract class Sensor implements SensorListener{
 
 	private Body sensorBody;
 	private float sensorHeight;
@@ -22,17 +23,20 @@ public class Sensor {
 	private Sprite currentSprite;
 	private float sensorRadius;
 	
-	public Sensor(World world, BodyDef def, AssetManagerPlus assets, String name, float scale, Object userData, int index1, int index2){
+	public Sensor(SensorContactListener contactListener, World world, AssetManagerPlus assets, String name, float scale,
+			int index1, int index2){
+		
 		BodyDef sensorBodyDef = new BodyDef();
 		sensorBodyDef.type = BodyType.DynamicBody;
-		sensorBodyDef.position.set(def.position.x, def.position.y);
-		Body sensorBody = world.createBody(sensorBodyDef);
+		sensorBody = world.createBody(sensorBodyDef);
+		
 		EntityFixtureDef sensorDef = new EntityFixtureDef(assets, name);
 		sensorDef.isSensor = true;
 		sensorDef.attach(sensorBody, scale, false);
-		sensorBody.setUserData(userData);
-		this.sensorBody = sensorBody;
+		sensorBody.setUserData(name);
 		sensorHeight = extractHeight(index1, index2);
+		
+		contactListener.addListener(name, this);
 	}
 	
 	public void weld(World world, Body newBody) {
@@ -86,5 +90,11 @@ public class Sensor {
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	public abstract void beginContact(Fixture sensor, Fixture sensee);
+	
+	@Override
+	public abstract void endContact(Fixture sensor, Fixture sensee);
 	
 }
