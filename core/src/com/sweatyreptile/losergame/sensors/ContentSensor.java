@@ -36,9 +36,7 @@ public class ContentSensor extends Sensor {
 	@Override
 	public void beginContact(Fixture sensor, Fixture sensee) {
 		Body senseeBody = sensee.getBody();
-		if (!contents.contains(senseeBody)) {
-			contents.add(senseeBody);
-		}
+		contents.add(senseeBody);
 		if (listener != null) {
 			dirtyAdded = true;
 		}

@@ -74,7 +74,7 @@ public class Player extends Entity{
 		rightQuackingBody = world.createBody(def);
 		leftQuackingDuckingBody = world.createBody(def);
 		rightQuackingDuckingBody = world.createBody(def);
-
+		
 		fixDef.attach(leftBody, .2f, false);
 		fixDef.attach(rightBody, .2f, true);
 		topFixDef.attach(leftDuckingBody, .2f, false);
@@ -124,7 +124,7 @@ public class Player extends Entity{
 		sensors = new ArrayList<Sensor>();
 		Sensor flightSensor = new CountingSensor(contactListener, flightSensorListener, world, assets, "duck_flight_sensor", .2f, 0, 2);
 		Sensor landingSensor = new CountingSensor(contactListener, landingSensorListener, world, assets, "duck_landing_sensor", .2f, 0, 2);
-		grabSensor = new ContentSensor(contactListener, world, assets, "duck_grab_sensor", .2f, 2, 0);
+		grabSensor = new ContentSensor(contactListener, world, assets, "duck_grab_sensor", .2f, 0, 3);
 		Collections.addAll(sensors, flightSensor, landingSensor, grabSensor);
 		for (Sensor sensor : sensors) sensor.weld(world, currentBody);
 		quackSound = assets.get("quack_dummy.ogg");
