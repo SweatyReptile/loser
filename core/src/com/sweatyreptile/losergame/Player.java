@@ -360,9 +360,7 @@ public class Player extends Entity{
 	}
 	
 	private void switchBody(Body oldBody, Body newBody){
-		Gdx.app.log("yay", "hooray you body switch");
 		newBody.setTransform(oldBody.getPosition(), 0f);
-		Gdx.app.log("yay", "1 oh no you body switch");
 		newBody.setLinearVelocity(oldBody.getLinearVelocity());
 		oldBody.setActive(false);
 		newBody.setActive(true);
