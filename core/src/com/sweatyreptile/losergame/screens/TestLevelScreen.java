@@ -20,9 +20,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
-import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.Player;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
+import com.sweatyreptile.losergame.SensorContactListener;
 import com.sweatyreptile.losergame.entities.MusicPlayer;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
@@ -51,7 +51,7 @@ public class TestLevelScreen implements Screen {
 	private Map<String, Entity> entities;
 	
 	private EntityFactory entityFactory;
-	private LoserContactListener contactListener;
+	private SensorContactListener contactListener;
 	
 	MusicPlayer radio;
 	
@@ -95,11 +95,7 @@ public class TestLevelScreen implements Screen {
 	public void update(float delta) {
 		physWorld.step(1/60f, 6, 2); // TODO: Change step
 		
-		//need to be moved
-		radio.decideVolume(player.getBody());
-		if (!contactListener.isFlightSensorContacting() && !player.isFlying()) player.fly();
-		else if (contactListener.isLandingSensorContacting() && player.isFlying()) player.land();
-		//end
+		radio.determineVolume(player.getBody());
 		
 		player.update(delta);
 		for (Entity entity : entities.values()){
@@ -133,7 +129,7 @@ public class TestLevelScreen implements Screen {
 	
 	private void setupWorld() {
 		
-		contactListener = new LoserContactListener();
+		contactListener = new SensorContactListener();
 		physWorld.setContactListener(contactListener);
 		
 		EntityFactory ef = entityFactory;

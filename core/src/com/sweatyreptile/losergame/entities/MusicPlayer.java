@@ -32,17 +32,17 @@ public class MusicPlayer extends Entity {
 		if (autoPlay) music.play();
 		
 		//DEFAULT (TODO)
-		accessRange = new Sensor(world, bodyDef, assets, "default_sensor", .5f, "music_player", 0, 0);
-		accessRange.setCenterRoundSensor(sprite);
-		accessRange.weld(world, currentBody);
+		//accessRange = new Sensor(world, bodyDef, assets, "default_sensor", .5f, "music_player", 0, 0);
+		//accessRange.setCenterRoundSensor(sprite);
+		//accessRange.weld(world, currentBody);
 		//END DEFAULT
 		
 	}
 	
 	public void setRange(String name, float scale, Object userData, int index1, int index2){
-		accessRange = new Sensor(world, bodyDef, assets, name, scale, userData, index1, index2);
-		accessRange.setCenterRoundSensor(sprite);
-		accessRange.weld(world, currentBody);
+		//accessRange = new Sensor(world, bodyDef, assets, name, scale, userData, index1, index2);
+		//accessRange.setCenterRoundSensor(sprite);
+		//accessRange.weld(world, currentBody);
 	}
 	
 	private void toggleMusic(){
@@ -50,7 +50,7 @@ public class MusicPlayer extends Entity {
 		else music.play();
 	}
 	
-	public void decideVolume(Body playerBody){
+	public void determineVolume(Body playerBody){
 		Vector2 playerPos = playerBody.getPosition();
 		Vector2 pos = currentBody.getPosition();
 		double posX = (double) pos.x;

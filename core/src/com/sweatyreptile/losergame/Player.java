@@ -3,6 +3,7 @@ package com.sweatyreptile.losergame;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -53,6 +54,8 @@ public class Player extends Entity{
 	
 	private SensorContactListener contactListener;
 
+	private ContentSensor grabSensor;
+
 	public Player(World world, BodyDef def, AssetManagerPlus assets, SensorContactListener contactListener) {
 		super(world, def);
 		this.contactListener = contactListener;
@@ -70,15 +73,6 @@ public class Player extends Entity{
 		rightQuackingBody = world.createBody(def);
 		leftQuackingDuckingBody = world.createBody(def);
 		rightQuackingDuckingBody = world.createBody(def);
-		
-		leftBody.setUserData(new String[]{"left"});
-		rightBody.setUserData(new String[]{"right"});
-		leftDuckingBody.setUserData(new String[]{"left", "duck"});
-		rightDuckingBody.setUserData(new String[]{"right", "duck"});
-		leftQuackingBody.setUserData(new String[]{"left", "quack"});
-		rightQuackingBody.setUserData(new String[]{"right", "quack"});
-		rightQuackingDuckingBody.setUserData(new String[]{"right", "quack", "duck"});
-		leftQuackingDuckingBody.setUserData(new String[]{"left", "quack", "duck"});
 
 		fixDef.attach(leftBody, .2f, false);
 		fixDef.attach(rightBody, .2f, true);
@@ -113,7 +107,9 @@ public class Player extends Entity{
 		CountingSensorListener flightSensorListener = new CountingSensorListener() {
 			@Override public void contactAdded(int totalContacts){}
 			@Override public void contactRemoved(int totalContacts) {
-				if (totalContacts == 0 && !isFlying()) fly();
+				if (totalContacts == 0 && !isFlying()) {
+					fly();
+				}
 			}
 		};
 		
@@ -124,19 +120,22 @@ public class Player extends Entity{
 			}
 		};
 		
-		
 		sensors = new ArrayList<Sensor>();
 		Sensor flightSensor = new CountingSensor(contactListener, flightSensorListener, world, assets, "duck_flight_sensor", .2f, 0, 2);
 		Sensor landingSensor = new CountingSensor(contactListener, landingSensorListener, world, assets, "duck_landing_sensor", .2f, 0, 2);
-		//TODO: Sensor grabSensor = new Sensor(world, assets, "duck_grab_sensor", .2f, "grab_sensor", 2, 0);
-		Collections.addAll(sensors, flightSensor, landingSensor);//, grabSensor);
+		grabSensor = new ContentSensor(contactListener, world, assets, "duck_grab_sensor", .2f, 2, 0);
+		Collections.addAll(sensors, flightSensor, landingSensor, grabSensor);
 		for (Sensor sensor : sensors) sensor.weld(world, currentBody);
-		
 		quackSound = assets.get("quack_dummy.ogg");
 		
 	}
 	
 	public void update(float delta) {
+
+		for (Sensor sensor : sensors) {
+			sensor.update(delta);
+		}
+		
 		super.update(delta);
 		if (movingDirection != Direction.NONE) {
 			Vector2 velocity = currentBody.getLinearVelocity();
@@ -151,6 +150,7 @@ public class Player extends Entity{
 	
 			}
 		}
+		
 	}
 	
 	private void weldToDuck(Body object){
@@ -191,10 +191,12 @@ public class Player extends Entity{
 		}
 		ducking = true;
 		
-		Body currentGrabBody = contactListener.getCurrentGrabBody();
-		if (currentGrabBody != null && currentGrabBody.getType().equals(BodyType.DynamicBody)){
-			grabbedObject = currentGrabBody;
-			weldToDuck(grabbedObject);
+		if (!grabSensor.empty()) {
+			Body currentGrabBody = grabSensor.getNewestBody();
+			if (currentGrabBody.getType().equals(BodyType.DynamicBody)) {
+				grabbedObject = currentGrabBody;
+				weldToDuck(grabbedObject);
+			}
 		}
 	}
 	
@@ -353,7 +355,9 @@ public class Player extends Entity{
 	}
 	
 	private void switchBody(Body oldBody, Body newBody){
+		Gdx.app.log("yay", "hooray you body switch");
 		newBody.setTransform(oldBody.getPosition(), 0f);
+		Gdx.app.log("yay", "1 oh no you body switch");
 		newBody.setLinearVelocity(oldBody.getLinearVelocity());
 		oldBody.setActive(false);
 		newBody.setActive(true);

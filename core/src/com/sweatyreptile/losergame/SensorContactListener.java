@@ -1,5 +1,6 @@
 package com.sweatyreptile.losergame;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.physics.box2d.Contact;
@@ -13,7 +14,7 @@ public class SensorContactListener implements ContactListener {
 	private Map<String, SensorListener> listeners;
 	
 	public SensorContactListener() {
-		
+		listeners = new HashMap<String, SensorListener>();
 	}
 	
 	public void addListener(String nameData, SensorListener listener) {
@@ -39,7 +40,7 @@ public class SensorContactListener implements ContactListener {
 	private void processFixture(Fixture sensor, Fixture sensee, boolean beginContact) {
 		if (userDataExists(sensor)) {
 			if (sensor.isSensor() && !sensee.isSensor()) {
-				SensorListener listener = listeners.get(sensor.getUserData());
+				SensorListener listener = listeners.get(sensor.getBody().getUserData());
 				if (listener == null) throw new IllegalArgumentException("Listener named " + sensor.getUserData() + " is not in SensorContactListener");
 				if (beginContact) {
 					listener.beginContact(sensor, sensee);

@@ -35,7 +35,6 @@ public abstract class Sensor implements SensorListener{
 		sensorDef.attach(sensorBody, scale, false);
 		sensorBody.setUserData(name);
 		sensorHeight = extractHeight(index1, index2);
-		
 		contactListener.addListener(name, this);
 	}
 	
@@ -96,5 +95,7 @@ public abstract class Sensor implements SensorListener{
 	
 	@Override
 	public abstract void endContact(Fixture sensor, Fixture sensee);
+	
+	public abstract void update(float delta);
 	
 }
