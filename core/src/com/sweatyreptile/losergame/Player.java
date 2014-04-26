@@ -3,7 +3,6 @@ package com.sweatyreptile.losergame;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -56,14 +55,11 @@ public class Player extends Entity{
 	private boolean quacking;
 	
 	private Sound quackSound;
-	
-	private SensorContactListener contactListener;
 
 	private ContentSensor grabSensor;
 
 	public Player(World world, BodyDef def, AssetManagerPlus assets, SensorContactListener contactListener) {
 		super(world, def);
-		this.contactListener = contactListener;
 		
 		DuckFixtureDef fixDef = new DuckFixtureDef(assets);
 		DuckTopFixtureDef topFixDef = new DuckTopFixtureDef(assets);

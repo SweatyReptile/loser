@@ -21,6 +21,7 @@ public class ContentSensor extends Sensor {
 		contents = new Stack<Body>();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void update(float delta) {
 		if (dirtyAdded) {
 			listener.bodyAdded((Stack<Body>) contents.clone());
