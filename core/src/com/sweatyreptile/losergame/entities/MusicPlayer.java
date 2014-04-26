@@ -19,11 +19,14 @@ public class MusicPlayer extends Entity {
 	private Music music;
 	private static final float MAX_DISTANCE = 3;
 	
+	private Body playerBody;
+	
 	public MusicPlayer(World world, BodyDef bodyDef, AssetManagerPlus assets, 
 			EntityFixtureDef fixtureDef, boolean flipped, float screenWidth,
-			float viewportWidth, String musicName, boolean autoPlay) {
+			float viewportWidth, String musicName, boolean autoPlay, Body playerBody) {
 		super(world, bodyDef, fixtureDef, flipped, screenWidth, viewportWidth);
 		
+		this.playerBody = playerBody;
 		this.bodyDef = bodyDef;
 		this.assets = assets;
 		
@@ -50,7 +53,13 @@ public class MusicPlayer extends Entity {
 		else music.play();
 	}
 	
-	public void determineVolume(Body playerBody){
+	@Override
+	public void update(float delta) {
+		super.update(delta);
+		determineVolume();
+	}
+	
+	public void determineVolume(){
 		Vector2 playerPos = playerBody.getPosition();
 		Vector2 pos = currentBody.getPosition();
 		double posX = (double) pos.x;
