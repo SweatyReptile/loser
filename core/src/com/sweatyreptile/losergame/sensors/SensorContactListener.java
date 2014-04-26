@@ -1,4 +1,4 @@
-package com.sweatyreptile.losergame;
+package com.sweatyreptile.losergame.sensors;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -17,6 +17,11 @@ import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckQuackFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckTopFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
+import com.sweatyreptile.losergame.sensors.ContentSensor;
+import com.sweatyreptile.losergame.sensors.CountingSensor;
+import com.sweatyreptile.losergame.sensors.CountingSensorListener;
+import com.sweatyreptile.losergame.sensors.Sensor;
+import com.sweatyreptile.losergame.sensors.SensorContactListener;
 
 public class Player extends Entity{
 	

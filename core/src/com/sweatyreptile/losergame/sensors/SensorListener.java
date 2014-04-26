@@ -1,4 +1,4 @@
-package com.sweatyreptile.losergame;
+package com.sweatyreptile.losergame.sensors;
 
 import com.badlogic.gdx.physics.box2d.Fixture;
 

@@ -1,4 +1,4 @@
-package com.sweatyreptile.losergame;
+package com.sweatyreptile.losergame.sensors;
 
 public interface CountingSensorListener {
 
