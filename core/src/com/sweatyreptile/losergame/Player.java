@@ -59,7 +59,7 @@ public class Player extends Entity{
 	private ContentSensor grabSensor;
 
 	public Player(World world, BodyDef def, AssetManagerPlus assets, SensorContactListener contactListener) {
-		super(world, def);
+		super(world, def, "duck");
 		
 		DuckFixtureDef fixDef = new DuckFixtureDef(assets);
 		DuckTopFixtureDef topFixDef = new DuckTopFixtureDef(assets);
@@ -124,7 +124,7 @@ public class Player extends Entity{
 		sensors = new ArrayList<Sensor>();
 		Sensor flightSensor = new CountingSensor(contactListener, flightSensorListener, world, assets, "duck_flight_sensor", .2f, 0, 2);
 		Sensor landingSensor = new CountingSensor(contactListener, landingSensorListener, world, assets, "duck_landing_sensor", .2f, 0, 2);
-		grabSensor = new ContentSensor(contactListener, world, assets, "duck_grab_sensor", .2f, 0, 3);
+		grabSensor = new ContentSensor(contactListener, null, world, assets, "duck_grab_sensor", .2f, 0, 3);
 		Collections.addAll(sensors, flightSensor, landingSensor, grabSensor);
 		for (Sensor sensor : sensors) sensor.weld(world, currentBody);
 		quackSound = assets.get("quack_dummy.ogg");
@@ -382,6 +382,14 @@ public class Player extends Entity{
 	
 	public boolean isDucking(){
 		return ducking;
+	}
+	
+	//TEMP METHOD
+	public ArrayList<Body> getQuackBodies(){
+		ArrayList<Body> quackBodies = new ArrayList<Body>();
+		Collections.addAll(quackBodies, leftQuackingBody, rightQuackingBody,
+				leftQuackingDuckingBody, rightQuackingDuckingBody);
+		return quackBodies;
 	}
 	
 }

@@ -14,11 +14,12 @@ public class ContentSensor extends Sensor {
 	private boolean dirtyAdded;
 	private boolean dirtyRemoved;
 	
-	public ContentSensor(SensorContactListener contactListener, World world,
+	public ContentSensor(SensorContactListener contactListener, ContentSensorListener listener, World world,
 			AssetManagerPlus assets, String name, float scale, int index1,
 			int index2) {
 		super(contactListener, world, assets, name, scale, index1, index2);
 		contents = new Stack<Body>();
+		this.listener = listener;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -36,6 +37,7 @@ public class ContentSensor extends Sensor {
 	@Override
 	public void beginContact(Fixture sensor, Fixture sensee) {
 		Body senseeBody = sensee.getBody();
+		//if (!contents.contains(senseeBody)) 
 		contents.add(senseeBody);
 		if (listener != null) {
 			dirtyAdded = true;

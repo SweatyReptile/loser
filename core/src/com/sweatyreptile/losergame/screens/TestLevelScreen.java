@@ -87,7 +87,7 @@ public class TestLevelScreen implements Screen {
 
 		spriteRenderer.end();
 		
-		physRenderer.render(physWorld, camera.combined);
+		//physRenderer.render(physWorld, camera.combined);
 	}
 	
 	public void update(float delta) {
@@ -151,7 +151,8 @@ public class TestLevelScreen implements Screen {
 		BodyDef radioBodyDef = new BodyDef();
 		radioBodyDef.type = BodyType.DynamicBody;
 		radioBodyDef.position.set(new Vector2(1.4f, 1.1f));
-		radio = new MusicPlayer(physWorld, radioBodyDef, assets, new MetalFixtureDef(assets, "radio"), false, width, viewportWidth, "baby_come_back.ogg", false, player.getBody());
+		radio = new MusicPlayer(contactListener, physWorld, radioBodyDef, assets, 
+				new MetalFixtureDef(assets, "radio"), false, width, viewportWidth, "baby_come_back.ogg", false, player);
 		entities.put("radio", radio);
 		
 		BodyDef groundDef = new BodyDef();
