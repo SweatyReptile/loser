@@ -36,7 +36,7 @@ public abstract class Sensor implements SensorListener{
 		sensorDef.attach(sensorBody, scale, false);
 		sensorBody.setUserData(name);
 		sensorHeight = extractHeight(index1, index2);
-		contactListener.addListener(name, this);
+		contactListener.addSensorListener(name, this);
 	}
 	
 	public void weld(World world, Body newBody) {

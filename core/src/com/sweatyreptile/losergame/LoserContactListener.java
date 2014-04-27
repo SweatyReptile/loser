@@ -12,14 +12,14 @@ import com.sweatyreptile.losergame.sensors.SensorListener;
 
 public class LoserContactListener implements ContactListener {
 
-	private Map<String, SensorListener> listeners;
+	private Map<String, SensorListener> sensorListeners;
 	
 	public LoserContactListener() {
-		listeners = new HashMap<String, SensorListener>();
+		sensorListeners = new HashMap<String, SensorListener>();
 	}
 	
-	public void addListener(String nameData, SensorListener listener) {
-		listeners.put(nameData, listener);
+	public void addSensorListener(String nameData, SensorListener listener) {
+		sensorListeners.put(nameData, listener);
 	}
 	
 	@Override
@@ -41,7 +41,7 @@ public class LoserContactListener implements ContactListener {
 	private void processFixture(Fixture sensor, Fixture sensee, boolean beginContact) {
 		if (userDataExists(sensor)) {
 			if (sensor.isSensor() && !sensee.isSensor()) {
-				SensorListener listener = listeners.get(sensor.getBody().getUserData());
+				SensorListener listener = sensorListeners.get(sensor.getBody().getUserData());
 				if (listener == null) throw new IllegalArgumentException("Listener named " + sensor.getUserData() + " is not in SensorContactListener");
 				if (beginContact) {
 					listener.beginContact(sensor, sensee);
