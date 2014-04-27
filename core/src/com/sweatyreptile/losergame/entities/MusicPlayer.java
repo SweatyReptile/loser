@@ -40,7 +40,7 @@ public class MusicPlayer extends Entity {
 
 			@Override
 			public void bodyAdded(Stack<Body> contents) {
-				Gdx.app.log("Yo yo", "sup i added a body, yo " + contents.size());
+				Gdx.app.log("Radio", "Added. Size: " + contents.size());
 				for (Body quackBody : player2.getQuackBodies()) {
 					if (contents.peek().equals(quackBody)) {
 						toggleMusic();
@@ -51,7 +51,7 @@ public class MusicPlayer extends Entity {
 
 			@Override
 			public void bodyRemoved(Stack<Body> contents) {
-				Gdx.app.log("Yo yo", "sup i removed a body, yo " + contents.size());
+				Gdx.app.log("Radio", "Removed. Size: " + contents.size());
 				
 			}
 			
