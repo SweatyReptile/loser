@@ -117,7 +117,7 @@ public class TestLevelScreen implements Screen {
 		physWorld = new World(new Vector2(0f, -9.8f), true);
 		physRenderer = new Box2DDebugRenderer();
 		
-		entityFactory = new EntityFactory(assets, entities, physWorld, viewportWidth, 1280);
+		entityFactory = new EntityFactory(assets, entities, physWorld, contactListener, viewportWidth, 1280);
 		background = assets.get("background.png");
 		setupWorld();
 	}
@@ -135,7 +135,7 @@ public class TestLevelScreen implements Screen {
 		duckDef.position.set(2f, viewportHeight/2);
 		duckDef.fixedRotation = true;
 		
-		player = new Player(physWorld, duckDef, assets, contactListener);
+		player = new Player(physWorld, contactListener, duckDef, assets);
 		
 		ef.create("dead_duck", BodyType.DynamicBody, 1.4f, .5f, new DuckFixtureDef(assets), false);
 		ef.create("wash_machine", BodyType.StaticBody, .5f, .1f, new EntityFixtureDef(assets, "wash_machine"), false);

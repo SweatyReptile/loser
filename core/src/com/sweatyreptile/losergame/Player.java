@@ -57,8 +57,8 @@ public class Player extends Entity{
 
 	private ContentSensor grabSensor;
 
-	public Player(World world, BodyDef def, AssetManagerPlus assets, LoserContactListener contactListener) {
-		super(world, def, "duck");
+	public Player(World world, LoserContactListener contactListener, BodyDef def, AssetManagerPlus assets) {
+		super(world, contactListener, def, "duck");
 		
 		DuckFixtureDef fixDef = new DuckFixtureDef(assets);
 		DuckTopFixtureDef topFixDef = new DuckTopFixtureDef(assets);
