@@ -26,20 +26,16 @@ public class Entity {
 	protected float spriteOriginX;
 	protected float spriteOriginY;
 	
-	protected String name;
-	
 	public Entity(World world, BodyDef bodyDef, String name){
 		this.sprite = new Sprite();
 		currentBody = world.createBody(bodyDef);
 		this.world = world;
-		this.name = name;
 	}
 	
 	public Entity(World world, BodyDef bodyDef, 
 			EntityFixtureDef fixtureDef, float scale, 
-			boolean flipped, String name) {
+			boolean flipped) {
 		
-		this.name = name;
 		currentBody = world.createBody(bodyDef);
 		Texture spriteTexture = fixtureDef.getTexture();
 		
@@ -69,16 +65,16 @@ public class Entity {
 	
 	public Entity(World world, BodyDef bodyDef, 
 			EntityFixtureDef fixtureDef, boolean flipped,
-			float screenWidth, float viewportWidth, String name) {
+			float screenWidth, float viewportWidth) {
 		this(world, bodyDef, fixtureDef, 
 				fixtureDef.getTexture().getWidth() * viewportWidth / screenWidth,
-				flipped, name);
+				flipped);
 	}
 	
 	public Entity(World world, BodyDef bodyDef, 
 			EntityFixtureDef fixtureDef, AssetManagerPlus assets, 
 			String bodyName, float scale, String name) {
-		this(world, bodyDef, fixtureDef, scale, false, name);
+		this(world, bodyDef, fixtureDef, scale, false);
 	} 
 	
 	public void render(SpriteBatch renderer){
@@ -105,9 +101,5 @@ public class Entity {
 	
 	public void setY(float y){
 		sprite.setY(y);
-	}
-
-	public String getName() {
-		return name;
 	}
 }

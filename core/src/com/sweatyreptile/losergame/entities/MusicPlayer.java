@@ -31,7 +31,7 @@ public class MusicPlayer extends Entity {
 	public MusicPlayer(SensorContactListener contactListener, World world, BodyDef bodyDef, AssetManagerPlus assets, 
 			EntityFixtureDef fixtureDef, boolean flipped, float screenWidth,
 			float viewportWidth, String musicName, boolean autoPlay, Player player) {
-		super(world, bodyDef, fixtureDef, flipped, screenWidth, viewportWidth, fixtureDef.getName());
+		super(world, bodyDef, fixtureDef, flipped, screenWidth, viewportWidth);
 		
 		this.contactListener = contactListener;
 		this.player = player;
