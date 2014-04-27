@@ -23,7 +23,7 @@ public abstract class Sensor implements SensorListener{
 	private Sprite currentSprite;
 	private float sensorRadius;
 	
-	public Sensor(SensorContactListener contactListener, World world, AssetManagerPlus assets, String name, float scale,
+	public Sensor(LoserContactListener contactListener, World world, AssetManagerPlus assets, String name, float scale,
 			int index1, int index2){
 		
 		BodyDef sensorBodyDef = new BodyDef();

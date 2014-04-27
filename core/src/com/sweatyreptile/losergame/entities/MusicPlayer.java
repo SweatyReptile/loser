@@ -14,21 +14,21 @@ import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.sensors.ContentSensor;
 import com.sweatyreptile.losergame.sensors.ContentSensorListener;
-import com.sweatyreptile.losergame.sensors.SensorContactListener;
+import com.sweatyreptile.losergame.sensors.LoserContactListener;
 
 public class MusicPlayer extends Entity {
 
 	private BodyDef bodyDef;
 	private AssetManagerPlus assets;
 	
-	private SensorContactListener contactListener;
+	private LoserContactListener contactListener;
 	private ContentSensor quackSensor;
 	private Music music;
 	private static final float MAX_DISTANCE = 2;
 	
 	private Player player;
 	
-	public MusicPlayer(SensorContactListener contactListener, World world, BodyDef bodyDef, AssetManagerPlus assets, 
+	public MusicPlayer(LoserContactListener contactListener, World world, BodyDef bodyDef, AssetManagerPlus assets, 
 			EntityFixtureDef fixtureDef, boolean flipped, float screenWidth,
 			float viewportWidth, String musicName, boolean autoPlay, Player player) {
 		super(world, bodyDef, fixtureDef, flipped, screenWidth, viewportWidth, fixtureDef.getName());

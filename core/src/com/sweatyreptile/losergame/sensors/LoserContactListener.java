@@ -9,11 +9,11 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class SensorContactListener implements ContactListener {
+public class LoserContactListener implements ContactListener {
 
 	private Map<String, SensorListener> listeners;
 	
-	public SensorContactListener() {
+	public LoserContactListener() {
 		listeners = new HashMap<String, SensorListener>();
 	}
 	

@@ -28,7 +28,7 @@ import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.fixtures.MetalFixtureDef;
 import com.sweatyreptile.losergame.fixtures.WoodFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
-import com.sweatyreptile.losergame.sensors.SensorContactListener;
+import com.sweatyreptile.losergame.sensors.LoserContactListener;
 
 public class TestLevelScreen implements Screen { 
 	
@@ -51,7 +51,7 @@ public class TestLevelScreen implements Screen {
 	private Map<String, Entity> entities;
 	
 	private EntityFactory entityFactory;
-	private SensorContactListener contactListener;
+	private LoserContactListener contactListener;
 	
 	MusicPlayer radio;
 	
@@ -124,7 +124,7 @@ public class TestLevelScreen implements Screen {
 	
 	private void setupWorld() {
 		
-		contactListener = new SensorContactListener();
+		contactListener = new LoserContactListener();
 		physWorld.setContactListener(contactListener);
 		
 		EntityFactory ef = entityFactory;

@@ -20,7 +20,7 @@ import com.sweatyreptile.losergame.sensors.ContentSensor;
 import com.sweatyreptile.losergame.sensors.CountingSensor;
 import com.sweatyreptile.losergame.sensors.CountingSensorListener;
 import com.sweatyreptile.losergame.sensors.Sensor;
-import com.sweatyreptile.losergame.sensors.SensorContactListener;
+import com.sweatyreptile.losergame.sensors.LoserContactListener;
 
 public class Player extends Entity{
 	
@@ -58,7 +58,7 @@ public class Player extends Entity{
 
 	private ContentSensor grabSensor;
 
-	public Player(World world, BodyDef def, AssetManagerPlus assets, SensorContactListener contactListener) {
+	public Player(World world, BodyDef def, AssetManagerPlus assets, LoserContactListener contactListener) {
 		super(world, def, "duck");
 		
 		DuckFixtureDef fixDef = new DuckFixtureDef(assets);
