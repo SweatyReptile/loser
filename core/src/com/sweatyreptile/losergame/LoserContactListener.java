@@ -13,9 +13,11 @@ import com.sweatyreptile.losergame.sensors.SensorListener;
 public class LoserContactListener implements ContactListener {
 
 	private Map<String, SensorListener> sensorListeners;
+	private Map<String, EntityListener<?>> entityListeners;
 	
 	public LoserContactListener() {
 		sensorListeners = new HashMap<String, SensorListener>();
+		entityListeners = new HashMap<String, EntityListener<?>>();
 	}
 	
 	public void addSensorListener(String nameData, SensorListener listener) {
@@ -48,6 +50,16 @@ public class LoserContactListener implements ContactListener {
 				}
 				else {
 					listener.endContact(sensor, sensee);
+				}
+			}
+			else{
+				Entity entity = (Entity) sensor.getBody().getUserData();
+				EntityListener<Entity> listener = (EntityListener<Entity>) entityListeners.get(entity.getName());
+				if (beginContact) {
+					listener.beginContact(entity, sensee);
+				}
+				else {
+					listener.endContact(entity, sensee);
 				}
 			}
 		}
