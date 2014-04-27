@@ -17,11 +17,7 @@ import com.sweatyreptile.losergame.sensors.ContentSensorListener;
 import com.sweatyreptile.losergame.sensors.SensorContactListener;
 
 public class MusicPlayer extends Entity {
-
-	private BodyDef bodyDef;
-	private AssetManagerPlus assets;
 	
-	private SensorContactListener contactListener;
 	private ContentSensor quackSensor;
 	private Music music;
 	private static final float MAX_DISTANCE = 2;
@@ -33,10 +29,7 @@ public class MusicPlayer extends Entity {
 			float viewportWidth, String musicName, boolean autoPlay, Player player) {
 		super(world, bodyDef, fixtureDef, flipped, screenWidth, viewportWidth);
 		
-		this.contactListener = contactListener;
 		this.player = player;
-		this.bodyDef = bodyDef;
-		this.assets = assets;
 		
 		music = assets.get(musicName);
 		music.setLooping(true);
@@ -67,18 +60,6 @@ public class MusicPlayer extends Entity {
 		quackSensor.setCenterRoundSensor(sprite);
 		quackSensor.weld(world, currentBody);
 		
-		//DEFAULT (TODO)
-		//accessRange = new Sensor(world, bodyDef, assets, "default_sensor", .5f, "music_player", 0, 0);
-		//accessRange.setCenterRoundSensor(sprite);
-		//accessRange.weld(world, currentBody);
-		//END DEFAULT
-		
-	}
-	
-	public void setRange(String name, float scale, Object userData, int index1, int index2){
-		//accessRange = new Sensor(world, bodyDef, assets, name, scale, userData, index1, index2);
-		//accessRange.setCenterRoundSensor(sprite);
-		//accessRange.weld(world, currentBody);
 	}
 	
 	private void toggleMusic(){
