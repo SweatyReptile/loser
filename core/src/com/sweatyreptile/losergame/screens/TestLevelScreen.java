@@ -117,7 +117,7 @@ public class TestLevelScreen implements Screen {
 		physWorld = new World(new Vector2(0f, -9.8f), true);
 		physRenderer = new Box2DDebugRenderer();
 		
-		entityFactory = new EntityFactory(assets, entities, physWorld, viewportWidth, width);
+		entityFactory = new EntityFactory(assets, entities, physWorld, viewportWidth, 1280);
 		background = assets.get("background.png");
 		setupWorld();
 	}
