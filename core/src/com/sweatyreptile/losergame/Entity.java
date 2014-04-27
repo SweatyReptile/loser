@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
@@ -28,18 +29,23 @@ public class Entity {
 	
 	protected String name;
 	
-	public Entity(World world, BodyDef bodyDef, String name){
+	private ContactListener contactListener;
+	
+	public Entity(World world, ContactListener contactListener, BodyDef bodyDef, String name){
 		this.sprite = new Sprite();
 		currentBody = world.createBody(bodyDef);
 		this.world = world;
 		this.name = name;
+		this.contactListener = contactListener;
 	}
 	
-	public Entity(World world, BodyDef bodyDef, 
+	public Entity(World world, ContactListener contactListener, BodyDef bodyDef, 
 			EntityFixtureDef fixtureDef, float scale, 
 			boolean flipped, String name) {
 		
 		this.name = name;
+		this.contactListener = contactListener;
+		
 		currentBody = world.createBody(bodyDef);
 		Texture spriteTexture = fixtureDef.getTexture();
 		
@@ -67,18 +73,18 @@ public class Entity {
 		sprite.setOrigin(spriteOriginX, spriteOriginY);
 	}
 	
-	public Entity(World world, BodyDef bodyDef, 
+	public Entity(World world, ContactListener contactListener, BodyDef bodyDef, 
 			EntityFixtureDef fixtureDef, boolean flipped,
 			float screenWidth, float viewportWidth, String name) {
-		this(world, bodyDef, fixtureDef, 
+		this(world, contactListener, bodyDef, fixtureDef, 
 				fixtureDef.getTexture().getWidth() * viewportWidth / screenWidth,
 				flipped, name);
 	}
 	
-	public Entity(World world, BodyDef bodyDef, 
+	public Entity(World world, BodyDef bodyDef, ContactListener contactListener,
 			EntityFixtureDef fixtureDef, AssetManagerPlus assets, 
 			String bodyName, float scale, String name) {
-		this(world, bodyDef, fixtureDef, scale, false, name);
+		this(world, contactListener, bodyDef, fixtureDef, scale, false, name);
 	} 
 	
 	public void render(SpriteBatch renderer){
