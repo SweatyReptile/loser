@@ -1,4 +1,4 @@
-package com.sweatyreptile.losergame.sensors;
+package com.sweatyreptile.losergame;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.sweatyreptile.losergame.sensors.SensorListener;
 
 public class LoserContactListener implements ContactListener {
 

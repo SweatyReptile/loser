@@ -20,7 +20,6 @@ import com.sweatyreptile.losergame.sensors.ContentSensor;
 import com.sweatyreptile.losergame.sensors.CountingSensor;
 import com.sweatyreptile.losergame.sensors.CountingSensorListener;
 import com.sweatyreptile.losergame.sensors.Sensor;
-import com.sweatyreptile.losergame.sensors.LoserContactListener;
 
 public class Player extends Entity{
 	

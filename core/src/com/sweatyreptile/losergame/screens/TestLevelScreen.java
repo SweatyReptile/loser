@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
+import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.Player;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.MusicPlayer;
@@ -28,7 +29,6 @@ import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.fixtures.MetalFixtureDef;
 import com.sweatyreptile.losergame.fixtures.WoodFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
-import com.sweatyreptile.losergame.sensors.LoserContactListener;
 
 public class TestLevelScreen implements Screen { 
 	

@@ -9,12 +9,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
+import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.Player;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.sensors.ContentSensor;
 import com.sweatyreptile.losergame.sensors.ContentSensorListener;
-import com.sweatyreptile.losergame.sensors.LoserContactListener;
 
 public class MusicPlayer extends Entity {
 
