@@ -29,9 +29,9 @@ public class Entity {
 	
 	protected String name;
 	
-	private ContactListener contactListener;
+	private LoserContactListener contactListener;
 	
-	public Entity(World world, ContactListener contactListener, BodyDef bodyDef, String name){
+	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, String name){
 		this.sprite = new Sprite();
 		currentBody = world.createBody(bodyDef);
 		this.world = world;
@@ -39,7 +39,7 @@ public class Entity {
 		this.contactListener = contactListener;
 	}
 	
-	public Entity(World world, ContactListener contactListener, BodyDef bodyDef, 
+	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
 			EntityFixtureDef fixtureDef, float scale, 
 			boolean flipped, String name) {
 		
@@ -73,7 +73,7 @@ public class Entity {
 		sprite.setOrigin(spriteOriginX, spriteOriginY);
 	}
 	
-	public Entity(World world, ContactListener contactListener, BodyDef bodyDef, 
+	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
 			EntityFixtureDef fixtureDef, boolean flipped,
 			float screenWidth, float viewportWidth, String name) {
 		this(world, contactListener, bodyDef, fixtureDef, 
@@ -81,7 +81,7 @@ public class Entity {
 				flipped, name);
 	}
 	
-	public Entity(World world, BodyDef bodyDef, ContactListener contactListener,
+	public Entity(World world, BodyDef bodyDef, LoserContactListener contactListener,
 			EntityFixtureDef fixtureDef, AssetManagerPlus assets, 
 			String bodyName, float scale, String name) {
 		this(world, contactListener, bodyDef, fixtureDef, scale, false, name);
@@ -116,4 +116,5 @@ public class Entity {
 	public String getName() {
 		return name;
 	}
+	
 }
