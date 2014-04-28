@@ -21,7 +21,7 @@ import com.sweatyreptile.losergame.sensors.CountingSensor;
 import com.sweatyreptile.losergame.sensors.CountingSensorListener;
 import com.sweatyreptile.losergame.sensors.Sensor;
 
-public class Player extends Entity{
+public class Player extends Entity<Player>{
 	
 	private enum Direction{
 		LEFT, RIGHT, NONE

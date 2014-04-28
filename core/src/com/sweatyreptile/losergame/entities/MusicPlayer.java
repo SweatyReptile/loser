@@ -16,7 +16,7 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.sensors.ContentSensor;
 import com.sweatyreptile.losergame.sensors.ContentSensorListener;
 
-public class MusicPlayer extends Entity {
+public class MusicPlayer extends Entity<MusicPlayer> {
 
 	private BodyDef bodyDef;
 	private AssetManagerPlus assets;

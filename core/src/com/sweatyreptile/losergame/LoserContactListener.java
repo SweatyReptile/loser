@@ -53,8 +53,8 @@ public class LoserContactListener implements ContactListener {
 				}
 			}
 			else{
-				Entity entity = (Entity) sensor.getBody().getUserData();
-				EntityListener<Entity> listener = (EntityListener<Entity>) entityListeners.get(entity.getName());
+				Entity<?> entity = (Entity<?>) sensor.getBody().getUserData();
+				EntityListener<Entity<?>> listener = (EntityListener<Entity<?>>) entityListeners.get(entity.getName());
 				if (beginContact) {
 					listener.beginContact(entity, sensee);
 				}
