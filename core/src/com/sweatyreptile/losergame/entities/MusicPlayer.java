@@ -7,6 +7,7 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.LoserContactListener;
@@ -23,6 +24,8 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 	private static final float MAX_DISTANCE = 2;
 	
 	private Player player;
+	private AssetManagerPlus assets;
+	private LoserContactListener contactListener;
 	
 	public MusicPlayer(LoserContactListener contactListener, World world, BodyDef bodyDef, AssetManagerPlus assets, 
 			EntityFixtureDef fixtureDef, boolean flipped, float screenWidth,
@@ -30,48 +33,25 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 		super(world, contactListener, bodyDef, fixtureDef, flipped, screenWidth, viewportWidth, fixtureDef.getName());
 		
 		this.player = player;
+		this.assets = assets;
 		
 		music = assets.get(musicName);
 		music.setLooping(true);
 		if (autoPlay) music.play();
 		
-		final Player player2 = player; 
-		ContentSensorListener quackSensorListener = new ContentSensorListener() {
-
-			@Override
-			public void bodyAdded(Stack<Body> contents) {
-				Gdx.app.log("Radio", "Added. Size: " + contents.size());
-				for (Body quackBody : player2.getQuackBodies()) {
-					if (contents.peek().equals(quackBody)) {
-						toggleMusic();
-						break;
-					}
-				}
-			}
-
-			@Override
-			public void bodyRemoved(Stack<Body> contents) {
-				Gdx.app.log("Radio", "Removed. Size: " + contents.size());
-				
-			}
-			
-		};
+		ContentSensorListener quackSensorListener = new MusicPlayerContentSensorListener();
 		quackSensor = new ContentSensor(contactListener, quackSensorListener, world, assets, "default_sensor", .5f, 0, 0);
 		quackSensor.setCenterRoundSensor(sprite);
 		quackSensor.weld(world, currentBody);
 		
-		//DEFAULT (TODO)
-		//accessRange = new Sensor(world, bodyDef, assets, "default_sensor", .5f, "music_player", 0, 0);
-		//accessRange.setCenterRoundSensor(sprite);
-		//accessRange.weld(world, currentBody);
-		//END DEFAULT
-		
 	}
 	
-	public void setRange(String name, float scale, Object userData, int index1, int index2){
-		//accessRange = new Sensor(world, bodyDef, assets, name, scale, userData, index1, index2);
-		//accessRange.setCenterRoundSensor(sprite);
-		//accessRange.weld(world, currentBody);
+	public void setRange(String name, float scale, Object userData, int index1, int index2, boolean setCenter){
+		quackSensor.destroy(world);
+		quackSensor = new ContentSensor(contactListener, new MusicPlayerContentSensorListener(),
+				world, assets, name, scale, index1, index2);
+		if (setCenter) quackSensor.setCenterRoundSensor(sprite);
+		quackSensor.weld(world, currentBody);
 	}
 	
 	private void toggleMusic(){
@@ -99,6 +79,23 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 		music.setVolume(volume);
 	}
 	
-	
+	private class MusicPlayerContentSensorListener implements ContentSensorListener{
+		@Override
+		public void bodyAdded(Stack<Body> contents) {
+			Gdx.app.log("Radio", "Added. Size: " + contents.size());
+			for (Body quackBody : player.getQuackBodies()) {
+				if (contents.peek().equals(quackBody)) {
+					toggleMusic();
+					break;
+				}
+			}
+		}
+
+		@Override
+		public void bodyRemoved(Stack<Body> contents) {
+			Gdx.app.log("Radio", "Removed. Size: " + contents.size());
+			
+		}
+	}
 
 }
