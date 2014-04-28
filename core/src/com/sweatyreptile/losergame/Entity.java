@@ -8,11 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
-public class Entity {
+public class Entity <T extends Entity<?>>{
 
 	protected World world;
 	protected Sprite sprite;
@@ -26,15 +27,25 @@ public class Entity {
 	protected float spriteOriginX;
 	protected float spriteOriginY;
 	
-	public Entity(World world, BodyDef bodyDef, String name){
+	protected String name;
+	
+	private LoserContactListener contactListener;
+	
+	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, String name){
 		this.sprite = new Sprite();
 		currentBody = world.createBody(bodyDef);
 		this.world = world;
+		this.name = name;
+		this.contactListener = contactListener;
+		currentBody.setUserData(this);
 	}
 	
-	public Entity(World world, BodyDef bodyDef, 
+	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
 			EntityFixtureDef fixtureDef, float scale, 
-			boolean flipped) {
+			boolean flipped, String name) {
+		
+		this.name = name;
+		this.contactListener = contactListener;
 		
 		currentBody = world.createBody(bodyDef);
 		Texture spriteTexture = fixtureDef.getTexture();
@@ -61,20 +72,22 @@ public class Entity {
 		spriteOriginY = (spriteHeight - bodyHeight) / 2;
 		
 		sprite.setOrigin(spriteOriginX, spriteOriginY);
+		
+		currentBody.setUserData(this);
 	}
 	
-	public Entity(World world, BodyDef bodyDef, 
+	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
 			EntityFixtureDef fixtureDef, boolean flipped,
-			float screenWidth, float viewportWidth) {
-		this(world, bodyDef, fixtureDef, 
+			float screenWidth, float viewportWidth, String name) {
+		this(world, contactListener, bodyDef, fixtureDef, 
 				fixtureDef.getTexture().getWidth() * viewportWidth / screenWidth,
-				flipped);
+				flipped, name);
 	}
 	
-	public Entity(World world, BodyDef bodyDef, 
+	public Entity(World world, BodyDef bodyDef, LoserContactListener contactListener,
 			EntityFixtureDef fixtureDef, AssetManagerPlus assets, 
 			String bodyName, float scale, String name) {
-		this(world, bodyDef, fixtureDef, scale, false);
+		this(world, contactListener, bodyDef, fixtureDef, scale, false, name);
 	} 
 	
 	public void render(SpriteBatch renderer){
@@ -102,4 +115,13 @@ public class Entity {
 	public void setY(float y){
 		sprite.setY(y);
 	}
+
+	public String getName() {
+		return name;
+	}
+	
+	public void addListener(EntityListener<T> listener){
+		contactListener.addEntityListener(name, listener);
+	}
+	
 }

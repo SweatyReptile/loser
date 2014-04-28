@@ -1,4 +1,4 @@
-package com.sweatyreptile.losergame.sensors;
+package com.sweatyreptile.losergame;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,17 +8,24 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.sweatyreptile.losergame.sensors.SensorListener;
 
-public class SensorContactListener implements ContactListener {
+public class LoserContactListener implements ContactListener {
 
-	private Map<String, SensorListener> listeners;
+	private Map<String, SensorListener> sensorListeners;
+	private Map<String, EntityListener<?>> entityListeners;
 	
-	public SensorContactListener() {
-		listeners = new HashMap<String, SensorListener>();
+	public LoserContactListener() {
+		sensorListeners = new HashMap<String, SensorListener>();
+		entityListeners = new HashMap<String, EntityListener<?>>();
 	}
 	
-	public void addListener(String nameData, SensorListener listener) {
-		listeners.put(nameData, listener);
+	public void addSensorListener(String nameData, SensorListener listener) {
+		sensorListeners.put(nameData, listener);
+	}
+	
+	public void addEntityListener(String name, EntityListener<?> listener) {
+		entityListeners.put(name, listener);
 	}
 	
 	@Override
@@ -40,13 +47,25 @@ public class SensorContactListener implements ContactListener {
 	private void processFixture(Fixture sensor, Fixture sensee, boolean beginContact) {
 		if (userDataExists(sensor)) {
 			if (sensor.isSensor() && !sensee.isSensor()) {
-				SensorListener listener = listeners.get(sensor.getBody().getUserData());
+				SensorListener listener = sensorListeners.get(sensor.getBody().getUserData());
 				if (listener == null) throw new IllegalArgumentException("Listener named " + sensor.getUserData() + " is not in SensorContactListener");
 				if (beginContact) {
 					listener.beginContact(sensor, sensee);
 				}
 				else {
 					listener.endContact(sensor, sensee);
+				}
+			}
+			else if (!sensor.isSensor()){
+				Entity<?> entity = (Entity<?>) sensor.getBody().getUserData();
+				EntityListener<Entity<?>> listener = (EntityListener<Entity<?>>) entityListeners.get(entity.getName());
+				if (listener != null){
+					if (beginContact) {
+						listener.beginContact(entity, sensee);
+					}
+					else {
+						listener.endContact(entity, sensee);
+					}
 				}
 			}
 		}
