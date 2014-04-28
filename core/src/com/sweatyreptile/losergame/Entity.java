@@ -117,4 +117,8 @@ public class Entity <T extends Entity<?>>{
 		return name;
 	}
 	
+	public void addListener(EntityListener<T> listener){
+		contactListener.addEntityListener(name, listener);
+	}
+	
 }

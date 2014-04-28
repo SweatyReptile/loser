@@ -24,6 +24,10 @@ public class LoserContactListener implements ContactListener {
 		sensorListeners.put(nameData, listener);
 	}
 	
+	public void addEntityListener(String name, EntityListener<?> listener) {
+		entityListeners.put(name, listener);
+	}
+	
 	@Override
 	public void beginContact(Contact contact) {
 		Fixture fixtureA = contact.getFixtureA();
@@ -52,7 +56,7 @@ public class LoserContactListener implements ContactListener {
 					listener.endContact(sensor, sensee);
 				}
 			}
-			else{
+			else if (!sensor.isSensor()){
 				Entity<?> entity = (Entity<?>) sensor.getBody().getUserData();
 				EntityListener<Entity<?>> listener = (EntityListener<Entity<?>>) entityListeners.get(entity.getName());
 				if (beginContact) {
