@@ -32,6 +32,8 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class TestLevelScreen implements Screen { 
 	
+	private static final boolean DRAW_PHYSICS = false;
+	
 	private int width;
 	private int height;
 	private float viewportWidth;
@@ -87,7 +89,9 @@ public class TestLevelScreen implements Screen {
 
 		spriteRenderer.end();
 		
-		physRenderer.render(physWorld, camera.combined);
+		if (DRAW_PHYSICS){
+			physRenderer.render(physWorld, camera.combined);
+		}
 	}
 	
 	public void update(float delta) {
