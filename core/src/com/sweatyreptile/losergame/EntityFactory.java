@@ -34,7 +34,7 @@ public class EntityFactory {
 		bodyDef.position.set(xPosition, yPosition);
 		bodyDef.type = bodyType;
 		
-		Entity<?> entity = new Entity(world, contactListener, bodyDef, entityFixtureDef, flip, screenWidth, viewportWidth, name){};
+		Entity<?> entity = new Entity(world, contactListener, bodyDef, entityFixtureDef, flip, screenWidth, viewportWidth, name);
 		entities.put(name, entity);
 	}
 
