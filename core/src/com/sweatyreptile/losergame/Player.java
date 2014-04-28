@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
+import com.badlogic.gdx.utils.Timer;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckQuackFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckTopFixtureDef;
@@ -25,6 +26,8 @@ import com.sweatyreptile.losergame.sensors.Sensor;
 
 public class Player extends Entity<Player>{
 	
+	private static final float DUCK_BODY_SIZE = .88f * .2f;
+
 	private enum Direction{
 		LEFT, RIGHT, NONE
 	}
@@ -76,6 +79,8 @@ public class Player extends Entity<Player>{
 		leftQuackingDuckingBody = world.createBody(def);
 		rightQuackingDuckingBody = world.createBody(def);
 		
+		setSpriteOrigin(fixDef.getTexture(), .2f, DUCK_BODY_SIZE);
+		
 		leftBody.setUserData(this);
 		rightBody.setUserData(this);
 		leftDuckingBody.setUserData(this);
@@ -85,14 +90,14 @@ public class Player extends Entity<Player>{
 		leftQuackingDuckingBody.setUserData(this);
 		rightQuackingDuckingBody.setUserData(this);
 		
-		fixDef.attach(leftBody, .2f, false);
-		fixDef.attach(rightBody, .2f, true);
-		topFixDef.attach(leftDuckingBody, .2f, false);
-		topFixDef.attach(rightDuckingBody, .2f, true);
-		quackFixDef.attach(leftQuackingBody, .2f, false);
-		quackFixDef.attach(rightQuackingBody, .2f, true);
-		quackTopFixDef.attach(leftQuackingDuckingBody, .2f, false);
-		quackTopFixDef.attach(rightQuackingDuckingBody, .2f, true);
+		fixDef.attach(leftBody, DUCK_BODY_SIZE, false);
+		fixDef.attach(rightBody, DUCK_BODY_SIZE, true);
+		topFixDef.attach(leftDuckingBody, DUCK_BODY_SIZE, false);
+		topFixDef.attach(rightDuckingBody, DUCK_BODY_SIZE, true);
+		quackFixDef.attach(leftQuackingBody, DUCK_BODY_SIZE, false);
+		quackFixDef.attach(rightQuackingBody, DUCK_BODY_SIZE, true);
+		quackTopFixDef.attach(leftQuackingDuckingBody, DUCK_BODY_SIZE, false);
+		quackTopFixDef.attach(rightQuackingDuckingBody, DUCK_BODY_SIZE, true);
 		
 		currentBody = leftBody;
 		rightBody.setActive(false);
@@ -269,6 +274,12 @@ public class Player extends Entity<Player>{
 		}
 		quacking = true;
 		quackSound.play();
+		Timer.schedule(new Timer.Task() {
+			@Override
+			public void run() {
+				stopQuacking();
+			}
+		}, 0.214f); // Length of quacking sound effect in seconds
 	}
 	
 	public void stopQuacking() {

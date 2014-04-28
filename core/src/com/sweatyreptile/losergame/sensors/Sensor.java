@@ -60,6 +60,16 @@ public abstract class Sensor implements SensorListener{
 		sensorWeld = (WeldJoint) world.createJoint(weld);
 	}
 	
+	public void destroy(World world) {
+		unweld(world);
+		world.destroyBody(sensorBody);
+	}
+	
+	public void unweld(World world) {
+		world.destroyJoint(sensorWeld);
+		sensorWeld = null;
+	}
+	
 	private float extractHeight(int index1, int index2){
 		Vector2 vertex1 = new Vector2();
 		Vector2 vertex2 = new Vector2();

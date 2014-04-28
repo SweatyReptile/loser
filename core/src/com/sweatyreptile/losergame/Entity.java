@@ -56,23 +56,16 @@ public class Entity <T extends Entity<?>>{
 		float spriteScale = scale;
 		float bodyScale = 0f;
 		if (bodyDef.type == BodyType.DynamicBody){
-			bodyScale = 0.88f * scale;
+			bodyScale = 0.84f * scale;
 		}
 		else {
 			bodyScale = scale;
 		}
 		fixtureDef.attach(currentBody, bodyScale, flipped);
 		
-		bodyWidth = 1f * bodyScale;
-		bodyHeight = (float) spriteTexture.getHeight() * bodyScale / spriteTexture.getWidth();
-		spriteWidth = 1f * spriteScale;
-		spriteHeight = (float) spriteTexture.getHeight() * spriteScale / spriteTexture.getWidth();
-		
-		sprite = new Sprite(spriteTexture);
+		sprite = new Sprite(spriteTexture);		
+		setSpriteOrigin(spriteTexture, spriteScale, bodyScale);
 		sprite.setSize(spriteWidth, spriteHeight);
-		
-		spriteOriginX = (spriteWidth - bodyWidth) / 2;
-		spriteOriginY = (spriteHeight - bodyHeight) / 2;
 		
 		sprite.setOrigin(spriteOriginX, spriteOriginY);
 		
@@ -92,6 +85,16 @@ public class Entity <T extends Entity<?>>{
 			String bodyName, float scale, String name) {
 		this(world, contactListener, bodyDef, fixtureDef, scale, false, name);
 	} 
+	
+	protected void setSpriteOrigin(Texture texture, float spriteScale,
+			float bodyScale) {
+		spriteWidth = 1f * spriteScale;
+		spriteHeight = (float)texture.getHeight() * spriteScale / texture.getWidth();
+		bodyWidth = 1f * bodyScale;
+		bodyHeight = (float) texture.getHeight() * bodyScale / texture.getWidth();
+		spriteOriginX = (spriteWidth - bodyWidth) / 2;
+		spriteOriginY = (spriteHeight - bodyHeight) / 2;
+	}
 	
 	public void render(SpriteBatch renderer){
 		sprite.draw(renderer);
