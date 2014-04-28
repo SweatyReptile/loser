@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
-public class Entity {
+public abstract class Entity <T extends Entity<?>>{
 
 	protected World world;
 	protected Sprite sprite;
