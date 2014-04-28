@@ -26,6 +26,8 @@ import com.sweatyreptile.losergame.sensors.Sensor;
 
 public class Player extends Entity<Player>{
 	
+	private static final float DUCK_BODY_SIZE = .88f * .2f;
+
 	private enum Direction{
 		LEFT, RIGHT, NONE
 	}
@@ -77,6 +79,8 @@ public class Player extends Entity<Player>{
 		leftQuackingDuckingBody = world.createBody(def);
 		rightQuackingDuckingBody = world.createBody(def);
 		
+		setSpriteOrigin(fixDef.getTexture(), .2f, DUCK_BODY_SIZE);
+		
 		leftBody.setUserData(this);
 		rightBody.setUserData(this);
 		leftDuckingBody.setUserData(this);
@@ -86,14 +90,14 @@ public class Player extends Entity<Player>{
 		leftQuackingDuckingBody.setUserData(this);
 		rightQuackingDuckingBody.setUserData(this);
 		
-		fixDef.attach(leftBody, .2f, false);
-		fixDef.attach(rightBody, .2f, true);
-		topFixDef.attach(leftDuckingBody, .2f, false);
-		topFixDef.attach(rightDuckingBody, .2f, true);
-		quackFixDef.attach(leftQuackingBody, .2f, false);
-		quackFixDef.attach(rightQuackingBody, .2f, true);
-		quackTopFixDef.attach(leftQuackingDuckingBody, .2f, false);
-		quackTopFixDef.attach(rightQuackingDuckingBody, .2f, true);
+		fixDef.attach(leftBody, DUCK_BODY_SIZE, false);
+		fixDef.attach(rightBody, DUCK_BODY_SIZE, true);
+		topFixDef.attach(leftDuckingBody, DUCK_BODY_SIZE, false);
+		topFixDef.attach(rightDuckingBody, DUCK_BODY_SIZE, true);
+		quackFixDef.attach(leftQuackingBody, DUCK_BODY_SIZE, false);
+		quackFixDef.attach(rightQuackingBody, DUCK_BODY_SIZE, true);
+		quackTopFixDef.attach(leftQuackingDuckingBody, DUCK_BODY_SIZE, false);
+		quackTopFixDef.attach(rightQuackingDuckingBody, DUCK_BODY_SIZE, true);
 		
 		currentBody = leftBody;
 		rightBody.setActive(false);
