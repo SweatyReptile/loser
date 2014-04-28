@@ -87,7 +87,7 @@ public class TestLevelScreen implements Screen {
 
 		spriteRenderer.end();
 		
-		//physRenderer.render(physWorld, camera.combined);
+		physRenderer.render(physWorld, camera.combined);
 	}
 	
 	public void update(float delta) {
