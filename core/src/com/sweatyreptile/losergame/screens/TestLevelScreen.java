@@ -121,7 +121,8 @@ public class TestLevelScreen implements Screen {
 		physWorld = new World(new Vector2(0f, -9.8f), true);
 		physRenderer = new Box2DDebugRenderer();
 		
-		entityFactory = new EntityFactory(assets, entities, physWorld, contactListener, viewportWidth, 1280);
+		entityFactory = new EntityFactory(assets, entities,
+				physWorld, contactListener, viewportWidth, Entity.DEFAULT_SCREEN_WIDTH);
 		background = assets.get("background.png");
 		setupWorld();
 	}
@@ -155,7 +156,8 @@ public class TestLevelScreen implements Screen {
 		radioBodyDef.type = BodyType.DynamicBody;
 		radioBodyDef.position.set(new Vector2(1.4f, 1.1f));
 		radio = new MusicPlayer(contactListener, physWorld, radioBodyDef, assets, 
-				new MetalFixtureDef(assets, "radio"), false, width, viewportWidth, "baby_come_back.ogg", false, player);
+				new MetalFixtureDef(assets, "radio"), false, Entity.DEFAULT_SCREEN_WIDTH,
+				viewportWidth, "baby_come_back.ogg", false, player);
 		entities.put("radio", radio);
 		
 		BodyDef groundDef = new BodyDef();

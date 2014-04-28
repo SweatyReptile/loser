@@ -14,6 +14,10 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class Entity <T extends Entity<?>>{
 
+	// Default size of screen (in pixels) relative to the size of 
+	// the image used as the sprite for the entity (in pixels)
+	public static final float DEFAULT_SCREEN_WIDTH = 1280;
+	
 	protected World world;
 	protected Sprite sprite;
 	protected Body currentBody;
