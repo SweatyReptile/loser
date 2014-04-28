@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
+import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
@@ -23,7 +24,7 @@ public abstract class Sensor implements SensorListener{
 	private Sprite currentSprite;
 	private float sensorRadius;
 	
-	public Sensor(SensorContactListener contactListener, World world, AssetManagerPlus assets, String name, float scale,
+	public Sensor(LoserContactListener contactListener, World world, AssetManagerPlus assets, String name, float scale,
 			int index1, int index2){
 		
 		BodyDef sensorBodyDef = new BodyDef();
@@ -35,7 +36,7 @@ public abstract class Sensor implements SensorListener{
 		sensorDef.attach(sensorBody, scale, false);
 		sensorBody.setUserData(name);
 		sensorHeight = extractHeight(index1, index2);
-		contactListener.addListener(name, this);
+		contactListener.addSensorListener(name, this);
 	}
 	
 	public void weld(World world, Body newBody) {

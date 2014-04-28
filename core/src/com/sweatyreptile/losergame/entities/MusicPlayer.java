@@ -9,34 +9,27 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
+import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.Player;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.sensors.ContentSensor;
 import com.sweatyreptile.losergame.sensors.ContentSensorListener;
-import com.sweatyreptile.losergame.sensors.SensorContactListener;
 
-public class MusicPlayer extends Entity {
+public class MusicPlayer extends Entity<MusicPlayer> {
 
-	private BodyDef bodyDef;
-	private AssetManagerPlus assets;
-	
-	private SensorContactListener contactListener;
 	private ContentSensor quackSensor;
 	private Music music;
 	private static final float MAX_DISTANCE = 2;
 	
 	private Player player;
 	
-	public MusicPlayer(SensorContactListener contactListener, World world, BodyDef bodyDef, AssetManagerPlus assets, 
+	public MusicPlayer(LoserContactListener contactListener, World world, BodyDef bodyDef, AssetManagerPlus assets, 
 			EntityFixtureDef fixtureDef, boolean flipped, float screenWidth,
 			float viewportWidth, String musicName, boolean autoPlay, Player player) {
-		super(world, bodyDef, fixtureDef, flipped, screenWidth, viewportWidth, fixtureDef.getName());
+		super(world, contactListener, bodyDef, fixtureDef, flipped, screenWidth, viewportWidth, fixtureDef.getName());
 		
-		this.contactListener = contactListener;
 		this.player = player;
-		this.bodyDef = bodyDef;
-		this.assets = assets;
 		
 		music = assets.get(musicName);
 		music.setLooping(true);
@@ -47,7 +40,7 @@ public class MusicPlayer extends Entity {
 
 			@Override
 			public void bodyAdded(Stack<Body> contents) {
-				Gdx.app.log("Yo yo", "sup i added a body, yo " + contents.size());
+				Gdx.app.log("Radio", "Added. Size: " + contents.size());
 				for (Body quackBody : player2.getQuackBodies()) {
 					if (contents.peek().equals(quackBody)) {
 						toggleMusic();
@@ -58,7 +51,7 @@ public class MusicPlayer extends Entity {
 
 			@Override
 			public void bodyRemoved(Stack<Body> contents) {
-				Gdx.app.log("Yo yo", "sup i removed a body, yo " + contents.size());
+				Gdx.app.log("Radio", "Removed. Size: " + contents.size());
 				
 			}
 			

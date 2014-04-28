@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
+import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.Player;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.MusicPlayer;
@@ -28,9 +29,10 @@ import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.fixtures.MetalFixtureDef;
 import com.sweatyreptile.losergame.fixtures.WoodFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
-import com.sweatyreptile.losergame.sensors.SensorContactListener;
 
 public class TestLevelScreen implements Screen { 
+	
+	private static final boolean DRAW_PHYSICS = false;
 	
 	private int width;
 	private int height;
@@ -48,10 +50,10 @@ public class TestLevelScreen implements Screen {
 	private Player player;
 	private PlayerInputProcessor playerInputProcessor;
 	
-	private Map<String, Entity> entities;
+	private Map<String, Entity<?>> entities;
 	
 	private EntityFactory entityFactory;
-	private SensorContactListener contactListener;
+	private LoserContactListener contactListener;
 	
 	MusicPlayer radio;
 	
@@ -64,7 +66,7 @@ public class TestLevelScreen implements Screen {
 		this.viewportWidth = viewportWidth;
 		this.viewportHeight = viewportHeight;
 		this.playerInputProcessor = playerInputProcessor;
-		this.entities = new HashMap<String, Entity>();
+		this.entities = new HashMap<String, Entity<?>>();
 	}
 	
 	@Override
@@ -79,7 +81,7 @@ public class TestLevelScreen implements Screen {
 		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight);
 		spriteRenderer.enableBlending();
 		
-		for (Entity entity : entities.values()){
+		for (Entity<?> entity : entities.values()){
 			entity.render(spriteRenderer);
 		}
 		
@@ -87,14 +89,16 @@ public class TestLevelScreen implements Screen {
 
 		spriteRenderer.end();
 		
-		//physRenderer.render(physWorld, camera.combined);
+		if (DRAW_PHYSICS){
+			physRenderer.render(physWorld, camera.combined);
+		}
 	}
 	
 	public void update(float delta) {
 		physWorld.step(1/60f, 6, 2); // TODO: Change step
 		
 		player.update(delta);
-		for (Entity entity : entities.values()){
+		for (Entity<?> entity : entities.values()){
 			entity.update(delta);
 		}
 	}
@@ -117,14 +121,14 @@ public class TestLevelScreen implements Screen {
 		physWorld = new World(new Vector2(0f, -9.8f), true);
 		physRenderer = new Box2DDebugRenderer();
 		
-		entityFactory = new EntityFactory(assets, entities, physWorld, viewportWidth, 1280);
+		entityFactory = new EntityFactory(assets, entities, physWorld, contactListener, viewportWidth, 1280);
 		background = assets.get("background.png");
 		setupWorld();
 	}
 	
 	private void setupWorld() {
 		
-		contactListener = new SensorContactListener();
+		contactListener = new LoserContactListener();
 		physWorld.setContactListener(contactListener);
 		
 		EntityFactory ef = entityFactory;
@@ -135,7 +139,7 @@ public class TestLevelScreen implements Screen {
 		duckDef.position.set(2f, viewportHeight/2);
 		duckDef.fixedRotation = true;
 		
-		player = new Player(physWorld, duckDef, assets, contactListener);
+		player = new Player(physWorld, contactListener, duckDef, assets);
 		
 		ef.create("dead_duck", BodyType.DynamicBody, 1.4f, .5f, new DuckFixtureDef(assets), false);
 		ef.create("wash_machine", BodyType.StaticBody, .5f, .1f, new EntityFixtureDef(assets, "wash_machine"), false);

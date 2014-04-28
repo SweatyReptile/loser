@@ -2,6 +2,7 @@ package com.sweatyreptile.losergame.sensors;
 
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class CountingSensor extends Sensor {
@@ -11,7 +12,7 @@ public class CountingSensor extends Sensor {
 	private boolean dirtyAdded;
 	private boolean dirtyRemoved;
 	
-	public CountingSensor(SensorContactListener contactListener, CountingSensorListener listener, World world, AssetManagerPlus assets, 
+	public CountingSensor(LoserContactListener contactListener, CountingSensorListener listener, World world, AssetManagerPlus assets, 
 			String name, float scale, int index1, int index2) {
 		super(contactListener, world, assets, name, scale, index1, index2);
 		this.listener = listener;

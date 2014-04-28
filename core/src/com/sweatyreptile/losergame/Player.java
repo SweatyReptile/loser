@@ -3,12 +3,14 @@ package com.sweatyreptile.losergame;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
@@ -20,9 +22,8 @@ import com.sweatyreptile.losergame.sensors.ContentSensor;
 import com.sweatyreptile.losergame.sensors.CountingSensor;
 import com.sweatyreptile.losergame.sensors.CountingSensorListener;
 import com.sweatyreptile.losergame.sensors.Sensor;
-import com.sweatyreptile.losergame.sensors.SensorContactListener;
 
-public class Player extends Entity{
+public class Player extends Entity<Player>{
 	
 	private enum Direction{
 		LEFT, RIGHT, NONE
@@ -58,8 +59,8 @@ public class Player extends Entity{
 
 	private ContentSensor grabSensor;
 
-	public Player(World world, BodyDef def, AssetManagerPlus assets, SensorContactListener contactListener) {
-		super(world, def, "duck");
+	public Player(World world, LoserContactListener contactListener, BodyDef def, AssetManagerPlus assets) {
+		super(world, contactListener, def, "duck");
 		
 		DuckFixtureDef fixDef = new DuckFixtureDef(assets);
 		DuckTopFixtureDef topFixDef = new DuckTopFixtureDef(assets);
@@ -74,6 +75,15 @@ public class Player extends Entity{
 		rightQuackingBody = world.createBody(def);
 		leftQuackingDuckingBody = world.createBody(def);
 		rightQuackingDuckingBody = world.createBody(def);
+		
+		leftBody.setUserData(this);
+		rightBody.setUserData(this);
+		leftDuckingBody.setUserData(this);
+		rightDuckingBody.setUserData(this);
+		leftQuackingBody.setUserData(this);
+		rightQuackingBody.setUserData(this);
+		leftQuackingDuckingBody.setUserData(this);
+		rightQuackingDuckingBody.setUserData(this);
 		
 		fixDef.attach(leftBody, .2f, false);
 		fixDef.attach(rightBody, .2f, true);
@@ -104,6 +114,22 @@ public class Player extends Entity{
 		quackingDuckingSprite.setSize(.2f, .16f);
 		
 		sprite = standingSprite;
+		
+		addListener(new EntityListener<Player>(){
+
+			@Override
+			public void beginContact(Player entity, Fixture sensee) {
+				Gdx.app.log("Player", "Touched something!");
+				
+			}
+
+			@Override
+			public void endContact(Player entity, Fixture sensee) {
+				Gdx.app.log("Player", "Stopped touching something!");
+				
+			}
+			
+		});
 		
 		CountingSensorListener flightSensorListener = new CountingSensorListener() {
 			@Override public void contactAdded(int totalContacts){}
