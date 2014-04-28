@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
+import com.badlogic.gdx.utils.Timer;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckQuackFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckTopFixtureDef;
@@ -269,6 +270,12 @@ public class Player extends Entity<Player>{
 		}
 		quacking = true;
 		quackSound.play();
+		Timer.schedule(new Timer.Task() {
+			@Override
+			public void run() {
+				stopQuacking();
+			}
+		}, 0.214f); // Length of quacking sound effect in seconds
 	}
 	
 	public void stopQuacking() {
