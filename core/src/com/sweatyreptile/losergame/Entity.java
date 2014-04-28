@@ -37,6 +37,7 @@ public class Entity <T extends Entity<?>>{
 		this.world = world;
 		this.name = name;
 		this.contactListener = contactListener;
+		currentBody.setUserData(this);
 	}
 	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
@@ -71,6 +72,8 @@ public class Entity <T extends Entity<?>>{
 		spriteOriginY = (spriteHeight - bodyHeight) / 2;
 		
 		sprite.setOrigin(spriteOriginX, spriteOriginY);
+		
+		currentBody.setUserData(this);
 	}
 	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
