@@ -10,13 +10,13 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class EntityFactory {
 
-	private Map<String, Entity> entities;
+	private Map<String, Entity<?>> entities;
 	private World world;
 	private LoserContactListener contactListener;
 	private float viewportWidth;
 	private float screenWidth;
 	
-	public EntityFactory(AssetManagerPlus assets, Map<String, Entity> entities,
+	public EntityFactory(AssetManagerPlus assets, Map<String, Entity<?>> entities,
 			World world, LoserContactListener contactListener, float viewportWidth, float screenWidth) {
 		super();
 		this.entities = entities;

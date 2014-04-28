@@ -48,7 +48,7 @@ public class TestLevelScreen implements Screen {
 	private Player player;
 	private PlayerInputProcessor playerInputProcessor;
 	
-	private Map<String, Entity> entities;
+	private Map<String, Entity<?>> entities;
 	
 	private EntityFactory entityFactory;
 	private LoserContactListener contactListener;
@@ -64,7 +64,7 @@ public class TestLevelScreen implements Screen {
 		this.viewportWidth = viewportWidth;
 		this.viewportHeight = viewportHeight;
 		this.playerInputProcessor = playerInputProcessor;
-		this.entities = new HashMap<String, Entity>();
+		this.entities = new HashMap<String, Entity<?>>();
 	}
 	
 	@Override
@@ -79,7 +79,7 @@ public class TestLevelScreen implements Screen {
 		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight);
 		spriteRenderer.enableBlending();
 		
-		for (Entity entity : entities.values()){
+		for (Entity<?> entity : entities.values()){
 			entity.render(spriteRenderer);
 		}
 		
@@ -94,7 +94,7 @@ public class TestLevelScreen implements Screen {
 		physWorld.step(1/60f, 6, 2); // TODO: Change step
 		
 		player.update(delta);
-		for (Entity entity : entities.values()){
+		for (Entity<?> entity : entities.values()){
 			entity.update(delta);
 		}
 	}
