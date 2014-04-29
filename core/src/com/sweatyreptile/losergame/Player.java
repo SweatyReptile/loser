@@ -26,7 +26,9 @@ import com.sweatyreptile.losergame.sensors.Sensor;
 
 public class Player extends Entity<Player>{
 	
-	private static final float DUCK_BODY_SIZE = .88f * .2f;
+	private static final float DUCK_SPRITE_SIZE = .2f;
+	private static final float DUCK_BODY_SIZE = .88f * DUCK_SPRITE_SIZE;
+	private static final float DUCKING_SPRITE_HEIGHT = .16f;
 
 	private enum Direction{
 		LEFT, RIGHT, NONE
@@ -79,7 +81,7 @@ public class Player extends Entity<Player>{
 		leftQuackingDuckingBody = world.createBody(def);
 		rightQuackingDuckingBody = world.createBody(def);
 		
-		setSpriteOrigin(fixDef.getTexture(), .2f, DUCK_BODY_SIZE);
+		setSpriteOrigin(fixDef.getTexture(), DUCK_SPRITE_SIZE, DUCK_BODY_SIZE);
 		
 		leftBody.setUserData(this);
 		rightBody.setUserData(this);
@@ -113,10 +115,10 @@ public class Player extends Entity<Player>{
 		duckingSprite = new Sprite(topFixDef.getTexture());
 		quackingSprite = new Sprite(quackFixDef.getTexture());
 		quackingDuckingSprite = new Sprite(quackTopFixDef.getTexture());
-		standingSprite.setSize(.2f, .2f);
-		duckingSprite.setSize(.2f, .16f);
-		quackingSprite.setSize(.2f, .2f);
-		quackingDuckingSprite.setSize(.2f, .16f);
+		standingSprite.setSize(DUCK_SPRITE_SIZE, DUCK_SPRITE_SIZE);
+		duckingSprite.setSize(DUCK_SPRITE_SIZE, DUCKING_SPRITE_HEIGHT);
+		quackingSprite.setSize(DUCK_SPRITE_SIZE, DUCK_SPRITE_SIZE);
+		quackingDuckingSprite.setSize(DUCK_SPRITE_SIZE, DUCKING_SPRITE_HEIGHT);
 		
 		sprite = standingSprite;
 		
