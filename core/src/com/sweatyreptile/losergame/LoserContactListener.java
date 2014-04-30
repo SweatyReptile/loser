@@ -61,10 +61,10 @@ public class LoserContactListener implements ContactListener {
 				EntityListener<Entity<?>> listener = (EntityListener<Entity<?>>) entityListeners.get(entity.getName());
 				if (listener != null){
 					if (beginContact) {
-						listener.beginContact(entity, sensee);
+						listener.beginContact(entity, sensor, sensee);
 					}
 					else {
-						listener.endContact(entity, sensee);
+						listener.endContact(entity, sensor, sensee);
 					}
 				}
 			}
