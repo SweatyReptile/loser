@@ -44,7 +44,7 @@ public class LoserContactListener implements ContactListener {
 		processFixture(fixtureB, fixtureA, false);
 	}
 
-	private void processFixture(Fixture contactor, Fixture contactee, boolean beginContact) {
+	public void processFixture(Fixture contactor, Fixture contactee, boolean beginContact) {
 		if (userDataExists(contactor)) {
 			if (contactor.isSensor() && !contactee.isSensor()) {
 				SensorListener listener = sensorListeners.get(contactor.getBody().getUserData());
