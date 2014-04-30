@@ -389,6 +389,7 @@ public class Player extends Entity<Player>{
 		newBody.setTransform(oldBody.getPosition(), 0f);
 		newBody.setLinearVelocity(oldBody.getLinearVelocity());
 		oldBody.setActive(false);
+		contactFixer.flushContacts(contactListener);
 		newBody.setActive(true);
 		currentBody = newBody;
 		for (Sensor sensor : sensors) sensor.weld(world, currentBody);
@@ -430,16 +431,15 @@ public class Player extends Entity<Player>{
 		
 		@Override
 		public void beginContact(Player entity, Fixture entityFixture, Fixture contacted) {
-			Gdx.app.log("Player", "Touched something!");
 			Array<Fixture> group = new Array<Fixture>(2);
 			group.add(entityFixture);
 			group.add(contacted);
 			startedContacts.push(group);
+			Gdx.app.log("Player", "Touched something, size: " + startedContacts.size());
 		}
 
 		@Override
 		public void endContact(Player entity, Fixture entityFixture, Fixture contacted) {
-			Gdx.app.log("Player", "Stopped touching something!");
 			for (int i = 0; i < startedContacts.size(); i++){
 				Array<Fixture> group = startedContacts.get(i);
 				Fixture storedEntityFixture = group.get(0);
@@ -451,9 +451,11 @@ public class Player extends Entity<Player>{
 					       // because only one contact was ended
 				}
 			}
+			Gdx.app.log("Player", "Stopped touching something!, size: " + startedContacts.size());
 		}
 		
 		public void flushContacts(LoserContactListener contactListener){
+			Gdx.app.log("Player", "Flushing contacts!");
 			while(!startedContacts.isEmpty()){
 				Array<Fixture> group = startedContacts.pop();
 				Fixture storedEntityFixture = group.get(0);
