@@ -2,6 +2,7 @@ package com.sweatyreptile.losergame;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Stack;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckQuackFixtureDef;
@@ -123,17 +125,43 @@ public class Player extends Entity<Player>{
 		sprite = standingSprite;
 		
 		addListener(new EntityListener<Player>(){
-
+			
+			// Holds current player contacts so that they may be flushed
+			// when the player switches bodies
+			private Stack<Array<Fixture>> startedContacts = new Stack<Array<Fixture>>();
+			
 			@Override
 			public void beginContact(Player entity, Fixture entityFixture, Fixture contacted) {
 				Gdx.app.log("Player", "Touched something!");
-				
+				Array<Fixture> group = new Array<Fixture>(2);
+				group.add(entityFixture);
+				group.add(contacted);
+				startedContacts.push(group);
 			}
 
 			@Override
 			public void endContact(Player entity, Fixture entityFixture, Fixture contacted) {
 				Gdx.app.log("Player", "Stopped touching something!");
-				
+				for (int i = 0; i < startedContacts.size(); i++){
+					Array<Fixture> group = startedContacts.get(i);
+					Fixture storedEntityFixture = group.get(0);
+					Fixture storedContactedFixture = group.get(1);
+					if (entityFixture.equals(storedEntityFixture) &&
+							contacted.equals(storedContactedFixture)){
+						startedContacts.remove(group);
+						break; // We only need remove one instance of this group
+						       // because only one contact was ended
+					}
+				}
+			}
+			
+			public void flushContacts(LoserContactListener contactListener){
+				while(!startedContacts.isEmpty()){
+					Array<Fixture> group = startedContacts.pop();
+					Fixture storedEntityFixture = group.get(0);
+					Fixture storedContactedFixture = group.get(0);
+					contactListener.processFixture(storedEntityFixture, storedContactedFixture, false);
+				}
 			}
 			
 		});
