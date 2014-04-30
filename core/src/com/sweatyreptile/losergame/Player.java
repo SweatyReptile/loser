@@ -125,13 +125,13 @@ public class Player extends Entity<Player>{
 		addListener(new EntityListener<Player>(){
 
 			@Override
-			public void beginContact(Player entity, Fixture sensee) {
+			public void beginContact(Player entity, Fixture sensor, Fixture sensee) {
 				Gdx.app.log("Player", "Touched something!");
 				
 			}
 
 			@Override
-			public void endContact(Player entity, Fixture sensee) {
+			public void endContact(Player entity, Fixture sensor, Fixture sensee) {
 				Gdx.app.log("Player", "Stopped touching something!");
 				
 			}
