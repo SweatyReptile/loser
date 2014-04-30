@@ -459,8 +459,9 @@ public class Player extends Entity<Player>{
 			while(!startedContacts.isEmpty()){
 				Array<Fixture> group = startedContacts.pop();
 				Fixture storedEntityFixture = group.get(0);
-				Fixture storedContactedFixture = group.get(0);
+				Fixture storedContactedFixture = group.get(1);
 				contactListener.processFixture(storedEntityFixture, storedContactedFixture, false);
+				contactListener.processFixture(storedContactedFixture, storedEntityFixture, false);
 			}
 		}
 		
