@@ -2,6 +2,7 @@ package com.sweatyreptile.losergame;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Stack;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckQuackFixtureDef;
@@ -26,7 +28,9 @@ import com.sweatyreptile.losergame.sensors.Sensor;
 
 public class Player extends Entity<Player>{
 	
-	private static final float DUCK_BODY_SIZE = .88f * .2f;
+	private static final float DUCK_SPRITE_SIZE = .2f;
+	private static final float DUCK_BODY_SIZE = .88f * DUCK_SPRITE_SIZE;
+	private static final float DUCKING_SPRITE_HEIGHT = .16f;
 
 	private enum Direction{
 		LEFT, RIGHT, NONE
@@ -61,6 +65,8 @@ public class Player extends Entity<Player>{
 	private Sound quackSound;
 
 	private ContentSensor grabSensor;
+	
+	private PlayerContactFixerListener contactFixer;
 
 	public Player(World world, LoserContactListener contactListener, BodyDef def, AssetManagerPlus assets) {
 		super(world, contactListener, def, "duck");
@@ -79,7 +85,7 @@ public class Player extends Entity<Player>{
 		leftQuackingDuckingBody = world.createBody(def);
 		rightQuackingDuckingBody = world.createBody(def);
 		
-		setSpriteOrigin(fixDef.getTexture(), .2f, DUCK_BODY_SIZE);
+		setSpriteOrigin(fixDef.getTexture(), DUCK_SPRITE_SIZE, DUCK_BODY_SIZE);
 		
 		leftBody.setUserData(this);
 		rightBody.setUserData(this);
@@ -113,28 +119,15 @@ public class Player extends Entity<Player>{
 		duckingSprite = new Sprite(topFixDef.getTexture());
 		quackingSprite = new Sprite(quackFixDef.getTexture());
 		quackingDuckingSprite = new Sprite(quackTopFixDef.getTexture());
-		standingSprite.setSize(.2f, .2f);
-		duckingSprite.setSize(.2f, .16f);
-		quackingSprite.setSize(.2f, .2f);
-		quackingDuckingSprite.setSize(.2f, .16f);
+		standingSprite.setSize(DUCK_SPRITE_SIZE, DUCK_SPRITE_SIZE);
+		duckingSprite.setSize(DUCK_SPRITE_SIZE, DUCKING_SPRITE_HEIGHT);
+		quackingSprite.setSize(DUCK_SPRITE_SIZE, DUCK_SPRITE_SIZE);
+		quackingDuckingSprite.setSize(DUCK_SPRITE_SIZE, DUCKING_SPRITE_HEIGHT);
 		
 		sprite = standingSprite;
 		
-		addListener(new EntityListener<Player>(){
-
-			@Override
-			public void beginContact(Player entity, Fixture sensee) {
-				Gdx.app.log("Player", "Touched something!");
-				
-			}
-
-			@Override
-			public void endContact(Player entity, Fixture sensee) {
-				Gdx.app.log("Player", "Stopped touching something!");
-				
-			}
-			
-		});
+		contactFixer = new PlayerContactFixerListener();
+		addListener(contactFixer);
 		
 		CountingSensorListener flightSensorListener = new CountingSensorListener() {
 			@Override public void contactAdded(int totalContacts){}
@@ -396,6 +389,7 @@ public class Player extends Entity<Player>{
 		newBody.setTransform(oldBody.getPosition(), 0f);
 		newBody.setLinearVelocity(oldBody.getLinearVelocity());
 		oldBody.setActive(false);
+		contactFixer.flushContacts(contactListener);
 		newBody.setActive(true);
 		currentBody = newBody;
 		for (Sensor sensor : sensors) sensor.weld(world, currentBody);
@@ -427,6 +421,50 @@ public class Player extends Entity<Player>{
 		Collections.addAll(quackBodies, leftQuackingBody, rightQuackingBody,
 				leftQuackingDuckingBody, rightQuackingDuckingBody);
 		return quackBodies;
+	}
+	
+	private class PlayerContactFixerListener implements EntityListener<Player>{
+		
+		// Holds current player contacts so that they may be flushed
+		// when the player switches bodies
+		private Stack<Array<Fixture>> startedContacts = new Stack<Array<Fixture>>();
+		
+		@Override
+		public void beginContact(Player entity, Fixture entityFixture, Fixture contacted) {
+			Array<Fixture> group = new Array<Fixture>(2);
+			group.add(entityFixture);
+			group.add(contacted);
+			startedContacts.push(group);
+			Gdx.app.log("Player", "Touched something, size: " + startedContacts.size());
+		}
+
+		@Override
+		public void endContact(Player entity, Fixture entityFixture, Fixture contacted) {
+			for (int i = 0; i < startedContacts.size(); i++){
+				Array<Fixture> group = startedContacts.get(i);
+				Fixture storedEntityFixture = group.get(0);
+				Fixture storedContactedFixture = group.get(1);
+				if (entityFixture.equals(storedEntityFixture) &&
+						contacted.equals(storedContactedFixture)){
+					startedContacts.remove(group);
+					break; // We only need remove one instance of this group
+					       // because only one contact was ended
+				}
+			}
+			Gdx.app.log("Player", "Stopped touching something!, size: " + startedContacts.size());
+		}
+		
+		public void flushContacts(LoserContactListener contactListener){
+			Gdx.app.log("Player", "Flushing contacts!");
+			while(!startedContacts.isEmpty()){
+				Array<Fixture> group = startedContacts.pop();
+				Fixture storedEntityFixture = group.get(0);
+				Fixture storedContactedFixture = group.get(1);
+				contactListener.processFixture(storedEntityFixture, storedContactedFixture, false);
+				contactListener.processFixture(storedContactedFixture, storedEntityFixture, false);
+			}
+		}
+		
 	}
 	
 }

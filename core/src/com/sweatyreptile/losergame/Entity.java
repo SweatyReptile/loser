@@ -32,7 +32,7 @@ public class Entity <T extends Entity<?>>{
 	
 	protected String name;
 	
-	private LoserContactListener contactListener;
+	protected LoserContactListener contactListener;
 	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, String name){
 		this.sprite = new Sprite();

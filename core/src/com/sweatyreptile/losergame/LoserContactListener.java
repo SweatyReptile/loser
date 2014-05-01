@@ -44,27 +44,27 @@ public class LoserContactListener implements ContactListener {
 		processFixture(fixtureB, fixtureA, false);
 	}
 
-	private void processFixture(Fixture sensor, Fixture sensee, boolean beginContact) {
-		if (userDataExists(sensor)) {
-			if (sensor.isSensor() && !sensee.isSensor()) {
-				SensorListener listener = sensorListeners.get(sensor.getBody().getUserData());
-				if (listener == null) throw new IllegalArgumentException("Listener named " + sensor.getUserData() + " is not in SensorContactListener");
+	public void processFixture(Fixture contactor, Fixture contactee, boolean beginContact) {
+		if (userDataExists(contactor)) {
+			if (contactor.isSensor() && !contactee.isSensor()) {
+				SensorListener listener = sensorListeners.get(contactor.getBody().getUserData());
+				if (listener == null) throw new IllegalArgumentException("Listener named " + contactor.getUserData() + " is not in SensorContactListener");
 				if (beginContact) {
-					listener.beginContact(sensor, sensee);
+					listener.beginContact(contactor, contactee);
 				}
 				else {
-					listener.endContact(sensor, sensee);
+					listener.endContact(contactor, contactee);
 				}
 			}
-			else if (!sensor.isSensor()){
-				Entity<?> entity = (Entity<?>) sensor.getBody().getUserData();
+			else if (!contactor.isSensor()){
+				Entity<?> entity = (Entity<?>) contactor.getBody().getUserData();
 				EntityListener<Entity<?>> listener = (EntityListener<Entity<?>>) entityListeners.get(entity.getName());
 				if (listener != null){
 					if (beginContact) {
-						listener.beginContact(entity, sensee);
+						listener.beginContact(entity, contactor, contactee);
 					}
 					else {
-						listener.endContact(entity, sensee);
+						listener.endContact(entity, contactor, contactee);
 					}
 				}
 			}
