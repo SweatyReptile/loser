@@ -21,20 +21,17 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class TestLevelScreen extends LevelScreen{ 
 	
-	Player player;
-	private PlayerInputProcessor playerInputProcessor;
-	
-	MusicPlayer radio;
+	private MusicPlayer radio;
 	
 	public TestLevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight){
+		super(playerInputProcessor);
 		spriteRenderer = batch;
 		this.assets = assets;
 		this.width = width;
 		this.height = height;
 		this.viewportWidth = viewportWidth;
 		this.viewportHeight = viewportHeight;
-		this.playerInputProcessor = playerInputProcessor;
 		this.entities = new HashMap<String, Entity<?>>();
 	}
 	

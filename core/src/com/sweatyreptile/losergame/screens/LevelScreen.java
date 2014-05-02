@@ -17,6 +17,7 @@ import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.Player;
+import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public abstract class LevelScreen implements Screen{
@@ -35,11 +36,13 @@ public abstract class LevelScreen implements Screen{
 	protected EntityFactory entityFactory;
 	protected Map<String, Entity<?>> entities;
 	protected Player player;
+	private PlayerInputProcessor playerInputProcessor;
 	protected AssetManagerPlus assets;
 	protected Texture background;
 
-	public LevelScreen() {
+	public LevelScreen(PlayerInputProcessor playerInputProcessor) {
 		super();
+		this.playerInputProcessor = playerInputProcessor;
 	}
 
 	@Override
@@ -106,6 +109,7 @@ public abstract class LevelScreen implements Screen{
 			throw new IllegalStateException(this + " has not created a player.");
 		}
 		
+		playerInputProcessor.setPlayer(player);
 		setupWorld();
 	}
 	
