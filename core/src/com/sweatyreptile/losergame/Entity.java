@@ -54,13 +54,7 @@ public class Entity <T extends Entity<?>>{
 		Texture spriteTexture = fixtureDef.getTexture();
 		
 		float spriteScale = scale;
-		float bodyScale = 0f;
-		if (bodyDef.type == BodyType.DynamicBody){
-			bodyScale = 0.84f * scale;
-		}
-		else {
-			bodyScale = scale;
-		}
+		float bodyScale = scale;
 		fixtureDef.attach(currentBody, bodyScale, flipped);
 		
 		sprite = new Sprite(spriteTexture);		
