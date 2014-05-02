@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
@@ -67,6 +68,9 @@ public class Player extends Entity<Player>{
 	private ContentSensor grabSensor;
 	
 	private PlayerContactFixerListener contactFixer;
+	
+	private float bodyHeight; //Assumes all standing bodies are the same height
+	private float duckingBodyHeight; //Assumes all ducking bodies are the same height
 
 	public Player(World world, LoserContactListener contactListener, BodyDef def, AssetManagerPlus assets) {
 		super(world, contactListener, def, "duck");
@@ -152,6 +156,9 @@ public class Player extends Entity<Player>{
 		Collections.addAll(sensors, flightSensor, landingSensor, grabSensor);
 		for (Sensor sensor : sensors) sensor.weld(world, currentBody);
 		quackSound = assets.get("quack_dummy.ogg");
+		
+		bodyHeight = extractBodyHeight(leftBody);
+		duckingBodyHeight = extractBodyHeight(leftDuckingBody);
 		
 	}
 	
@@ -394,6 +401,24 @@ public class Player extends Entity<Player>{
 		currentBody = newBody;
 		for (Sensor sensor : sensors) sensor.weld(world, currentBody);
 		if (grabbedObject != null) weldToDuck(grabbedObject);
+	}
+	
+	private float extractBodyHeight(Body body){
+		Vector2 currentPos = currentBody.getPosition();
+		float lowestValue = currentPos.x;
+		float highestValue = currentPos.x;
+		Array<Fixture> fixtures = body.getFixtureList();
+		for (Fixture fixture : fixtures){
+			PolygonShape shape = (PolygonShape) fixture.getShape();
+			for (int index = 0; index < shape.getVertexCount(); index++){
+				Vector2 vertex = new Vector2();
+				shape.getVertex(index, vertex);
+				float x = vertex.x;
+				//if (x < lowestValue) lowestValue = x;
+				if (x > highestValue) highestValue = x;
+			}
+		}
+		return highestValue - lowestValue;
 	}
 
 	private void flipSprites(boolean horizontal) {
