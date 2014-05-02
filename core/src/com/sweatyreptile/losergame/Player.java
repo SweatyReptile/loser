@@ -30,7 +30,7 @@ import com.sweatyreptile.losergame.sensors.Sensor;
 public class Player extends Entity<Player>{
 	
 	private static final float DUCK_SPRITE_SIZE = .2f;
-	private static final float DUCK_BODY_SIZE = .88f * DUCK_SPRITE_SIZE;
+	private static final float DUCK_BODY_SIZE = DUCK_SPRITE_SIZE;
 	private static final float DUCKING_SPRITE_HEIGHT = .16f;
 
 	private enum Direction{
