@@ -393,7 +393,7 @@ public class Player extends Entity<Player>{
 	}
 	
 	private void switchBody(Body oldBody, Body newBody, boolean fromTop){
-		setTransform(oldBody, fromTop);
+		setTransform(newBody, fromTop);
 		newBody.setLinearVelocity(oldBody.getLinearVelocity());
 		oldBody.setActive(false);
 		contactFixer.flushContacts(contactListener);
@@ -425,7 +425,6 @@ public class Player extends Entity<Player>{
 				Vector2 vertex = new Vector2();
 				shape.getVertex(index, vertex);
 				float x = vertex.x;
-				//if (x < lowestValue) lowestValue = x;
 				if (x > highestValue) highestValue = x;
 			}
 		}
