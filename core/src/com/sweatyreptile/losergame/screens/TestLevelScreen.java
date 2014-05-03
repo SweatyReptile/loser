@@ -45,7 +45,7 @@ public class TestLevelScreen extends LevelScreen{
 		BodyDef radioBodyDef = new BodyDef();
 		radioBodyDef.type = BodyType.DynamicBody;
 		radioBodyDef.position.set(new Vector2(1.4f, 1.1f));
-		radio = new MusicPlayer(contactListener, physWorld, radioBodyDef, assets, 
+		radio = new MusicPlayer(contactListener, world, radioBodyDef, assets, 
 				new MetalFixtureDef(assets, "radio"), false, Entity.DEFAULT_SCREEN_WIDTH,
 				viewportWidth, "baby_come_back.ogg", false, player);
 		entities.put("radio", radio);
@@ -55,7 +55,7 @@ public class TestLevelScreen extends LevelScreen{
 		groundDef.position.set(viewportWidth / 2, 0);
 		PolygonShape groundBox = new PolygonShape();
 		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
-		Body groundBody = physWorld.createBody(groundDef);
+		Body groundBody = world.createBody(groundDef);
 		groundBody.createFixture(groundBox, 0f);
 		groundBox.dispose();
 		
@@ -67,7 +67,7 @@ public class TestLevelScreen extends LevelScreen{
 		duckDef.type = BodyType.DynamicBody;
 		duckDef.position.set(2f, viewportHeight/2);
 		duckDef.fixedRotation = true;
-		return new Player(physWorld, contactListener, duckDef, assets);
+		return new Player(world, contactListener, duckDef, assets);
 	}
 
 }

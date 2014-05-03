@@ -32,7 +32,7 @@ public abstract class LevelScreen implements Screen{
 	protected Camera camera;
 	protected SpriteBatch spriteRenderer;
 	protected Box2DDebugRenderer physRenderer;
-	protected World physWorld;
+	protected World world;
 	protected LoserContactListener contactListener;
 	protected EntityFactory entityFactory;
 	protected Map<String, Entity<?>> entities;
@@ -75,12 +75,12 @@ public abstract class LevelScreen implements Screen{
 		spriteRenderer.end();
 		
 		if (DRAW_PHYSICS){
-			physRenderer.render(physWorld, camera.combined);
+			physRenderer.render(world, camera.combined);
 		}
 	}
 
 	public void update(float delta) {
-		physWorld.step(1/60f, 6, 2); // TODO: Change step
+		world.step(1/60f, 6, 2); // TODO: Change step
 		
 		player.update(delta);
 		for (Entity<?> entity : entities.values()){
@@ -103,15 +103,15 @@ public abstract class LevelScreen implements Screen{
 		
 		resize(width, height);
 		
-		physWorld = new World(new Vector2(0f, -9.8f), true);
+		world = new World(new Vector2(0f, -9.8f), true);
 		physRenderer = new Box2DDebugRenderer();
 		
 		entityFactory = new EntityFactory(assets, entities,
-				physWorld, contactListener, viewportWidth, Entity.DEFAULT_SCREEN_WIDTH);
+				world, contactListener, viewportWidth, Entity.DEFAULT_SCREEN_WIDTH);
 		background = assets.get("background.png");
 		
 		contactListener = new LoserContactListener();
-		physWorld.setContactListener(contactListener);
+		world.setContactListener(contactListener);
 		
 		player = createPlayer();
 		if (player == null){
@@ -142,7 +142,7 @@ public abstract class LevelScreen implements Screen{
 
 	@Override
 	public void dispose() {
-		physWorld.dispose();
+		world.dispose();
 	}
 
 }
