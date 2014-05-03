@@ -13,12 +13,12 @@ import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.fixtures.WoodFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
-public class ScrollingLevelScreen extends LevelScreen {
+public class TestScrollingLevelScreen extends LevelScreen {
 	
 	protected float levelEnd;
 	protected float level0;     // The location of the level's left edge
 	
-	public ScrollingLevelScreen(SpriteBatch batch, AssetManagerPlus assets,
+	public TestScrollingLevelScreen(SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
 			float viewportWidth, float viewportHeight) {
 		super(batch, assets, playerInputProcessor, width, height,
@@ -47,7 +47,7 @@ public class ScrollingLevelScreen extends LevelScreen {
 	@Override
 	protected Player createPlayer() {
 		BodyDef def = new BodyDef();
-		def.position.set(.5f, .5f);
+		def.position.set(viewportWidth / 2, viewportHeight / 2);
 		def.fixedRotation = true;
 		def.type = BodyType.DynamicBody;
 		return new Player(world, contactListener, def, assets);
