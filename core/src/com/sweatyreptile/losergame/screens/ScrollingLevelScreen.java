@@ -29,7 +29,8 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 		float camera0 = playerX - (viewportWidth / 2);
 		float cameraEnd = playerX + (viewportWidth / 2);
 		
-		if (camera0 > level0 && cameraEnd < levelEnd){
+		if ((levelEnd == 0 && level0 == 0) || 
+				camera0 > level0 && cameraEnd < levelEnd){
 			setCameraPosition(playerX, viewportHeight / 2);
 		}
 	}
