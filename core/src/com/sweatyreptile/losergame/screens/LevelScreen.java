@@ -23,7 +23,7 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public abstract class LevelScreen implements Screen{
 
-	private static final boolean DRAW_PHYSICS = false;
+	private static final boolean DRAW_PHYSICS = true;
 	
 	protected int width;
 	protected int height;
@@ -90,9 +90,11 @@ public abstract class LevelScreen implements Screen{
 
 	@Override
 	public void resize(int width, int height) {
-		camera.position.set(new Vector3(viewportWidth/ 2, viewportHeight/ 2, 0));
-		camera.viewportHeight = viewportHeight;
-		camera.viewportWidth = viewportWidth;
+		
+	}
+	
+	public void setCameraPosition(float x, float y){
+		camera.position.set(x, y, 0f);
 		camera.update();
 		spriteRenderer.setProjectionMatrix(camera.combined);
 	}
@@ -100,8 +102,9 @@ public abstract class LevelScreen implements Screen{
 	@Override
 	public void show() {
 		camera = new OrthographicCamera(width, height);
-		
-		resize(width, height);
+		camera.viewportHeight = viewportHeight;
+		camera.viewportWidth = viewportWidth;
+		setCameraPosition(viewportWidth/ 2, viewportHeight/ 2);
 		
 		world = new World(new Vector2(0f, -9.8f), true);
 		physRenderer = new Box2DDebugRenderer();
