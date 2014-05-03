@@ -29,6 +29,11 @@ public class ScrollingLevelScreen extends LevelScreen {
 	
 	@Override
 	public void update(float delta) {
+		if (player.isMoving()){
+			camera.position.set(player.getX(), viewportHeight / 2, 0);
+			camera.update();
+			spriteRenderer.setProjectionMatrix(camera.combined);
+		}
 		super.update(delta);
 	}
 
@@ -37,6 +42,7 @@ public class ScrollingLevelScreen extends LevelScreen {
 		BodyDef def = new BodyDef();
 		def.position.set(.5f, .5f);
 		def.fixedRotation = true;
+		def.type = BodyType.DynamicBody;
 		return new Player(world, contactListener, def, assets);
 	}
 
