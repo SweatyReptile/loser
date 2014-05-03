@@ -21,4 +21,4 @@ All art assets are licensed under the [Creative Commons Attribution-NonCommercia
 loser
 =====
 
-[![](https://i.imgur.com/f9tBRBH.png)](https://i.imgur.com/f9tBRBH.png)
+[![](http://i.imgur.com/Y5I6lO7.png)](http://i.imgur.com/Y5I6lO7.png)
