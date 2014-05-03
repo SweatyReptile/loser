@@ -13,6 +13,7 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.screens.FinishableScreen;
 import com.sweatyreptile.losergame.screens.LoadingScreen;
 import com.sweatyreptile.losergame.screens.ScreenFinishedListener;
+import com.sweatyreptile.losergame.screens.TestScrollingLevelScreen;
 import com.sweatyreptile.losergame.screens.TestLevelScreen;
 
 public class LoserGame extends Game implements ScreenFinishedListener{
@@ -32,7 +33,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		
 		PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
 		
-		Screen testScreen = new TestLevelScreen(batch, assets, playerInputProcessor,
+		Screen testScreen = new TestScrollingLevelScreen(batch, assets, playerInputProcessor,
 				Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 3.2f, 1.8f);
 		
 		Screen loadingScreen = new LoadingScreen(this, assets, testScreen);
