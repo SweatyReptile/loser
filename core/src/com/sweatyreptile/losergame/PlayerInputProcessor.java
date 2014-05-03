@@ -59,6 +59,7 @@ public class PlayerInputProcessor implements InputProcessor {
 		case Input.Keys.W:
 		case Input.Keys.UP:
 		case Input.Keys.SPACE:
+			player.stopJumping();
 			return true;
 		//case Input.Keys.E:
 		//case Input.Keys.ENTER:

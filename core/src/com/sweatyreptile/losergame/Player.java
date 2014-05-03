@@ -366,7 +366,7 @@ public class Player extends Entity<Player>{
 		Vector2 position = currentBody.getPosition();
 		Vector2 velocity = currentBody.getLinearVelocity();
 		currentBody.setLinearVelocity(velocity.x, 0f);
-		currentBody.applyLinearImpulse(0, 0.5f, position.x, position.y, true);
+		currentBody.applyLinearImpulse(0, 0.55f, position.x, position.y, true);
 		
 		if (grabbedObject != null){
 			Vector2 grabPos = grabbedObject.getPosition();
@@ -392,6 +392,12 @@ public class Player extends Entity<Player>{
 		}
 	}
 	
+	public void stopJumping() {
+		Vector2 velocity = currentBody.getLinearVelocity();
+		currentBody.setLinearVelocity(velocity.x, velocity.y*1/2);
+		
+	}
+
 	private void switchBody(Body oldBody, Body newBody, boolean fromTop){
 		setTransform(newBody, fromTop);
 		newBody.setLinearVelocity(oldBody.getLinearVelocity());
