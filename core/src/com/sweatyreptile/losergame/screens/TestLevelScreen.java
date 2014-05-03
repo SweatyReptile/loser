@@ -1,7 +1,5 @@
 package com.sweatyreptile.losergame.screens;
 
-import java.util.HashMap;
-
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -23,16 +21,12 @@ public class TestLevelScreen extends LevelScreen{
 	
 	private MusicPlayer radio;
 	
-	public TestLevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
-			int width, int height, float viewportWidth, float viewportHeight){
-		super(playerInputProcessor);
-		spriteRenderer = batch;
-		this.assets = assets;
-		this.width = width;
-		this.height = height;
-		this.viewportWidth = viewportWidth;
-		this.viewportHeight = viewportHeight;
-		this.entities = new HashMap<String, Entity<?>>();
+	public TestLevelScreen(SpriteBatch batch, AssetManagerPlus assets,
+			PlayerInputProcessor playerInputProcessor, int width, int height,
+			float viewportWidth, float viewportHeight) {
+		super(batch, assets, playerInputProcessor, width, height, viewportWidth,
+				viewportHeight);
+		// TODO Auto-generated constructor stub
 	}
 	
 	protected void setupWorld() {

@@ -1,5 +1,6 @@
 package com.sweatyreptile.losergame.screens;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
@@ -40,9 +41,17 @@ public abstract class LevelScreen implements Screen{
 	protected AssetManagerPlus assets;
 	protected Texture background;
 
-	public LevelScreen(PlayerInputProcessor playerInputProcessor) {
-		super();
+	
+	public LevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
+			int width, int height, float viewportWidth, float viewportHeight){
+		this.spriteRenderer = batch;
+		this.assets = assets;
 		this.playerInputProcessor = playerInputProcessor;
+		this.width = width;
+		this.height = height;
+		this.viewportWidth = viewportWidth;
+		this.viewportHeight = viewportHeight;
+		this.entities = new HashMap<String, Entity<?>>();
 	}
 
 	@Override
