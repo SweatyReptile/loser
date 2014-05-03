@@ -13,10 +13,7 @@ import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.fixtures.WoodFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
-public class TestScrollingLevelScreen extends LevelScreen {
-	
-	protected float levelEnd;
-	protected float level0;     // The location of the level's left edge
+public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 	
 	public TestScrollingLevelScreen(SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
@@ -27,24 +24,6 @@ public class TestScrollingLevelScreen extends LevelScreen {
 	}
 	
 	@Override
-	public void update(float delta) {
-		if (player.isMoving() || player.isFlying()){
-			updateCamera();
-		}
-		super.update(delta);
-	}
-
-	private void updateCamera() {
-		float playerX = player.getX();
-		float camera0 = playerX - (viewportWidth / 2);
-		float cameraEnd = playerX + (viewportWidth / 2);
-		
-		if (camera0 > level0 && cameraEnd < levelEnd){
-			setCameraPosition(playerX, viewportHeight / 2);
-		}
-	}
-
-	@Override
 	protected Player createPlayer() {
 		BodyDef def = new BodyDef();
 		def.position.set(viewportWidth / 2, viewportHeight / 2);
@@ -53,6 +32,7 @@ public class TestScrollingLevelScreen extends LevelScreen {
 		return new Player(world, contactListener, def, assets);
 	}
 
+	@Override
 	protected void setupWorld() {
 		
 		level0 = -1.5f;
