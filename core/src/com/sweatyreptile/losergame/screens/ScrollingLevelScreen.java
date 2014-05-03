@@ -1,24 +1,23 @@
 package com.sweatyreptile.losergame.screens;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.sweatyreptile.losergame.Entity;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.sweatyreptile.losergame.EntityFactory;
 import com.sweatyreptile.losergame.Player;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
-import com.sweatyreptile.losergame.entities.MusicPlayer;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
-import com.sweatyreptile.losergame.fixtures.MetalFixtureDef;
 import com.sweatyreptile.losergame.fixtures.WoodFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class ScrollingLevelScreen extends LevelScreen {
-
+	
+	protected float levelEnd;
+	protected float level0;     // The location of the level's left edge
+	
 	public ScrollingLevelScreen(SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
 			float viewportWidth, float viewportHeight) {
@@ -29,10 +28,20 @@ public class ScrollingLevelScreen extends LevelScreen {
 	
 	@Override
 	public void update(float delta) {
-		if (player.isMoving()){
-			setCameraPosition(player.getX(), viewportHeight / 2);
+		if (player.isMoving() || player.isFlying()){
+			updateCamera();
 		}
 		super.update(delta);
+	}
+
+	private void updateCamera() {
+		float playerX = player.getX();
+		float camera0 = playerX - (viewportWidth / 2);
+		float cameraEnd = playerX + (viewportWidth / 2);
+		
+		if (camera0 > level0 && cameraEnd < levelEnd){
+			setCameraPosition(playerX, viewportHeight / 2);
+		}
 	}
 
 	@Override
@@ -45,6 +54,10 @@ public class ScrollingLevelScreen extends LevelScreen {
 	}
 
 	protected void setupWorld() {
+		
+		level0 = -1.5f;
+		levelEnd = viewportWidth + 1.5f;
+		
 		EntityFactory ef = entityFactory;
 		
 		ef.create("dead_duck", BodyType.DynamicBody, 1.4f, .5f, new DuckFixtureDef(assets), false);
