@@ -16,11 +16,18 @@ public class ContentSensor extends Sensor {
 	private boolean dirtyRemoved;
 	
 	public ContentSensor(LoserContactListener contactListener, ContentSensorListener listener, World world,
-			AssetManagerPlus assets, String name, float scale, int index1,
+			AssetManagerPlus assets, String assetsName, String name, float scale, int index1,
 			int index2) {
-		super(contactListener, world, assets, name, scale, index1, index2);
+		super(contactListener, world, assets, assetsName, name, scale, index1, index2);
 		contents = new Stack<Body>();
 		this.listener = listener;
+	}
+	
+	public ContentSensor(LoserContactListener contactListener, ContentSensorListener listener, World world,
+			AssetManagerPlus assets, String name, float scale, int index1,
+			int index2) {
+		this(contactListener, listener, world,
+				assets, name, name, scale, index1, index2);
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -35,7 +35,7 @@ public class Sharbal extends Entity<Sharbal> {
 		
 		this.player = player;
 		SharbalContentSensorListener listener = new SharbalContentSensorListener();
-		sensor = new ContentSensor(contactListener, listener, world, assets, "default_sensor", 1f, 0, 0);
+		sensor = new ContentSensor(contactListener, listener, world, assets, "default_sensor", "default_sensor_2", 1f, 0, 0);
 		sensor.setCenterRoundSensor(sprite);
 		sensor.weld(world, currentBody); //TODO remember to reweld the sensor if Sharbal switches bodies
 		
