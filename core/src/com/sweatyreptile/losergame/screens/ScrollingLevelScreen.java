@@ -1,6 +1,7 @@
 package com.sweatyreptile.losergame.screens;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
@@ -18,10 +19,12 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 
 	@Override
 	public void update(float delta) {
-		if (player.isMoving() || player.isFlying()){
+		Vector2 velocity = player.getBody().getLinearVelocity();
+		if (velocity.x != 0f || velocity.y != 0f){
 			updateCamera();
 		}
 		super.update(delta);
+
 	}
 
 	private void updateCamera() {
