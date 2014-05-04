@@ -24,6 +24,7 @@ public class Sharbal extends Entity<Sharbal> {
 	
 	private String[] phrases;
 	private static final String[] DEFAULT_PHRASES = new String[]{"go away", "i hate u", "who are you even"};
+	private Task respondTask;
 	
 	public Sharbal(World world, LoserContactListener contactListener,
 			BodyDef bodyDef, AssetManagerPlus assets, EntityFixtureDef fixtureDef, boolean flipped,
@@ -40,6 +41,14 @@ public class Sharbal extends Entity<Sharbal> {
 		sensor.weld(world, currentBody); //TODO remember to reweld the sensor if Sharbal switches bodies
 		
 		addListener(new SharbalContactListener());
+		
+		final String[] phrases2 = phrases;
+		respondTask = new Task() {
+			@Override
+			public void run() {
+				talk(generatePhrase(phrases2));
+			}
+		};
 	}
 	
 	public Sharbal(World world, LoserContactListener contactListener,
@@ -71,30 +80,26 @@ public class Sharbal extends Entity<Sharbal> {
 			
 			if (isPlayer(lastBody, player)){
 				if (player.quacking){
-					Timer.schedule(new Task() {
-						@Override
-						public void run() {
-							talk(generatePhrase(phrases));
-						}
-					}, 1f);
+					if (respondTask.isScheduled()) respondTask.cancel();
+					Timer.schedule(respondTask, 1f);
 				}
-				if (!playerEntered){
+				/*if (!playerEntered){
 					talk(generatePhrase(phrases));
 					playerEntered = true;
-				}
+				}*/
 			}
 		}
 
 		@Override
 		public void bodyRemoved(Stack<Body> contents) {
-			if (playerEntered){
+			/*if (playerEntered){
 				playerEntered = false;
 				for (Body body : contents){
 					if (isPlayer(body, player) && body.getUserData().equals(player)){
 						playerEntered = true;
 					}
 				}
-			}
+			}*/
 		}
 		
 		private boolean isPlayer(Body body, Player player){
