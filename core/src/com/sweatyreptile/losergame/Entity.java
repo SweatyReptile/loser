@@ -11,12 +11,10 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
@@ -44,14 +42,21 @@ public class Entity <T extends Entity<?>>{
 	
 	private String speech;
 	private BitmapFont speechFont;
+	private Task speechTask;
 	
 	@SuppressWarnings("deprecation")
-	private void generateSpeechFont() {
+	private void setUpSpeech() {
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("corbelb.ttf"));
 		speechFont = generator.generateFont(18);
 		speechFont.setScale(.0025f);
 		speechFont.setColor(Color.BLACK);
 		generator.dispose();
+		speechTask = new Task() {
+			@Override
+			public void run() {
+				setSpeechNull();
+			}
+		};
 	}
 	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, String name){
@@ -61,7 +66,7 @@ public class Entity <T extends Entity<?>>{
 		this.name = name;
 		this.contactListener = contactListener;
 		currentBody.setUserData(this);
-		generateSpeechFont();
+		setUpSpeech();
 	}
 	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
@@ -91,7 +96,7 @@ public class Entity <T extends Entity<?>>{
 		sprite.setOrigin(spriteOriginX, spriteOriginY);
 		
 		currentBody.setUserData(this);
-		generateSpeechFont();
+		setUpSpeech();
 	}
 	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
@@ -139,13 +144,8 @@ public class Entity <T extends Entity<?>>{
 	
 	public void talk(String speech){
 		this.speech = speech;
-		Timer.schedule(new Timer.Task() {
-			@Override
-			public void run() {
-				setSpeechNull();
-			}
-			
-		}, speech.length()/10); //TODO adjust time properly
+		if (speechTask.isScheduled()) speechTask.cancel();
+		Timer.schedule(speechTask, speech.length()/10);
 	}
 
 	private void setSpeechNull(){
