@@ -1,14 +1,22 @@
 package com.sweatyreptile.losergame;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Timer;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
@@ -34,6 +42,18 @@ public class Entity <T extends Entity<?>>{
 	
 	protected LoserContactListener contactListener;
 	
+	private String speech;
+	private BitmapFont speechFont;
+	
+	@SuppressWarnings("deprecation")
+	private void generateSpeechFont() {
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("corbelb.ttf"));
+		speechFont = generator.generateFont(18);
+		speechFont.setScale(.0025f);
+		speechFont.setColor(Color.BLACK);
+		generator.dispose();
+	}
+	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, String name){
 		this.sprite = new Sprite();
 		currentBody = world.createBody(bodyDef);
@@ -41,6 +61,7 @@ public class Entity <T extends Entity<?>>{
 		this.name = name;
 		this.contactListener = contactListener;
 		currentBody.setUserData(this);
+		generateSpeechFont();
 	}
 	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
@@ -70,6 +91,7 @@ public class Entity <T extends Entity<?>>{
 		sprite.setOrigin(spriteOriginX, spriteOriginY);
 		
 		currentBody.setUserData(this);
+		generateSpeechFont();
 	}
 	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
@@ -98,6 +120,7 @@ public class Entity <T extends Entity<?>>{
 	
 	public void render(SpriteBatch renderer){
 		sprite.draw(renderer);
+		if (speech != null) speechFont.draw(renderer, speech, getSpeechX(), getSpeechY());
 	}
 	
 	public void update(float delta){
@@ -114,6 +137,21 @@ public class Entity <T extends Entity<?>>{
 		sprite.setRotation(MathUtils.radiansToDegrees * currentBody.getAngle());
 	}
 	
+	public void talk(String speech){
+		this.speech = speech;
+		Timer.schedule(new Timer.Task() {
+			@Override
+			public void run() {
+				setSpeechNull();
+			}
+			
+		}, speech.length()/10); //TODO adjust time properly
+	}
+
+	private void setSpeechNull(){
+		speech = null;
+	}
+	
 	public void setX(float x){
 		sprite.setX(x);
 	}
@@ -128,6 +166,14 @@ public class Entity <T extends Entity<?>>{
 	
 	public void addListener(EntityListener<T> listener){
 		contactListener.addEntityListener(name, listener);
+	}
+	
+	private float getSpeechY() {
+		return sprite.getY() + spriteHeight + speechFont.getBounds(speech).height; //speech cannot be null, only works with single sprite entities
+	}
+
+	private float getSpeechX() {
+		return sprite.getX() + spriteWidth/2 - speechFont.getBounds(speech).width/2; //speech cannot be null, only works with single sprite entities
 	}
 	
 }
