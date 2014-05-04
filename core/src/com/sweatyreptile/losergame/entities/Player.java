@@ -1,4 +1,4 @@
-package com.sweatyreptile.losergame;
+package com.sweatyreptile.losergame.entities;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +18,10 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
+import com.sweatyreptile.losergame.DuckQuackTopFixtureDef;
+import com.sweatyreptile.losergame.Entity;
+import com.sweatyreptile.losergame.EntityListener;
+import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckQuackFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckTopFixtureDef;

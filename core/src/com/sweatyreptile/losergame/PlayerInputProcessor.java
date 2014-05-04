@@ -2,6 +2,7 @@ package com.sweatyreptile.losergame;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.sweatyreptile.losergame.entities.Player;
 
 public class PlayerInputProcessor implements InputProcessor {
 
