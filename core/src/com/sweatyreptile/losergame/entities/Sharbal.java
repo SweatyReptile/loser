@@ -19,7 +19,6 @@ import com.sweatyreptile.losergame.sensors.ContentSensorListener;
 
 public class Sharbal extends Entity<Sharbal> {
 	
-	private Player player;
 	private ContentSensor sensor;
 	
 	private static final String[] DEFAULT_PHRASES = new String[]{"go away", "i hate u", "who are you even"};
@@ -29,11 +28,10 @@ public class Sharbal extends Entity<Sharbal> {
 	
 	public Sharbal(World world, LoserContactListener contactListener,
 			BodyDef bodyDef, AssetManagerPlus assets, EntityFixtureDef fixtureDef, boolean flipped,
-			float screenWidth, float viewportWidth, Player player, String[] phrases) {
+			float screenWidth, float viewportWidth, String[] phrases) {
 		super(world, contactListener, bodyDef, fixtureDef, flipped, screenWidth,
 				viewportWidth, fixtureDef.getName());
 		
-		this.player = player;
 		SharbalContentSensorListener listener = new SharbalContentSensorListener();
 		sensor = new ContentSensor(contactListener, listener, world, assets, "default_sensor", "default_sensor_2", 1f, 0, 0);
 		sensor.setCenterRoundSensor(sprite);
@@ -54,7 +52,7 @@ public class Sharbal extends Entity<Sharbal> {
 			BodyDef bodyDef, AssetManagerPlus assets, EntityFixtureDef fixtureDef, boolean flipped,
 			float screenWidth, float viewportWidth, Player player) {
 		this(world, contactListener, bodyDef, assets, fixtureDef, flipped,
-			screenWidth, viewportWidth, player, DEFAULT_PHRASES);
+			screenWidth, viewportWidth, DEFAULT_PHRASES);
 	}
 	
 	@Override
@@ -77,7 +75,8 @@ public class Sharbal extends Entity<Sharbal> {
 		public void bodyAdded(Stack<Body> contents) {
 			Body lastBody = contents.peek();
 			
-			if (isPlayer(lastBody, player)){
+			if (isPlayer(lastBody)){
+				Player player = (Player) lastBody.getUserData();
 				if (player.quacking){
 					if (respondTask.isScheduled()) respondTask.cancel();
 					Timer.schedule(respondTask, 1f);
@@ -101,8 +100,10 @@ public class Sharbal extends Entity<Sharbal> {
 			}*/
 		}
 		
-		private boolean isPlayer(Body body, Player player){
-			if (body != null && body.getUserData() != null && body.getUserData().equals(player)) return true;
+		private boolean isPlayer(Body body){
+			if (body != null && body.getUserData() != null && 
+					((Entity<?>)(body.getUserData()))
+						.getName().equals("duck")) return true;
 			return false;
 		}
 		
