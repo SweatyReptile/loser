@@ -114,9 +114,10 @@ public class Sharbal extends Entity<Sharbal> {
 		@Override
 		public void beginContact(Sharbal entity, Fixture entityFixture,
 				Fixture contactee) {
-			Vector2 velocityVector = entityFixture.getBody().getLinearVelocity();
+			Vector2 velocityVector = contactee.getBody().getLinearVelocity();
 			float velocity = (float) Math.pow((float) Math.pow(velocityVector.x, 2) + (float) Math.pow(velocityVector.y, 2), 0.5);
-			if (velocity > 1f){
+			System.out.println(velocity);
+			if (velocity > 3f){
 				talk(generatePhrase(new String[]{"ow", "ouch", "owwwies!"}));
 			}
 			
