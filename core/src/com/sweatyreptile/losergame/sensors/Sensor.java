@@ -24,19 +24,25 @@ public abstract class Sensor implements SensorListener{
 	private Sprite currentSprite;
 	private float sensorRadius;
 	
-	public Sensor(LoserContactListener contactListener, World world, AssetManagerPlus assets, String name, float scale,
+	public Sensor(LoserContactListener contactListener, World world, AssetManagerPlus assets, String assetsName, String name, float scale,
 			int index1, int index2){
 		
 		BodyDef sensorBodyDef = new BodyDef();
 		sensorBodyDef.type = BodyType.DynamicBody;
 		sensorBody = world.createBody(sensorBodyDef);
 		
-		EntityFixtureDef sensorDef = new EntityFixtureDef(assets, name);
+		EntityFixtureDef sensorDef = new EntityFixtureDef(assets, assetsName);
 		sensorDef.isSensor = true;
 		sensorDef.attach(sensorBody, scale, false);
 		sensorBody.setUserData(name);
 		sensorHeight = extractHeight(index1, index2);
 		contactListener.addSensorListener(name, this);
+	}
+	
+	public Sensor(LoserContactListener contactListener, World world, AssetManagerPlus assets, String name, float scale,
+			int index1, int index2){
+		this(contactListener, world, assets, name, name, scale,
+			index1, index2);
 	}
 	
 	public void weld(World world, Body newBody) {

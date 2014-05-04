@@ -1,4 +1,4 @@
-package com.sweatyreptile.losergame;
+package com.sweatyreptile.losergame.entities;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -18,6 +18,10 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
+import com.sweatyreptile.losergame.DuckQuackTopFixtureDef;
+import com.sweatyreptile.losergame.Entity;
+import com.sweatyreptile.losergame.EntityListener;
+import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckQuackFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckTopFixtureDef;
@@ -184,7 +188,7 @@ public class Player extends Entity<Player>{
 		}
 		
 	}
-
+	
 	public boolean isMoving() {
 		return movingDirection != Direction.NONE;
 	}
@@ -227,7 +231,7 @@ public class Player extends Entity<Player>{
 		}
 		ducking = true;
 		
-		if (!grabSensor.empty()) {
+		if (!grabSensor.isEmpty()) {
 			Body currentGrabBody = grabSensor.getNewestBody();
 			if (currentGrabBody.getType().equals(BodyType.DynamicBody)) {
 				grabbedObject = currentGrabBody;
@@ -284,6 +288,7 @@ public class Player extends Entity<Player>{
 				stopQuacking();
 			}
 		}, 0.214f); // Length of quacking sound effect in seconds
+		talk("*quack lol*");
 	}
 	
 	public void stopQuacking() {
@@ -460,6 +465,10 @@ public class Player extends Entity<Player>{
 		return ducking;
 	}
 	
+	public boolean isQuacking(){
+		return quacking;
+	}
+	
 	//TEMP METHOD
 	public ArrayList<Body> getQuackBodies(){
 		ArrayList<Body> quackBodies = new ArrayList<Body>();
@@ -511,8 +520,8 @@ public class Player extends Entity<Player>{
 		}
 		
 	}
-
-	public float getX() {
+	
+	public float getX(){
 		return currentBody.getPosition().x;
 	}
 	

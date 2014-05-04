@@ -17,8 +17,8 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
 import com.sweatyreptile.losergame.LoserContactListener;
-import com.sweatyreptile.losergame.Player;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
+import com.sweatyreptile.losergame.entities.Player;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public abstract class LevelScreen implements Screen{

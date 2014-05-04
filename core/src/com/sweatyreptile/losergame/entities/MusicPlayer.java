@@ -13,7 +13,6 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.LoserContactListener;
-import com.sweatyreptile.losergame.Player;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.sensors.ContentSensor;
@@ -61,6 +60,7 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 	private void toggleMusic(){
 		if (music.isPlaying()) music.pause();
 		else music.play();
+		talk("*beep*");
 	}
 	
 	@Override
@@ -89,10 +89,11 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 		public void bodyAdded(Stack<Body> contents) {
 			Gdx.app.log("Radio", player.toString());
 			Gdx.app.log("Radio", "Added. Size: " + contents.size());
-			for (Body quackBody : player.getQuackBodies()) {
-				if (contents.peek().equals(quackBody)) {
+			Body lastBody = contents.peek();
+			if (isPlayer(lastBody)){	
+				Player player = (Player) lastBody.getUserData();
+				if (player.isQuacking()){
 					toggleMusic();
-					break;
 				}
 			}
 		}
@@ -101,6 +102,13 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 		public void bodyRemoved(Stack<Body> contents) {
 			Gdx.app.log("Radio", "Removed. Size: " + contents.size());
 			
+		}
+		
+		private boolean isPlayer(Body body){
+			if (body != null && body.getUserData() != null && 
+					((Entity<?>)(body.getUserData()))
+						.getName().equals("duck")) return true;
+			return false;
 		}
 	}
 
