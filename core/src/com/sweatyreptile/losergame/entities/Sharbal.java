@@ -5,6 +5,8 @@ import java.util.Stack;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
@@ -18,7 +20,7 @@ public class Sharbal extends Entity<Sharbal> {
 	private ContentSensor sensor;
 	
 	private String[] phrases;
-	private static final String[] DEFAULT_PHRASES = new String[]{"go away", "i hate u", "who are you even"};;
+	private static final String[] DEFAULT_PHRASES = new String[]{"go away", "i hate u", "who are you even"};
 	
 	public Sharbal(World world, LoserContactListener contactListener,
 			BodyDef bodyDef, AssetManagerPlus assets, EntityFixtureDef fixtureDef, boolean flipped,
@@ -30,7 +32,7 @@ public class Sharbal extends Entity<Sharbal> {
 		this.phrases = phrases;
 		
 		SharbalContentSensorListener listener = new SharbalContentSensorListener();
-		sensor = new ContentSensor(contactListener, listener, world, assets, "default_sensor", .5f, 0, 0);
+		sensor = new ContentSensor(contactListener, listener, world, assets, "default_sensor", 1f, 0, 0);
 		sensor.setCenterRoundSensor(sprite);
 		sensor.weld(world, currentBody); //TODO remember to reweld the sensor if Sharbal switches bodies
 	}
@@ -54,16 +56,27 @@ public class Sharbal extends Entity<Sharbal> {
 		return phrases[random];
 	}
 	
-	private class SharbalContentSensorListener implements ContentSensorListener { //TODO: find a better way to decide whether to talk
+	private class SharbalContentSensorListener implements ContentSensorListener {
 
 		private boolean playerEntered;
 		
 		@Override
 		public void bodyAdded(Stack<Body> contents) {
 			Body lastBody = contents.peek();
-			if (!playerEntered && isPlayer(lastBody, player)){
-				talk(generateSpeech());
-				playerEntered = true;
+			
+			if (isPlayer(lastBody, player)){
+				if (player.quacking){
+					Timer.schedule(new Task() {
+						@Override
+						public void run() {
+							talk(generateSpeech());
+						}
+					}, 1f);
+				}
+				if (!playerEntered){
+					talk(generateSpeech());
+					playerEntered = true;
+				}
 			}
 		}
 
