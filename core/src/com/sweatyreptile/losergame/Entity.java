@@ -56,7 +56,7 @@ public class Entity <T extends Entity<?>>{
 		speechTask = new Task() {
 			@Override
 			public void run() {
-				setSpeechNull();
+				endSpeech();
 			}
 		};
 	}
@@ -150,7 +150,7 @@ public class Entity <T extends Entity<?>>{
 		Timer.schedule(speechTask, speech.length()*SEC_PER_CHAR);
 	}
 
-	private void setSpeechNull(){
+	private void endSpeech(){
 		speech = null;
 	}
 	
