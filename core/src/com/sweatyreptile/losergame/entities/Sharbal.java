@@ -22,7 +22,6 @@ public class Sharbal extends Entity<Sharbal> {
 	private Player player;
 	private ContentSensor sensor;
 	
-	private String[] phrases;
 	private static final String[] DEFAULT_PHRASES = new String[]{"go away", "i hate u", "who are you even"};
 	private Task respondTask;
 	
@@ -35,8 +34,6 @@ public class Sharbal extends Entity<Sharbal> {
 				viewportWidth, fixtureDef.getName());
 		
 		this.player = player;
-		this.phrases = phrases;
-		
 		SharbalContentSensorListener listener = new SharbalContentSensorListener();
 		sensor = new ContentSensor(contactListener, listener, world, assets, "default_sensor", 1f, 0, 0);
 		sensor.setCenterRoundSensor(sprite);
@@ -74,7 +71,7 @@ public class Sharbal extends Entity<Sharbal> {
 	
 	private class SharbalContentSensorListener implements ContentSensorListener {
 
-		private boolean playerEntered;
+		//private boolean playerEntered;
 		
 		@Override
 		public void bodyAdded(Stack<Body> contents) {
