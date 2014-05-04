@@ -280,6 +280,7 @@ public class Player extends Entity<Player>{
 				stopQuacking();
 			}
 		}, 0.214f); // Length of quacking sound effect in seconds
+		talk("*quack lol*");
 	}
 	
 	public void stopQuacking() {
