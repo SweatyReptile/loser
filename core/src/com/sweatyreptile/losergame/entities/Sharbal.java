@@ -113,13 +113,16 @@ public class Sharbal extends Entity<Sharbal> {
 	
 	private class SharbalContactListener implements EntityListener<Sharbal>{
 
+		Body fastBody;
+		
 		@Override
 		public void beginContact(Sharbal entity, Fixture entityFixture,
 				Fixture contactee) {
 			Vector2 velocityVector = contactee.getBody().getLinearVelocity();
 			float velocity = (float) Math.pow((float) Math.pow(velocityVector.x, 2) + (float) Math.pow(velocityVector.y, 2), 0.5);
 			System.out.println(velocity);
-			if (velocity > PAINFUL_VELOCITY){
+			if (velocity > PAINFUL_VELOCITY && fastBody == null){
+				fastBody = contactee.getBody();
 				talk(generatePhrase(new String[]{"ow", "ouch", "owwwies!"}));
 			}
 			
@@ -128,7 +131,7 @@ public class Sharbal extends Entity<Sharbal> {
 		@Override
 		public void endContact(Sharbal entity, Fixture entityFixture,
 				Fixture contactee) {
-			// TODO Auto-generated method stub
+			if (contactee.getBody() == fastBody) fastBody = null;
 			
 		}
 		
