@@ -55,9 +55,9 @@ public class TestLevelScreen extends LevelScreen{
 		sharbalBodyDef.type = BodyType.StaticBody;
 		sharbalBodyDef.position.set(0.3f, 0.1f);
 		sharbal = new Sharbal(world, contactListener, sharbalBodyDef, assets,
-				new WoodFixtureDef(assets, "cereal"), false, 
+				new EntityFixtureDef(assets, "sharbal_test"), false, 
 				Entity.DEFAULT_SCREEN_WIDTH, viewportWidth, player);
-		entities.put("cereal", sharbal);
+		entities.put("sharbal_test", sharbal);
 		
 		BodyDef groundDef = new BodyDef();
 		groundDef.type = BodyType.StaticBody;
