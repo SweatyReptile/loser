@@ -19,8 +19,7 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 
 	@Override
 	public void update(float delta) {
-		Vector2 velocity = player.getBody().getLinearVelocity();
-		if (velocity.x != 0f || velocity.y != 0f){
+		if (player.hasVelocity()){
 			updateCamera();
 		}
 		super.update(delta);
