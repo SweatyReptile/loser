@@ -193,6 +193,16 @@ public class Player extends Entity<Player>{
 		return movingDirection != Direction.NONE;
 	}
 	
+	public boolean hasVelocity(){
+		Vector2 velocity = getBody().getLinearVelocity();
+		int x = Float.compare(velocity.x, 0f);
+		int y = Float.compare(velocity.y, 0f);
+		if (x != 0 || y != 0f){
+			return true;
+		}
+		return false;
+	}
+	
 	private void weldToDuck(Body object){
 		WeldJointDef grabObjectWeld = new WeldJointDef();
 		grabObjectWeld.bodyA = currentBody;
