@@ -46,39 +46,17 @@ public class Entity <T extends Entity<?>>{
 	private static final float SPEECH_PADDING = 0.05f;
 	private static final float SEC_PER_CHAR = 0.2f;
 	
-	@SuppressWarnings("deprecation")
-	private void setUpSpeech() {
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("corbelb.ttf"));
-		speechFont = generator.generateFont(18);
-		speechFont.setScale(.0025f);
-		speechFont.setColor(Color.BLACK);
-		generator.dispose();
-		speechTask = new Task() {
-			@Override
-			public void run() {
-				endSpeech();
-			}
-		};
-	}
-	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, String name){
 		this.sprite = new Sprite();
-		currentBody = world.createBody(bodyDef);
 		this.world = world;
-		this.name = name;
-		this.contactListener = contactListener;
-		currentBody.setUserData(this);
-		setUpSpeech();
+		setUpEntity(world, bodyDef, name, contactListener);
 	}
 	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
 			EntityFixtureDef fixtureDef, float scale, 
 			boolean flipped, String name) {
 		
-		this.name = name;
-		this.contactListener = contactListener;
-		
-		currentBody = world.createBody(bodyDef);
+		setUpEntity(world, bodyDef, name, contactListener);
 		Texture spriteTexture = fixtureDef.getTexture();
 		
 		float spriteScale = scale;
@@ -96,9 +74,6 @@ public class Entity <T extends Entity<?>>{
 		sprite.setSize(spriteWidth, spriteHeight);
 		
 		sprite.setOrigin(spriteOriginX, spriteOriginY);
-		
-		currentBody.setUserData(this);
-		setUpSpeech();
 	}
 	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
@@ -114,6 +89,30 @@ public class Entity <T extends Entity<?>>{
 			String bodyName, float scale, String name) {
 		this(world, contactListener, bodyDef, fixtureDef, scale, false, name);
 	} 
+	
+	public void setUpEntity(World world, BodyDef bodyDef, String name, LoserContactListener contactListener){
+		currentBody = world.createBody(bodyDef);
+		currentBody.setUserData(this);
+		this.name = name;
+		this.contactListener = contactListener;
+		setUpSpeech();
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	private void setUpSpeech() {
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("corbelb.ttf"));
+		speechFont = generator.generateFont(18);
+		speechFont.setScale(.0025f);
+		speechFont.setColor(Color.BLACK);
+		generator.dispose();
+		speechTask = new Task() {
+			@Override
+			public void run() {
+				endSpeech();
+			}
+		};
+	}
 	
 	protected void setSpriteOrigin(Texture texture, float spriteScale,
 			float bodyScale) {
