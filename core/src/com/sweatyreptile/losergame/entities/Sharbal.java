@@ -118,7 +118,6 @@ public class Sharbal extends Entity<Sharbal> {
 				Fixture contactee) {
 			Vector2 velocityVector = contactee.getBody().getLinearVelocity();
 			float velocity = (float) Math.pow((float) Math.pow(velocityVector.x, 2) + (float) Math.pow(velocityVector.y, 2), 0.5);
-			System.out.println(velocity);
 			if (velocity > PAINFUL_VELOCITY && fastBody == null){
 				fastBody = contactee.getBody();
 				talk(generatePhrase(new String[]{"ow", "ouch", "owwwies!"}));

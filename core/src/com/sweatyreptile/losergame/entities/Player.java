@@ -173,7 +173,7 @@ public class Player extends Entity<Player>{
 		}
 		
 		super.update(delta);
-		if (movingDirection != Direction.NONE) {
+		if (isMoving()) {
 			Vector2 velocity = currentBody.getLinearVelocity();
 			if (movingDirection == Direction.LEFT) {
 				if (!ducking) currentBody.setLinearVelocity(-MAX_VELOCITY, velocity.y);
@@ -187,6 +187,20 @@ public class Player extends Entity<Player>{
 			}
 		}
 		
+	}
+	
+	public boolean isMoving() {
+		return movingDirection != Direction.NONE;
+	}
+	
+	public boolean hasVelocity(){
+		Vector2 velocity = getBody().getLinearVelocity();
+		int x = Float.compare(velocity.x, 0f);
+		int y = Float.compare(velocity.y, 0f);
+		if (x != 0 || y != 0f){
+			return true;
+		}
+		return false;
 	}
 	
 	private void weldToDuck(Body object){
@@ -515,6 +529,14 @@ public class Player extends Entity<Player>{
 			}
 		}
 		
+	}
+	
+	public float getX(){
+		return currentBody.getPosition().x;
+	}
+	
+	public float getY() {
+		return currentBody.getPosition().y;
 	}
 	
 }
