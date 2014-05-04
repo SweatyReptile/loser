@@ -65,7 +65,7 @@ public class Player extends Entity<Player>{
 	private Direction movingDirection;
 	private boolean flying;
 	private boolean ducking;
-	private boolean quacking;
+	public boolean quacking;
 	
 	private Sound quackSound;
 
