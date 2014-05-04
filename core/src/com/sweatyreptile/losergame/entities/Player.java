@@ -227,7 +227,7 @@ public class Player extends Entity<Player>{
 		}
 		ducking = true;
 		
-		if (!grabSensor.empty()) {
+		if (!grabSensor.isEmpty()) {
 			Body currentGrabBody = grabSensor.getNewestBody();
 			if (currentGrabBody.getType().equals(BodyType.DynamicBody)) {
 				grabbedObject = currentGrabBody;
@@ -459,6 +459,10 @@ public class Player extends Entity<Player>{
 	
 	public boolean isDucking(){
 		return ducking;
+	}
+	
+	public boolean isQuacking(){
+		return quacking;
 	}
 	
 	//TEMP METHOD
