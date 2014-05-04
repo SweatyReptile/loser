@@ -61,6 +61,7 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 	private void toggleMusic(){
 		if (music.isPlaying()) music.pause();
 		else music.play();
+		talk("*beep*");
 	}
 	
 	@Override
