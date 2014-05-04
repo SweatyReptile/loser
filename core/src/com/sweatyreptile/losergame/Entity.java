@@ -44,6 +44,7 @@ public class Entity <T extends Entity<?>>{
 	private BitmapFont speechFont;
 	private Task speechTask;
 	private static final float SPEECH_PADDING = 0.05f;
+	private static final float SEC_PER_CHAR = 0.2f;
 	
 	@SuppressWarnings("deprecation")
 	private void setUpSpeech() {
@@ -146,7 +147,7 @@ public class Entity <T extends Entity<?>>{
 	public void talk(String speech){
 		this.speech = speech;
 		if (speechTask.isScheduled()) speechTask.cancel();
-		Timer.schedule(speechTask, speech.length()/10);
+		Timer.schedule(speechTask, speech.length()*SEC_PER_CHAR);
 	}
 
 	private void setSpeechNull(){
