@@ -17,25 +17,39 @@ import com.sweatyreptile.losergame.fixtures.MetalFixtureDef;
 import com.sweatyreptile.losergame.fixtures.WoodFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
-public class TestLevelScreen extends LevelScreen{ 
+public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 	
 	private MusicPlayer radio;
 	private Sharbal sharbal;
 	
-	public TestLevelScreen(SpriteBatch batch, AssetManagerPlus assets,
+	public TestScrollingLevelScreen(SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
 			float viewportWidth, float viewportHeight) {
-		super(batch, assets, playerInputProcessor, width, height, viewportWidth,
-				viewportHeight);
-		// TODO Auto-generated constructor stub
+		super(batch, assets, playerInputProcessor, width, height,
+				viewportWidth, viewportHeight);
+		
 	}
 	
+	@Override
+	protected Player createPlayer() {
+		BodyDef def = new BodyDef();
+		def.position.set(viewportWidth / 2, viewportHeight / 2);
+		def.fixedRotation = true;
+		def.type = BodyType.DynamicBody;
+		return new Player(world, contactListener, def, assets);
+	}
+
+	@Override
 	protected void setupWorld() {
+		
+		level0 = -1.5f;
+		levelEnd = viewportWidth + 1.5f;
+		
 		EntityFactory ef = entityFactory;
 		
 		ef.create("dead_duck", BodyType.DynamicBody, 1.4f, .5f, new DuckFixtureDef(assets), false);
 		ef.create("wash_machine", BodyType.StaticBody, .5f, .1f, new EntityFixtureDef(assets, "wash_machine"), false);
-		//ef.create("cereal", BodyType.DynamicBody, 1.8f, 0.7f, new EntityFixtureDef(assets, "cereal"), false);
+		ef.create("cereal", BodyType.DynamicBody, 1.8f, 0.7f, new EntityFixtureDef(assets, "cereal"), false);
 		ef.create("table", BodyType.StaticBody, 1.25f, .1f, new EntityFixtureDef(assets, "table"), false);
 		ef.create("book_blue", BodyType.DynamicBody, 1.1f, 1.1f, new WoodFixtureDef(assets, "book_blue"), false);
 		ef.create("book_red", BodyType.DynamicBody, 1.15f, 1.1f, new WoodFixtureDef(assets, "book_red"), false);
@@ -69,14 +83,4 @@ public class TestLevelScreen extends LevelScreen{
 		groundBox.dispose();
 		
 	}
-
-	@Override
-	protected Player createPlayer() {
-		BodyDef duckDef = new BodyDef();
-		duckDef.type = BodyType.DynamicBody;
-		duckDef.position.set(2f, viewportHeight/2);
-		duckDef.fixedRotation = true;
-		return new Player(world, contactListener, duckDef, assets);
-	}
-
 }

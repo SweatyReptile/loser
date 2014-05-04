@@ -2,6 +2,7 @@ package com.sweatyreptile.losergame;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.sweatyreptile.losergame.entities.Player;
 
 public class PlayerInputProcessor implements InputProcessor {
 
@@ -59,6 +60,7 @@ public class PlayerInputProcessor implements InputProcessor {
 		case Input.Keys.W:
 		case Input.Keys.UP:
 		case Input.Keys.SPACE:
+			player.stopJumping();
 			return true;
 		//case Input.Keys.E:
 		//case Input.Keys.ENTER:
