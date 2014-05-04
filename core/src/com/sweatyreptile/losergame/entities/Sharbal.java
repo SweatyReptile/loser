@@ -26,6 +26,8 @@ public class Sharbal extends Entity<Sharbal> {
 	private static final String[] DEFAULT_PHRASES = new String[]{"go away", "i hate u", "who are you even"};
 	private Task respondTask;
 	
+	private static final float PAINFUL_VELOCITY = 3f;
+	
 	public Sharbal(World world, LoserContactListener contactListener,
 			BodyDef bodyDef, AssetManagerPlus assets, EntityFixtureDef fixtureDef, boolean flipped,
 			float screenWidth, float viewportWidth, Player player, String[] phrases) {
@@ -117,7 +119,7 @@ public class Sharbal extends Entity<Sharbal> {
 			Vector2 velocityVector = contactee.getBody().getLinearVelocity();
 			float velocity = (float) Math.pow((float) Math.pow(velocityVector.x, 2) + (float) Math.pow(velocityVector.y, 2), 0.5);
 			System.out.println(velocity);
-			if (velocity > 3f){
+			if (velocity > PAINFUL_VELOCITY){
 				talk(generatePhrase(new String[]{"ow", "ouch", "owwwies!"}));
 			}
 			
