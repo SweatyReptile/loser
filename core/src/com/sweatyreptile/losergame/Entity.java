@@ -170,11 +170,11 @@ public class Entity <T extends Entity<?>>{
 	}
 	
 	private float getSpeechY() {
-		return sprite.getY() + spriteHeight + speechFont.getBounds(speech).height + SPEECH_PADDING; //speech cannot be null, only works with single sprite entities
+		return sprite.getY() + sprite.getHeight() + speechFont.getBounds(speech).height + SPEECH_PADDING; //speech cannot be null, only works with single sprite entities
 	}
 
 	private float getSpeechX() {
-		return sprite.getX() + spriteWidth/2 - speechFont.getBounds(speech).width/2; //speech cannot be null, only works with single sprite entities
+		return sprite.getX() + sprite.getWidth()/2 - speechFont.getBounds(speech).width/2; //speech cannot be null, only works with single sprite entities
 	}
 	
 }
