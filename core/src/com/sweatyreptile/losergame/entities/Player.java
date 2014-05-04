@@ -65,7 +65,7 @@ public class Player extends Entity<Player>{
 	private Direction movingDirection;
 	private boolean flying;
 	private boolean ducking;
-	public boolean quacking;
+	private boolean quacking;
 	
 	private Sound quackSound;
 
@@ -459,6 +459,10 @@ public class Player extends Entity<Player>{
 	
 	public boolean isDucking(){
 		return ducking;
+	}
+	
+	public boolean isQuacking(){
+		return quacking;
 	}
 	
 	//TEMP METHOD

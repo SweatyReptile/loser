@@ -77,7 +77,7 @@ public class Sharbal extends Entity<Sharbal> {
 			
 			if (isPlayer(lastBody)){
 				Player player = (Player) lastBody.getUserData();
-				if (player.quacking){
+				if (player.isQuacking()){
 					if (respondTask.isScheduled()) respondTask.cancel();
 					Timer.schedule(respondTask, 1f);
 				}
