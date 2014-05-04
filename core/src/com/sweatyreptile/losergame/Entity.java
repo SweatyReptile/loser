@@ -43,6 +43,7 @@ public class Entity <T extends Entity<?>>{
 	private String speech;
 	private BitmapFont speechFont;
 	private Task speechTask;
+	private static final float SPEECH_PADDING = 0.05f;
 	
 	@SuppressWarnings("deprecation")
 	private void setUpSpeech() {
@@ -169,7 +170,7 @@ public class Entity <T extends Entity<?>>{
 	}
 	
 	private float getSpeechY() {
-		return sprite.getY() + spriteHeight + speechFont.getBounds(speech).height; //speech cannot be null, only works with single sprite entities
+		return sprite.getY() + spriteHeight + speechFont.getBounds(speech).height + SPEECH_PADDING; //speech cannot be null, only works with single sprite entities
 	}
 
 	private float getSpeechX() {
