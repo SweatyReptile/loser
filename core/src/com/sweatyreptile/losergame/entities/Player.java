@@ -479,14 +479,6 @@ public class Player extends Entity<Player>{
 		return quacking;
 	}
 	
-	//TEMP METHOD
-	public ArrayList<Body> getQuackBodies(){
-		ArrayList<Body> quackBodies = new ArrayList<Body>();
-		Collections.addAll(quackBodies, leftQuackingBody, rightQuackingBody,
-				leftQuackingDuckingBody, rightQuackingDuckingBody);
-		return quackBodies;
-	}
-	
 	private class PlayerContactFixerListener implements EntityListener<Player>{
 		
 		// Holds current player contacts so that they may be flushed
