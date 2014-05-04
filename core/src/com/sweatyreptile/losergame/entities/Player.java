@@ -227,7 +227,7 @@ public class Player extends Entity<Player>{
 		}
 		ducking = true;
 		
-		if (!grabSensor.empty()) {
+		if (!grabSensor.isEmpty()) {
 			Body currentGrabBody = grabSensor.getNewestBody();
 			if (currentGrabBody.getType().equals(BodyType.DynamicBody)) {
 				grabbedObject = currentGrabBody;

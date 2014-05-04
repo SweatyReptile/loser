@@ -56,7 +56,7 @@ public class ContentSensor extends Sensor {
 		}
 	}
 	
-	public boolean empty() {
+	public boolean isEmpty() {
 		return contents.empty();
 	}
 
