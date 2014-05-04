@@ -109,7 +109,7 @@ public class Entity <T extends Entity<?>>{
 		speechTask = new Task() {
 			@Override
 			public void run() {
-				endSpeech();
+				clearSpeech();
 			}
 		};
 	}
@@ -149,7 +149,7 @@ public class Entity <T extends Entity<?>>{
 		Timer.schedule(speechTask, speech.length()*SEC_PER_CHAR);
 	}
 
-	private void endSpeech(){
+	private void clearSpeech(){
 		speech = null;
 	}
 	
