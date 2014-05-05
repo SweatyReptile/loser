@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -99,10 +100,11 @@ public class Entity <T extends Entity<?>>{
 	}
 	
 	
-	@SuppressWarnings("deprecation")
 	private void setUpSpeech() {
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("corbelb.ttf"));
-		speechFont = generator.generateFont(18);
+		FreeTypeFontParameter fontParameter = new FreeTypeFontParameter();
+		fontParameter.size = 18;
+		speechFont = generator.generateFont(fontParameter);
 		speechFont.setScale(.0025f);
 		speechFont.setColor(Color.BLACK);
 		generator.dispose();
