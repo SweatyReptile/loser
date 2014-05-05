@@ -23,7 +23,8 @@ public class Sharbal extends Entity<Sharbal> {
 	
 	private static final String[] DEFAULT_PHRASES = new String[]{
 		"go away", "i hate u", "who are you even", "leave me alone", "shoo", 
-		"SWEATY REPTILES UNITE!!!1", "i miss clib", "i kick ducks like you"};
+		"SWEATY REPTILES UNITE!", "i miss clib", "i kick ducks like you", "wow i m cute",
+		"*clever remark*", "i want a donut", "*reptile noise*", "u think ur so cool but ur nothing but a fool"};
 	private static final String[] OUCH_PHRASES = new String[]{"ow", "ouch", "owwwies!"};
 	private Task respondTask;
 	
