@@ -1,5 +1,7 @@
 package com.sweatyreptile.losergame;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
@@ -149,6 +151,16 @@ public class Entity <T extends Entity<?>>{
 		this.speech = speech;
 		if (speechTask.isScheduled()) speechTask.cancel();
 		Timer.schedule(speechTask, speech.length()*SEC_PER_CHAR);
+	}
+	
+	public void talk(String[] phrases) {
+		talk(generatePhrase(phrases));
+	}
+	
+	private String generatePhrase(String[] phrases){
+		int random = (int) (Math.random()*phrases.length);
+		System.out.println(random);
+		return phrases[random];
 	}
 
 	private void clearSpeech(){
