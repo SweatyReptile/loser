@@ -33,8 +33,8 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		
 		PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
 		
-		Screen testScreen = new TestScrollingLevelScreen(batch, assets, playerInputProcessor,
-				Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 3.2f, 1.8f);
+		Screen testScreen = new TestScrollingLevelScreen(this, null, batch, assets, playerInputProcessor,
+				Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 3.2f, 1.8f, 30);
 		
 		Screen loadingScreen = new LoadingScreen(this, assets, testScreen);
 		
