@@ -147,10 +147,14 @@ public class Entity <T extends Entity<?>>{
 		sprite.setRotation(MathUtils.radiansToDegrees * currentBody.getAngle());
 	}
 	
+	private float delaySeconds(String speech){
+		return speech.replaceAll("[^\\p{L}\\p{Nd}]", "").length()*SEC_PER_CHAR;
+	}
+	
 	public void talk(String speech){
 		this.speech = speech;
 		if (speechTask.isScheduled()) speechTask.cancel();
-		Timer.schedule(speechTask, speech.length()*SEC_PER_CHAR);
+		Timer.schedule(speechTask, delaySeconds(speech));
 	}
 	
 	public void talk(String[] phrases) {
