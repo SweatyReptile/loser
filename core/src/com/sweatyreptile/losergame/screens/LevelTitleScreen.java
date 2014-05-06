@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Timer.Task;
 
 public class LevelTitleScreen extends FinishableScreen {
 
+	private static final float SEC_PER_CHAR = 0.2f;
 	private int screenWidth;
 	private int screenHeight;
 	
@@ -71,8 +72,12 @@ public class LevelTitleScreen extends FinishableScreen {
 
 	@Override
 	public void show() {
-		Timer.schedule(finishTask, );
+		Timer.schedule(finishTask, delaySeconds(title));
 		//quack
+	}
+	
+	private float delaySeconds(String title){
+		return title.replaceAll("[^\\p{L}\\p{Nd}]", "").length()*SEC_PER_CHAR;
 	}
 
 	private float getTextY() {
