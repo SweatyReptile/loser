@@ -4,6 +4,7 @@ import java.awt.Font;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,21 +14,23 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
+import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class LevelTitleScreen extends FinishableScreen {
 
 	private static final float SEC_PER_CHAR = 0.0025f;
 	private int screenWidth;
 	private int screenHeight;
+	private SpriteBatch batch;
+	private AssetManagerPlus assets;
 	
 	private BitmapFont font;
 	private String title;
-	private SpriteBatch batch;
 	
 	private Task finishTask;
 	private float timeInSeconds;
 	
-	public LevelTitleScreen(SpriteBatch batch, int screenWidth, int screenHeight, 
+	public LevelTitleScreen(SpriteBatch batch, AssetManagerPlus assets, int screenWidth, int screenHeight, 
 			ScreenFinishedListener finishListener,
 			Screen nextScreen, String title) {
 		super(finishListener, nextScreen);
@@ -35,6 +38,7 @@ public class LevelTitleScreen extends FinishableScreen {
 		this.screenHeight = screenHeight;
 		this.title = title;
 		this.batch = batch;
+		this.assets = assets;
 		finishTask = new Task() {
 			@Override
 			public void run() {
@@ -44,10 +48,10 @@ public class LevelTitleScreen extends FinishableScreen {
 		font = generateFont(72, 1f, Color.WHITE); //TODO this is a default, make overloaded constructors, also fix scaling
 	}
 	
-	public LevelTitleScreen(SpriteBatch batch, int screenWidth, int screenHeight, 
+	public LevelTitleScreen(SpriteBatch batch, AssetManagerPlus assets, int screenWidth, int screenHeight, 
 			ScreenFinishedListener finishListener,
 			Screen nextScreen, String title, float timeInSeconds) {
-		this(batch, screenWidth, screenHeight, finishListener, nextScreen, title);
+		this(batch, assets, screenWidth, screenHeight, finishListener, nextScreen, title);
 		this.timeInSeconds = timeInSeconds;
 	}
 	
@@ -82,7 +86,8 @@ public class LevelTitleScreen extends FinishableScreen {
 	public void show() {
 		if (timeInSeconds == 0) timeInSeconds = delaySeconds(title);
 		Timer.schedule(finishTask, timeInSeconds);
-		//quack
+		Sound quackSound = (Sound) assets.get("quack_dummy.ogg");
+		quackSound.play();
 	}
 	
 	private float delaySeconds(String title){
