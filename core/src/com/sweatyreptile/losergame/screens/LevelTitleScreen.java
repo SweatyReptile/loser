@@ -25,6 +25,7 @@ public class LevelTitleScreen extends FinishableScreen {
 	private SpriteBatch batch;
 	
 	private Task finishTask;
+	private float timeInSeconds;
 	
 	public LevelTitleScreen(SpriteBatch batch, int screenWidth, int screenHeight, 
 			ScreenFinishedListener finishListener,
@@ -41,6 +42,13 @@ public class LevelTitleScreen extends FinishableScreen {
 			}
 		};
 		font = generateFont(72, 1f, Color.WHITE); //TODO this is a default, make overloaded constructors, also fix scaling
+	}
+	
+	public LevelTitleScreen(SpriteBatch batch, int screenWidth, int screenHeight, 
+			ScreenFinishedListener finishListener,
+			Screen nextScreen, String title, float timeInSeconds) {
+		this(batch, screenWidth, screenHeight, finishListener, nextScreen, title);
+		this.timeInSeconds = timeInSeconds;
 	}
 	
 	private BitmapFont generateFont(int size, float scale, Color color) {
@@ -72,7 +80,8 @@ public class LevelTitleScreen extends FinishableScreen {
 
 	@Override
 	public void show() {
-		Timer.schedule(finishTask, delaySeconds(title));
+		if (timeInSeconds == 0) timeInSeconds = delaySeconds(title);
+		Timer.schedule(finishTask, timeInSeconds);
 		//quack
 	}
 	
