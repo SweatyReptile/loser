@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.screens.FinishableScreen;
+import com.sweatyreptile.losergame.screens.LevelTitleScreen;
 import com.sweatyreptile.losergame.screens.LoadingScreen;
 import com.sweatyreptile.losergame.screens.ScreenFinishedListener;
 import com.sweatyreptile.losergame.screens.TestScrollingLevelScreen;
@@ -24,6 +25,8 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 	public void create () {
 		assets = new AssetManagerPlus();
 		batch = new SpriteBatch();
+		int screenWidth = Gdx.graphics.getWidth();
+		int screenHeight = Gdx.graphics.getHeight();
 
 		assets.load("badlogic.jpg", Texture.class);
 		assets.load("duck.json", FixedBodyEditorLoader.class);
@@ -34,9 +37,12 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
 		
 		Screen testScreen = new TestScrollingLevelScreen(batch, assets, playerInputProcessor,
-				Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), 3.2f, 1.8f);
+				screenWidth, screenHeight, 3.2f, 1.8f);
 		
-		Screen loadingScreen = new LoadingScreen(this, assets, testScreen);
+		Screen testTitleScreen = new LevelTitleScreen(batch, screenWidth, screenHeight, 
+				this, testScreen, "WELCOME TO THE JUNGLE");
+		
+		Screen loadingScreen = new LoadingScreen(this, assets, testTitleScreen);
 		
 		Gdx.input.setInputProcessor(playerInputProcessor);
 		
