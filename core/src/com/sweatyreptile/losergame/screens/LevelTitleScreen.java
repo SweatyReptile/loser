@@ -16,7 +16,7 @@ import com.badlogic.gdx.utils.Timer.Task;
 
 public class LevelTitleScreen extends FinishableScreen {
 
-	private static final float SEC_PER_CHAR = 0.2f;
+	private static final float SEC_PER_CHAR = 0.0025f;
 	private int screenWidth;
 	private int screenHeight;
 	
