@@ -163,7 +163,7 @@ public abstract class LevelScreen extends FinishableScreen{
 	}
 	
 	public void finish(){
-		finish();
+		super.finish();
 	}
 
 }
