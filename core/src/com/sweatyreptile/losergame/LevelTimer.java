@@ -26,8 +26,7 @@ public class LevelTimer {
 	
 	public void start(){
 		startTime = (float) TimeUtils.nanoTime();
-		endTime = startTime + (totalSeconds * (float) Math.pow(10, 9)); //TODO does this work
-		System.out.println(startTime + " to " + endTime);
+		endTime = startTime + (totalSeconds * (float) Math.pow(10, 9));
 	}
 	
 	public void render(ShapeRenderer shapeRenderer){
