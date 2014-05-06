@@ -1,15 +1,9 @@
 package com.sweatyreptile.losergame;
 
-import java.util.ArrayList;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -44,7 +38,6 @@ public class Entity <T extends Entity<?>>{
 	protected LoserContactListener contactListener;
 	
 	private String speech;
-	private BitmapFont speechFont;
 	private Task speechTask;
 	private static final float SPEECH_PADDING = 0.05f;
 	private static final float SEC_PER_CHAR = 0.2f;
@@ -103,13 +96,6 @@ public class Entity <T extends Entity<?>>{
 	
 	
 	private void setUpSpeech() {
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("corbelb.ttf"));
-		FreeTypeFontParameter fontParameter = new FreeTypeFontParameter();
-		fontParameter.size = 18;
-		speechFont = generator.generateFont(fontParameter);
-		speechFont.setScale(.0025f);
-		speechFont.setColor(Color.BLACK);
-		generator.dispose();
 		speechTask = new Task() {
 			@Override
 			public void run() {
@@ -130,7 +116,10 @@ public class Entity <T extends Entity<?>>{
 	
 	public void render(SpriteBatch renderer){
 		sprite.draw(renderer);
-		if (speech != null) speechFont.draw(renderer, speech, getSpeechX(), getSpeechY());
+	}
+	
+	public void renderSpeech(SpriteBatch renderer, BitmapFont font){
+		if (speech != null) font.draw(renderer, speech, getSpeechX(font), getSpeechY(font));
 	}
 	
 	public void update(float delta){
@@ -187,12 +176,15 @@ public class Entity <T extends Entity<?>>{
 		contactListener.addEntityListener(name, listener);
 	}
 	
-	private float getSpeechY() {
-		return sprite.getY() + sprite.getHeight() + speechFont.getBounds(speech).height + SPEECH_PADDING; //speech cannot be null, only works with single sprite entities
+	// For the below two methods, speech cannot be null, 
+	// and only works with single sprite entities
+	
+	private float getSpeechY(BitmapFont font) {
+		return sprite.getY() + sprite.getHeight() + font.getBounds(speech).height + SPEECH_PADDING;
 	}
 
-	private float getSpeechX() {
-		return sprite.getX() + sprite.getWidth()/2 - speechFont.getBounds(speech).width/2; //speech cannot be null, only works with single sprite entities
+	private float getSpeechX(BitmapFont font) {
+		return sprite.getX() + sprite.getWidth()/2 - font.getBounds(speech).width/2; 
 	}
 	
 }
