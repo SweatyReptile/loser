@@ -22,7 +22,7 @@ import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
-public abstract class LevelScreen implements Screen{
+public abstract class LevelScreen extends FinishableScreen{
 
 	private static final boolean DRAW_PHYSICS = false;
 	
@@ -46,8 +46,9 @@ public abstract class LevelScreen implements Screen{
 	private LevelTimer levelTimer;
 
 	
-	public LevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
+	public LevelScreen(ScreenFinishedListener listener, Screen nextScreen, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight, float timeLimit){
+		super(listener, nextScreen);
 		this.spriteRenderer = batch;
 		this.assets = assets;
 		this.playerInputProcessor = playerInputProcessor;
@@ -57,7 +58,7 @@ public abstract class LevelScreen implements Screen{
 		this.viewportHeight = viewportHeight;
 		this.entities = new HashMap<String, Entity<?>>();
 		shapeRenderer = new ShapeRenderer();
-		levelTimer = new LevelTimer(viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
+		levelTimer = new LevelTimer(this, viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
 	}
 
 	@Override
@@ -159,6 +160,10 @@ public abstract class LevelScreen implements Screen{
 	@Override
 	public void dispose() {
 		world.dispose();
+	}
+	
+	public void finish(){
+		finish();
 	}
 
 }

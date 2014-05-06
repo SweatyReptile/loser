@@ -1,5 +1,6 @@
 package com.sweatyreptile.losergame.screens;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -22,10 +23,11 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 	private MusicPlayer radio;
 	private Sharbal sharbal;
 	
-	public TestScrollingLevelScreen(SpriteBatch batch, AssetManagerPlus assets,
+	public TestScrollingLevelScreen(ScreenFinishedListener listener, Screen nextScreen,
+			SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
 			float viewportWidth, float viewportHeight, float timeLimit) {
-		super(batch, assets, playerInputProcessor, width, height,
+		super(listener, nextScreen, batch, assets, playerInputProcessor, width, height,
 				viewportWidth, viewportHeight, timeLimit);
 		
 	}
