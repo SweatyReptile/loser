@@ -103,7 +103,7 @@ public class Entity <T extends Entity<?>>{
 	private void setUpSpeech() {
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("corbelb.ttf"));
 		speechFont = generator.generateFont(18);
-		speechFont.setScale(.0025f);
+		speechFont.setScale(0.0025f);
 		speechFont.setColor(Color.BLACK);
 		generator.dispose();
 		speechTask = new Task() {
