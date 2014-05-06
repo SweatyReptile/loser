@@ -10,13 +10,12 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
-import com.sweatyreptile.losergame.LevelTimer;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
@@ -32,7 +31,6 @@ public abstract class LevelScreen implements Screen{
 	protected float viewportHeight;
 	protected Camera camera;
 	protected SpriteBatch spriteRenderer;
-	protected ShapeRenderer shapeRenderer;
 	protected Box2DDebugRenderer physRenderer;
 	protected World world;
 	protected LoserContactListener contactListener;
@@ -42,8 +40,6 @@ public abstract class LevelScreen implements Screen{
 	private PlayerInputProcessor playerInputProcessor;
 	protected AssetManagerPlus assets;
 	protected Texture background;
-	
-	private LevelTimer test;
 
 	
 	public LevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
@@ -56,9 +52,6 @@ public abstract class LevelScreen implements Screen{
 		this.viewportWidth = viewportWidth;
 		this.viewportHeight = viewportHeight;
 		this.entities = new HashMap<String, Entity<?>>();
-		shapeRenderer = new ShapeRenderer();
-		
-		test = new LevelTimer(viewportWidth, viewportHeight, 60);
 	}
 
 	@Override
@@ -81,8 +74,6 @@ public abstract class LevelScreen implements Screen{
 	
 		spriteRenderer.end();
 		
-		test.render(shapeRenderer);
-		
 		if (DRAW_PHYSICS){
 			physRenderer.render(world, camera.combined);
 		}
@@ -95,7 +86,6 @@ public abstract class LevelScreen implements Screen{
 		for (Entity<?> entity : entities.values()){
 			entity.update(delta);
 		}
-		test.update();
 	}
 
 	@Override
@@ -116,8 +106,6 @@ public abstract class LevelScreen implements Screen{
 		camera.viewportWidth = viewportWidth;
 		setCameraPosition(viewportWidth/ 2, viewportHeight/ 2);
 		
-		shapeRenderer.setProjectionMatrix(camera.combined);
-		
 		world = new World(new Vector2(0f, -9.8f), true);
 		physRenderer = new Box2DDebugRenderer();
 		
@@ -135,8 +123,6 @@ public abstract class LevelScreen implements Screen{
 		
 		playerInputProcessor.setPlayer(player);
 		setupWorld();
-		
-		test.start();
 	}
 	
 	protected abstract Player createPlayer(); 
