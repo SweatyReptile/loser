@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.utils.Timer.Task;
 
 public class LevelTitleScreen extends FinishableScreen {
 
@@ -20,6 +23,8 @@ public class LevelTitleScreen extends FinishableScreen {
 	private String title;
 	private SpriteBatch batch;
 	
+	private Task finishTask;
+	
 	public LevelTitleScreen(SpriteBatch batch, int screenWidth, int screenHeight, 
 			ScreenFinishedListener finishListener,
 			Screen nextScreen, String title) {
@@ -28,6 +33,12 @@ public class LevelTitleScreen extends FinishableScreen {
 		this.screenHeight = screenHeight;
 		this.title = title;
 		this.batch = batch;
+		finishTask = new Task() {
+			@Override
+			public void run() {
+				finish();
+			}
+		};
 		font = generateFont(72, 1f, Color.WHITE); //TODO this is a default, make overloaded constructors, also fix scaling
 	}
 	
@@ -60,8 +71,8 @@ public class LevelTitleScreen extends FinishableScreen {
 
 	@Override
 	public void show() {
-	//quack
-
+		Timer.schedule(finishTask, );
+		//quack
 	}
 
 	private float getTextY() {
