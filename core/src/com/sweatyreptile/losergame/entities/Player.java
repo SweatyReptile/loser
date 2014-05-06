@@ -385,7 +385,7 @@ public class Player extends Entity<Player>{
 		Vector2 position = currentBody.getPosition();
 		Vector2 velocity = currentBody.getLinearVelocity();
 		currentBody.setLinearVelocity(velocity.x, 0f);
-		currentBody.applyLinearImpulse(0, 0.55f, position.x, position.y, true);
+		currentBody.applyLinearImpulse(0, 0.40f, position.x, position.y, true);
 		
 		if (grabbedObject != null){
 			Vector2 grabPos = grabbedObject.getPosition();
