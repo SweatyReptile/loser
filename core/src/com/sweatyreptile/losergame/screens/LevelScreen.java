@@ -43,11 +43,11 @@ public abstract class LevelScreen implements Screen{
 	protected AssetManagerPlus assets;
 	protected Texture background;
 	
-	private LevelTimer test;
+	private LevelTimer levelTimer;
 
 	
 	public LevelScreen(SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
-			int width, int height, float viewportWidth, float viewportHeight){
+			int width, int height, float viewportWidth, float viewportHeight, float timeLimit){
 		this.spriteRenderer = batch;
 		this.assets = assets;
 		this.playerInputProcessor = playerInputProcessor;
@@ -57,8 +57,7 @@ public abstract class LevelScreen implements Screen{
 		this.viewportHeight = viewportHeight;
 		this.entities = new HashMap<String, Entity<?>>();
 		shapeRenderer = new ShapeRenderer();
-		
-		test = new LevelTimer(viewportWidth, viewportHeight, 60);
+		levelTimer = new LevelTimer(viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
 	}
 
 	@Override
@@ -81,7 +80,7 @@ public abstract class LevelScreen implements Screen{
 	
 		spriteRenderer.end();
 		
-		test.render(shapeRenderer);
+		levelTimer.render(shapeRenderer);
 		
 		if (DRAW_PHYSICS){
 			physRenderer.render(world, camera.combined);
@@ -95,7 +94,7 @@ public abstract class LevelScreen implements Screen{
 		for (Entity<?> entity : entities.values()){
 			entity.update(delta);
 		}
-		test.update();
+		levelTimer.update();
 	}
 
 	@Override
@@ -136,7 +135,7 @@ public abstract class LevelScreen implements Screen{
 		playerInputProcessor.setPlayer(player);
 		setupWorld();
 		
-		test.start();
+		levelTimer.start();
 	}
 	
 	protected abstract Player createPlayer(); 
