@@ -31,8 +31,7 @@ public class LevelTitleScreen extends FinishableScreen {
 	private float timeInSeconds;
 	
 	public LevelTitleScreen(SpriteBatch batch, AssetManagerPlus assets, int screenWidth, int screenHeight, 
-			ScreenFinishedListener finishListener,
-			Screen nextScreen, String title) {
+			ScreenFinishedListener finishListener, Screen nextScreen, String title) {
 		super(finishListener, nextScreen);
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
@@ -46,7 +45,7 @@ public class LevelTitleScreen extends FinishableScreen {
 				finish();
 			}
 		};
-		font = generateFont(72, 1f, Color.WHITE); //TODO this is a default, make overloaded constructors, also fix scaling
+		font = generateFont(72, 1f, Color.WHITE);
 	}
 	
 	public LevelTitleScreen(SpriteBatch batch, AssetManagerPlus assets, int screenWidth, int screenHeight, 
