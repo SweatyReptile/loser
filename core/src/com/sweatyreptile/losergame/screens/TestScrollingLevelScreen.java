@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
+import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.MusicPlayer;
 import com.sweatyreptile.losergame.entities.Player;
@@ -23,11 +24,10 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 	private MusicPlayer radio;
 	private Sharbal sharbal;
 	
-	public TestScrollingLevelScreen(ScreenFinishedListener listener, Screen nextScreen,
-			SpriteBatch batch, AssetManagerPlus assets,
+	public TestScrollingLevelScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
 			float viewportWidth, float viewportHeight, float timeLimit) {
-		super(listener, nextScreen, batch, assets, playerInputProcessor, width, height,
+		super(levelManager, batch, assets, playerInputProcessor, width, height,
 				viewportWidth, viewportHeight, timeLimit);
 		
 	}

@@ -1,6 +1,5 @@
 package com.sweatyreptile.losergame.screens;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -8,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
+import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.MusicPlayer;
 import com.sweatyreptile.losergame.entities.Player;
@@ -23,12 +23,11 @@ public class TestLevelScreen extends LevelScreen{
 	private MusicPlayer radio;
 	private Sharbal sharbal;
 	
-	public TestLevelScreen(ScreenFinishedListener listener, Screen nextScreen, SpriteBatch batch, AssetManagerPlus assets,
+	public TestLevelScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
 			float viewportWidth, float viewportHeight, float timeLimit) {
-		super(listener, nextScreen, batch, assets, playerInputProcessor, width, height, viewportWidth,
+		super(levelManager, batch, assets, playerInputProcessor, width, height, viewportWidth,
 				viewportHeight, timeLimit);
-		// TODO Auto-generated constructor stub
 	}
 	
 	protected void setupWorld() {
