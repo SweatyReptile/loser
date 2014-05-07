@@ -6,12 +6,17 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
@@ -42,7 +47,7 @@ public abstract class LevelScreen extends FinishableScreen{
 	private PlayerInputProcessor playerInputProcessor;
 	protected AssetManagerPlus assets;
 	protected Texture background;
-	
+	protected BitmapFont defaultSpeechFont;
 	private LevelTimer levelTimer;
 
 	
@@ -79,6 +84,12 @@ public abstract class LevelScreen extends FinishableScreen{
 		
 		player.render(spriteRenderer);
 	
+		for (Entity<?> entity : entities.values()){
+			entity.renderSpeech(spriteRenderer, defaultSpeechFont);
+		}
+		
+		player.renderSpeech(spriteRenderer, defaultSpeechFont);
+		
 		spriteRenderer.end();
 		
 		levelTimer.render(shapeRenderer);
@@ -134,11 +145,23 @@ public abstract class LevelScreen extends FinishableScreen{
 		}
 		
 		playerInputProcessor.setPlayer(player);
-		setupWorld();
 		
+		setupFonts();
+		setupWorld();
+
 		levelTimer.start();
 	}
 	
+	protected void setupFonts() {
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("corbelb.ttf"));
+		FreeTypeFontParameter fontParameter = new FreeTypeFontParameter();
+		fontParameter.size = 18;
+		defaultSpeechFont = generator.generateFont(fontParameter);
+		defaultSpeechFont.setScale(.0025f);
+		defaultSpeechFont.setColor(Color.BLACK);
+		generator.dispose();
+	}
+
 	protected abstract Player createPlayer(); 
 	protected abstract void setupWorld();
 

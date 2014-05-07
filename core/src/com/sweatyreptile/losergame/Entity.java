@@ -41,7 +41,6 @@ public class Entity <T extends Entity<?>>{
 	protected LoserContactListener contactListener;
 	
 	private String speech;
-	private BitmapFont speechFont;
 	private Task speechTask;
 	private static final float SPEECH_PADDING = 0.05f;
 	private static final float SEC_PER_CHAR = 0.2f;
@@ -99,13 +98,7 @@ public class Entity <T extends Entity<?>>{
 	}
 	
 	
-	@SuppressWarnings("deprecation")
 	private void setUpSpeech() {
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("corbelb.ttf"));
-		speechFont = generator.generateFont(18);
-		speechFont.setScale(0.0025f);
-		speechFont.setColor(Color.BLACK);
-		generator.dispose();
 		speechTask = new Task() {
 			@Override
 			public void run() {
@@ -126,7 +119,10 @@ public class Entity <T extends Entity<?>>{
 	
 	public void render(SpriteBatch renderer){
 		sprite.draw(renderer);
-		if (speech != null) speechFont.draw(renderer, speech, getSpeechX(), getSpeechY());
+	}
+	
+	public void renderSpeech(SpriteBatch renderer, BitmapFont font){
+		if (speech != null) font.draw(renderer, speech, getSpeechX(font), getSpeechY(font));
 	}
 	
 	public void update(float delta){
@@ -143,10 +139,24 @@ public class Entity <T extends Entity<?>>{
 		sprite.setRotation(MathUtils.radiansToDegrees * currentBody.getAngle());
 	}
 	
+	private float delaySeconds(String speech){
+		return speech.replaceAll("[^\\p{L}\\p{Nd}]", "").length()*SEC_PER_CHAR;
+	}
+	
 	public void talk(String speech){
 		this.speech = speech;
 		if (speechTask.isScheduled()) speechTask.cancel();
-		Timer.schedule(speechTask, speech.length()*SEC_PER_CHAR);
+		Timer.schedule(speechTask, delaySeconds(speech));
+	}
+	
+	public void talk(String[] phrases) {
+		talk(generatePhrase(phrases));
+	}
+	
+	private String generatePhrase(String[] phrases){
+		int random = (int) (Math.random()*phrases.length);
+		System.out.println(random);
+		return phrases[random];
 	}
 
 	private void clearSpeech(){
@@ -169,12 +179,15 @@ public class Entity <T extends Entity<?>>{
 		contactListener.addEntityListener(name, listener);
 	}
 	
-	private float getSpeechY() {
-		return sprite.getY() + sprite.getHeight() + speechFont.getBounds(speech).height + SPEECH_PADDING; //speech cannot be null, only works with single sprite entities
+	// For the below two methods, speech cannot be null, 
+	// and only works with single sprite entities
+	
+	private float getSpeechY(BitmapFont font) {
+		return sprite.getY() + sprite.getHeight() + font.getBounds(speech).height + SPEECH_PADDING;
 	}
 
-	private float getSpeechX() {
-		return sprite.getX() + sprite.getWidth()/2 - speechFont.getBounds(speech).width/2; //speech cannot be null, only works with single sprite entities
+	private float getSpeechX(BitmapFont font) {
+		return sprite.getX() + sprite.getWidth()/2 - font.getBounds(speech).width/2; 
 	}
 	
 }
