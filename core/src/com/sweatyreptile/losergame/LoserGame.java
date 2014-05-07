@@ -36,11 +36,13 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		
 		PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
 		
-		Screen testScreen = new TestScrollingLevelScreen(this, null, batch, assets, playerInputProcessor,
+		FinishableScreen testScreen = new TestScrollingLevelScreen(this, null, batch, assets, playerInputProcessor,
 				screenWidth, screenHeight, 3.2f, 1.8f, 30);
 		
 		Screen testTitleScreen = new LevelTitleScreen(batch, assets, screenWidth, screenHeight, 
 				this, testScreen, "WELCOME TO THE JUNGLE");
+		
+		testScreen.setNextScreen(testTitleScreen);
 		
 		Screen loadingScreen = new LoadingScreen(this, assets, testTitleScreen);
 		

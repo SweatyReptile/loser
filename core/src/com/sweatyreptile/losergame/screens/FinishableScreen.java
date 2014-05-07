@@ -14,6 +14,11 @@ public abstract class FinishableScreen implements Screen{
 	
 	protected void finish(){
 		finishListener.onFinish(this, nextScreen);
+		dispose();
+	}
+	
+	public void setNextScreen(Screen nextScreen){
+		this.nextScreen = nextScreen;
 	}
 	
 	
