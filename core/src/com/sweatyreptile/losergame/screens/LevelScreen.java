@@ -59,21 +59,26 @@ public abstract class LevelScreen implements Screen{
 		try {
 			screenClass = Class.forName(levelType);
 		} catch (ClassNotFoundException e) {
-			Gdx.app.error("Level Instantiation", "Level type " + levelType + " not found!", e);
+			Gdx.app.error("Level Instantiation", 
+					"Level type " + levelType + " not found!", e);
 		}
 		
 		LevelScreen levelScreen = null;
 		try {
 			levelScreen = (LevelScreen) screenClass.newInstance();
 		} catch (InstantiationException e) {
-			Gdx.app.error("Level Instantiation", "Level type " + levelType + " could not be instantiated!");
+			Gdx.app.error("Level Instantiation", 
+					"Level type " + levelType + " could not be instantiated!");
 			Gdx.app.error("Level Instantiation", 
 					"This may be because it does not containt a nullary constructor, or is an abstract type", e);
 		} catch (IllegalAccessException e) {
-			Gdx.app.error("Level Instantiation", "Nullary constructor of " + levelType + " is not public");
+			Gdx.app.error("Level Instantiation", 
+					"Nullary constructor of " + levelType + " is not public");
 		}
 		
-		levelScreen.init(manager, batch, assets, playerInputProcessor, width, height, viewportWidth, viewportHeight, timeLimit);
+		levelScreen.init(manager, batch, assets,
+				playerInputProcessor, width, height,
+				viewportWidth, viewportHeight, timeLimit);
 		
 		return null;
 	}
