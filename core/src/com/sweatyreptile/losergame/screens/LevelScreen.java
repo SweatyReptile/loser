@@ -31,6 +31,7 @@ public abstract class LevelScreen implements Screen{
 
 	private static final boolean DRAW_PHYSICS = false;
 	protected LevelManager levelManager;
+	protected String levelName;
 	protected String nextLevel;
 	protected int width;
 	protected int height;
@@ -239,6 +240,14 @@ public abstract class LevelScreen implements Screen{
 
 	public void setNextLevel(String nextLevel) {
 		this.nextLevel = nextLevel;
+	}
+
+	public String getLevelName() {
+		return levelName;
+	}
+
+	public void setLevelName(String levelName) {
+		this.levelName = levelName;
 	}
 
 	public void setLevelManager(LevelManager levelManager) {
