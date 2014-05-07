@@ -76,6 +76,12 @@ public abstract class LevelScreen implements Screen{
 		
 		player.render(spriteRenderer);
 	
+		for (Entity<?> entity : entities.values()){
+			entity.renderSpeech(spriteRenderer, defaultSpeechFont);
+		}
+		
+		player.renderSpeech(spriteRenderer, defaultSpeechFont);
+		
 		spriteRenderer.end();
 		
 		if (DRAW_PHYSICS){
