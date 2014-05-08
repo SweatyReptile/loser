@@ -54,7 +54,7 @@ public abstract class LevelScreen implements Screen{
 	protected float timeLimit;
 	
 	public static final LevelScreen newInstance(String levelType, LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
-			int width, int height, float viewportWidth, float viewportHeight, float timeLimit) {
+			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String levelName) {
 		
 		Class<?> screenClass = null;
 		try {
@@ -79,7 +79,7 @@ public abstract class LevelScreen implements Screen{
 		
 		levelScreen.init(manager, batch, assets,
 				playerInputProcessor, width, height,
-				viewportWidth, viewportHeight, timeLimit);
+				viewportWidth, viewportHeight, timeLimit, levelName);
 		
 		return null;
 	}
@@ -89,12 +89,12 @@ public abstract class LevelScreen implements Screen{
 	}
 	
 	public LevelScreen(LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
-			int width, int height, float viewportWidth, float viewportHeight, float timeLimit){
-		init(manager, batch, assets, playerInputProcessor, width, height, viewportWidth, viewportHeight, timeLimit);
+			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String levelName){
+		init(manager, batch, assets, playerInputProcessor, width, height, viewportWidth, viewportHeight, timeLimit, levelName);
 	}
 	
 	public final void init(LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
-			int width, int height, float viewportWidth, float viewportHeight, float timeLimit){
+			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String levelName){
 		this.levelManager = manager;
 		this.spriteRenderer = batch;
 		this.assets = assets;
@@ -104,6 +104,7 @@ public abstract class LevelScreen implements Screen{
 		this.viewportWidth = viewportWidth;
 		this.viewportHeight = viewportHeight;
 		this.timeLimit = timeLimit;
+		this.levelName = levelName;
 	}
 
 	@Override
