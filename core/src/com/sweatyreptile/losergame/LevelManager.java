@@ -6,15 +6,16 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
+import com.sweatyreptile.losergame.screens.FinishableScreen;
 import com.sweatyreptile.losergame.screens.LevelScreen;
 import com.sweatyreptile.losergame.screens.LevelTitleScreen;
 import com.sweatyreptile.losergame.screens.ScreenFinishedListener;
-import com.sweatyreptile.losergame.screens.TestScrollingLevelScreen;
 
 public class LevelManager {
 
 	private Map<String, LevelTitleScreen> levelTitles;
 	private Map<String, LevelScreen> levels;
+	private FinishableScreen currentScreen;
 	private SpriteBatch batch;
 	private AssetManagerPlus assets;
 	private PlayerInputProcessor inputProcessor;
@@ -55,5 +56,15 @@ public class LevelManager {
 		Gdx.app.log("LevelManager", "Instantiated " + alias);
 	}
 	
+	public void level(String alias){
+		LevelTitleScreen ltScreen = levelTitles.get(alias);
+		screenFinishedListener.onFinish(currentScreen, ltScreen);
+		currentScreen = ltScreen;
+	}
+	
+	public void level_notitle(String alias){
+		LevelScreen lvlScreen = levels.get(alias);
+		screenFinishedListener.onFinish(currentScreen, lvlScreen);
+	}
 	
 }
