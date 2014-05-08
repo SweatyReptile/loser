@@ -49,6 +49,7 @@ public abstract class LevelScreen extends FinishableScreen{
 	protected Texture background;
 	protected BitmapFont defaultSpeechFont;
 	private LevelTimer levelTimer;
+	private boolean limitedTime;
 
 	
 	public LevelScreen(ScreenFinishedListener listener, Screen nextScreen, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
@@ -63,7 +64,10 @@ public abstract class LevelScreen extends FinishableScreen{
 		this.viewportHeight = viewportHeight;
 		this.entities = new HashMap<String, Entity<?>>();
 		shapeRenderer = new ShapeRenderer();
-		levelTimer = new LevelTimer(this, viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
+		if (timeLimit >= 0){
+			limitedTime = true;
+			levelTimer = new LevelTimer(this, viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
+		}
 	}
 
 	@Override
@@ -92,7 +96,7 @@ public abstract class LevelScreen extends FinishableScreen{
 		
 		spriteRenderer.end();
 		
-		levelTimer.render(shapeRenderer);
+		if (limitedTime) levelTimer.render(shapeRenderer);
 		
 		if (DRAW_PHYSICS){
 			physRenderer.render(world, camera.combined);
@@ -106,7 +110,7 @@ public abstract class LevelScreen extends FinishableScreen{
 		for (Entity<?> entity : entities.values()){
 			entity.update(delta);
 		}
-		levelTimer.update();
+		if (limitedTime) levelTimer.update();
 	}
 
 	@Override
@@ -149,7 +153,7 @@ public abstract class LevelScreen extends FinishableScreen{
 		setupFonts();
 		setupWorld();
 
-		levelTimer.start();
+		if (limitedTime) levelTimer.start();
 	}
 	
 	protected void setupFonts() {
