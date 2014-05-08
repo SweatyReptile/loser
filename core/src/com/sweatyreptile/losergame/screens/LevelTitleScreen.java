@@ -24,13 +24,16 @@ public class LevelTitleScreen implements FinishableScreen {
 	private BitmapFont font;
 	private String title;
 	
+	private String levelAlias;
+	
 	private Task finishTask;
 	private float timeInSeconds;
 	
 	public LevelTitleScreen(SpriteBatch batch, AssetManagerPlus assets,
-			int screenWidth, int screenHeight, String title) {
+			int screenWidth, int screenHeight, String levelAlias, String title) {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
+		this.levelAlias = levelAlias;
 		this.title = title;
 		this.batch = batch;
 		this.assets = assets;
@@ -46,8 +49,8 @@ public class LevelTitleScreen implements FinishableScreen {
 	
 	public LevelTitleScreen(SpriteBatch batch, AssetManagerPlus assets, int screenWidth, int screenHeight, 
 			ScreenFinishedListener finishListener,
-			Screen nextScreen, String title, float timeInSeconds) {
-		this(batch, assets, screenWidth, screenHeight, title);
+			Screen nextScreen, String levelAlias, String title, float timeInSeconds) {
+		this(batch, assets, screenWidth, screenHeight, levelAlias, title);
 		this.timeInSeconds = timeInSeconds;
 	}
 	

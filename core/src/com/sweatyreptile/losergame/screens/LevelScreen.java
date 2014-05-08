@@ -31,6 +31,7 @@ public abstract class LevelScreen implements Screen{
 
 	private static final boolean DRAW_PHYSICS = false;
 	protected LevelManager levelManager;
+	protected String alias;
 	protected String levelName;
 	protected String nextLevel;
 	protected int width;
@@ -54,7 +55,7 @@ public abstract class LevelScreen implements Screen{
 	protected float timeLimit;
 	
 	public static final LevelScreen newInstance(String levelType, LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
-			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String levelName) {
+			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName) {
 		
 		Class<?> screenClass = null;
 		try {
@@ -79,7 +80,8 @@ public abstract class LevelScreen implements Screen{
 		
 		levelScreen.init(manager, batch, assets,
 				playerInputProcessor, width, height,
-				viewportWidth, viewportHeight, timeLimit, levelName);
+				viewportWidth, viewportHeight, timeLimit, 
+				alias, levelName);
 		
 		return null;
 	}
@@ -89,12 +91,12 @@ public abstract class LevelScreen implements Screen{
 	}
 	
 	public LevelScreen(LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
-			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String levelName){
-		init(manager, batch, assets, playerInputProcessor, width, height, viewportWidth, viewportHeight, timeLimit, levelName);
+			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName){
+		init(manager, batch, assets, playerInputProcessor, width, height, viewportWidth, viewportHeight, timeLimit, alias, levelName);
 	}
 	
 	public final void init(LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
-			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String levelName){
+			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName){
 		this.levelManager = manager;
 		this.spriteRenderer = batch;
 		this.assets = assets;
@@ -105,6 +107,7 @@ public abstract class LevelScreen implements Screen{
 		this.viewportHeight = viewportHeight;
 		this.timeLimit = timeLimit;
 		this.levelName = levelName;
+		this.alias = alias;
 	}
 
 	@Override

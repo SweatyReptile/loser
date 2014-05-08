@@ -12,9 +12,9 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 
 	public ScrollingLevelScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
-			float viewportWidth, float viewportHeight, float timeLimit) {
+			float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName) {
 		super(levelManager, batch, assets, playerInputProcessor, width, height,
-				viewportWidth, viewportHeight, timeLimit);
+				viewportWidth, viewportHeight, timeLimit, alias, levelName);
 	}
 
 	@Override
