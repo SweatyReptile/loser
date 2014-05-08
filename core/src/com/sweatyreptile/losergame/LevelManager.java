@@ -15,17 +15,36 @@ public class LevelManager {
 	private LevelScreen currentLevel;
 	private SpriteBatch batch;
 	private AssetManagerPlus assets;
+	private PlayerInputProcessor inputProcessor;
+	
+	private int screenWidth;
+	private int screenHeight;
 
 	private ScreenFinishedListener screenFinishedListener;
 	
 	public LevelManager(AssetManagerPlus assets, SpriteBatch batch, 
-			float screenwidth, float screenheight){
+			PlayerInputProcessor inputProcessor, 
+			int screenWidth, int screenHeight){
 		this.batch = batch;
 		this.assets = assets;
+		this.screenWidth = screenWidth;
+		this.screenHeight = screenHeight;
 		
 		levels = new HashMap<String, LevelScreen>();
 		
-		String testLevelName = "WELCOME TO THE JUNGLE";
+		instantiateScreen("testHome", "TestScrollingLevelScreen", "WELCOME TO THE JUNGLE", 3.2f, 1.8f, 30f);
+	}
+	
+	public void instantiateScreen(String alias, String typeName, String levelName,
+			float viewportWidth, float viewportHeight, float timeLimit){
+		
+		LevelScreen level = LevelScreen.newInstance(
+				typeName, this, batch, assets,
+				inputProcessor, screenWidth, screenHeight,
+				viewportWidth, viewportHeight, timeLimit, levelName);
+		
+		levels.put(alias, level);
+		
 	}
 	
 	public void update(float delta){
