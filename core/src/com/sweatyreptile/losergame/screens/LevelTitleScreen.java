@@ -1,7 +1,5 @@
 package com.sweatyreptile.losergame.screens;
 
-import java.awt.Font;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
@@ -11,12 +9,11 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
-public class LevelTitleScreen extends FinishableScreen {
+public class LevelTitleScreen implements FinishableScreen {
 
 	private static final float SEC_PER_CHAR = 0.0025f;
 	private int screenWidth;
@@ -30,9 +27,8 @@ public class LevelTitleScreen extends FinishableScreen {
 	private Task finishTask;
 	private float timeInSeconds;
 	
-	public LevelTitleScreen(SpriteBatch batch, AssetManagerPlus assets, int screenWidth, int screenHeight, 
-			ScreenFinishedListener finishListener, Screen nextScreen, String title) {
-		super(finishListener, nextScreen);
+	public LevelTitleScreen(SpriteBatch batch, AssetManagerPlus assets,
+			int screenWidth, int screenHeight, String title) {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.title = title;
@@ -51,7 +47,7 @@ public class LevelTitleScreen extends FinishableScreen {
 	public LevelTitleScreen(SpriteBatch batch, AssetManagerPlus assets, int screenWidth, int screenHeight, 
 			ScreenFinishedListener finishListener,
 			Screen nextScreen, String title, float timeInSeconds) {
-		this(batch, assets, screenWidth, screenHeight, finishListener, nextScreen, title);
+		this(batch, assets, screenWidth, screenHeight, title);
 		this.timeInSeconds = timeInSeconds;
 	}
 	
@@ -127,6 +123,11 @@ public class LevelTitleScreen extends FinishableScreen {
 	public void dispose() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void finish() {
+		
 	}
 
 }
