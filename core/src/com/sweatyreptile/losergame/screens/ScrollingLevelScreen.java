@@ -7,15 +7,24 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public abstract class ScrollingLevelScreen extends LevelScreen {
 
-	protected float levelEnd;
-	protected float level0;
+	protected float levelEndHorizontal;
+	protected float level0Horizontal;
+	
+	protected float levelEndVertical;
+	protected float level0Vertical;
+	
+	protected boolean vertical;
+	protected boolean horizontal;
 
 	public ScrollingLevelScreen(ScreenFinishedListener listener, Screen nextScreen,
 			SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
-			float viewportWidth, float viewportHeight, float timeLimit) {
+			float viewportWidth, float viewportHeight, float timeLimit,
+			boolean horizontalScrolling, boolean verticalScrolling) {
 		super(listener, nextScreen, batch, assets, playerInputProcessor, width, height,
 				viewportWidth, viewportHeight, timeLimit);
+		this.vertical = verticalScrolling;
+		this.horizontal = horizontalScrolling;
 	}
 
 	@Override
@@ -29,13 +38,26 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 
 	private void updateCamera() {
 		float playerX = player.getX();
-		float camera0 = playerX - (viewportWidth / 2);
-		float cameraEnd = playerX + (viewportWidth / 2);
+		float camera0Horizontal = playerX - (viewportWidth / 2);
+		float cameraEndHorizontal = playerX + (viewportWidth / 2);
 		
-		if ((levelEnd == 0 && level0 == 0) || 
-				camera0 > level0 && cameraEnd < levelEnd){
-			setCameraPosition(playerX, viewportHeight / 2);
+		float playerY = player.getY();
+		float camera0Vertical = playerY - (viewportHeight / 2);
+		float cameraEndVertical = playerY + (viewportHeight / 2);
+		
+		if (horizontal){
+			if ((levelEndHorizontal == 0 && level0Horizontal == 0) || 
+					camera0Horizontal > level0Horizontal && cameraEndHorizontal < levelEndHorizontal){
+				setCameraPosition(playerX, camera.position.y);
+			}
 		}
+		if (vertical){
+			if ((levelEndVertical == 0 && level0Vertical == 0) || 
+					camera0Vertical > level0Vertical && cameraEndVertical < levelEndVertical){
+				setCameraPosition(camera.position.x, playerY);
+			}
+		}
+				
 	}
 
 }

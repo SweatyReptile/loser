@@ -28,7 +28,7 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 			PlayerInputProcessor playerInputProcessor, int width, int height,
 			float viewportWidth, float viewportHeight, float timeLimit) {
 		super(listener, nextScreen, batch, assets, playerInputProcessor, width, height,
-				viewportWidth, viewportHeight, timeLimit);
+				viewportWidth, viewportHeight, timeLimit, true, false);
 		
 	}
 	
@@ -44,8 +44,8 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 	@Override
 	protected void setupWorld() {
 		
-		level0 = -1.5f;
-		levelEnd = viewportWidth + 1.5f;
+		level0Horizontal = -1.5f;
+		levelEndHorizontal = viewportWidth + 1.5f;
 		
 		EntityFactory ef = entityFactory;
 		
