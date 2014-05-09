@@ -6,7 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.sweatyreptile.losergame.LevelChunk;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
@@ -26,9 +25,7 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 		super(listener, nextScreen, batch, assets, playerInputProcessor, width, height,
 				viewportWidth, viewportHeight, timeLimit, horizontalScrolling, verticalScrolling);
 		chunks = new Stack<LevelChunk>();
-		
 	}
-	
 	public InfiniteScrollingLevelScreen(ScreenFinishedListener listener,
 			Screen nextScreen, SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
@@ -36,7 +33,6 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 			boolean verticalScrolling) {
 		this(listener, nextScreen, batch, assets, playerInputProcessor, width, height,
 				viewportWidth, viewportHeight, -1, horizontalScrolling, verticalScrolling); //Use this constructor for unlimited time
-		
 	}
 	
 	@Override
@@ -46,11 +42,12 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 		float chunkHeight = originY;
 		for (int i = 0; i < chunks.size(); i++){
 			LevelChunk chunk = chunks.get(i);
+			//System.out.println(i + ": " + chunkHeight); TODO floats are slightly inaccurate, builds up over time
+			chunk.setOriginY(chunkHeight);
 			chunk.render(delta, spriteRenderer, 0, chunkHeight, viewportWidth, viewportHeight);
 			chunkHeight += chunk.getHeight(height, viewportHeight);
 		}
 		super.noClearRender(delta);
-		
 	}
 	
 	@Override
@@ -60,16 +57,31 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 		float cam = camera.position.y;
 		if (cam - viewportHeight/2 <= originY) extendDown();
 		else if (cam + viewportHeight/2 >= originY + totalChunkHeight) extendUp();
+
 	}
 	
 	private void extendDown(){
 		originY -= chunks.peek().getHeight(height, viewportHeight);
 		chunks.add(0, chunks.pop());
+		updateChunkOrigins();
+		chunks.firstElement().updateEntityPositions(viewportHeight);
 	}
 	
 	private void extendUp(){
 		originY += chunks.firstElement().getHeight(height, viewportHeight);
 		chunks.add(chunks.firstElement());
+		chunks.remove(chunks.firstElement());
+		updateChunkOrigins();
+		chunks.peek().updateEntityPositions(viewportHeight);
+	}
+	
+	private void updateChunkOrigins(){
+		float chunkHeight = originY;
+		for (int i = 0; i < chunks.size(); i++){
+			LevelChunk chunk = chunks.get(i);
+			chunk.setOriginY(chunkHeight);
+			chunkHeight += chunk.getHeight(height, viewportHeight);
+		}
 	}
 
 	@Override
@@ -82,6 +94,7 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 	protected void setupWorld() {
 		for (LevelChunk chunk : chunks){
 			totalChunkHeight += chunk.getHeight(height, viewportHeight);
+			chunk.updateEntityPositions(viewportHeight);
 		}
 		
 	}

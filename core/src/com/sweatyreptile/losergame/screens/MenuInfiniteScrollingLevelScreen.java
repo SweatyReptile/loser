@@ -7,9 +7,11 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.sweatyreptile.losergame.EntityFactory;
 import com.sweatyreptile.losergame.LevelChunk;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
+import com.sweatyreptile.losergame.fixtures.WoodFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class MenuInfiniteScrollingLevelScreen extends
@@ -36,16 +38,19 @@ public class MenuInfiniteScrollingLevelScreen extends
 
 	@Override
 	protected void setupWorld() {
-		
 		chunks.add(new LevelChunk() {
 			@Override protected void setup(){
 				background = (Texture) assets.get("background.png");
+				EntityFactory ef = new EntityFactory(assets, chunkEntities, world, contactListener, viewportWidth, width);
+				ef.create("book_blue", BodyType.StaticBody, 2f, 1f, new WoodFixtureDef(assets, "book_blue"), false);
 			}
 		});
 		
 		chunks.add(new LevelChunk() {
 			@Override protected void setup(){
 				background = (Texture) assets.get("background.png");
+				EntityFactory ef = new EntityFactory(assets, chunkEntities, world, contactListener, viewportWidth, width);
+				ef.create("book_red", BodyType.StaticBody, 1f, 1.5f, new WoodFixtureDef(assets, "book_red"), false);
 			}
 		});
 		
