@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
+import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class LevelTitleScreen implements FinishableScreen {
@@ -20,6 +21,7 @@ public class LevelTitleScreen implements FinishableScreen {
 	private int screenHeight;
 	private SpriteBatch batch;
 	private AssetManagerPlus assets;
+	private LevelManager levelManager;
 	
 	private BitmapFont font;
 	private String title;
@@ -29,8 +31,9 @@ public class LevelTitleScreen implements FinishableScreen {
 	private Task finishTask;
 	private float timeInSeconds;
 	
-	public LevelTitleScreen(SpriteBatch batch, AssetManagerPlus assets,
+	public LevelTitleScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
 			int screenWidth, int screenHeight, String levelAlias, String title) {
+		this.levelManager = levelManager;
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.levelAlias = levelAlias;
@@ -47,10 +50,10 @@ public class LevelTitleScreen implements FinishableScreen {
 		font = generateFont(72, 1f, Color.WHITE);
 	}
 	
-	public LevelTitleScreen(SpriteBatch batch, AssetManagerPlus assets, int screenWidth, int screenHeight, 
+	public LevelTitleScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets, int screenWidth, int screenHeight, 
 			ScreenFinishedListener finishListener,
 			Screen nextScreen, String levelAlias, String title, float timeInSeconds) {
-		this(batch, assets, screenWidth, screenHeight, levelAlias, title);
+		this(levelManager, batch, assets, screenWidth, screenHeight, levelAlias, title);
 		this.timeInSeconds = timeInSeconds;
 	}
 	

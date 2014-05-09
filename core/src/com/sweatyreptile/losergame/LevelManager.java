@@ -43,7 +43,7 @@ public class LevelManager {
 			float viewportWidth, float viewportHeight, float timeLimit){
 		
 		LevelTitleScreen titleScreen = new LevelTitleScreen(
-				batch, assets, screenWidth, screenHeight, alias, levelName);
+				this, batch, assets, screenWidth, screenHeight, alias, levelName);
 		
 		LevelScreen level = LevelScreen.newInstance(
 				typeName, this, batch, assets,
