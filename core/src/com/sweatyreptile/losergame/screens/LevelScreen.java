@@ -27,7 +27,7 @@ import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
-public abstract class LevelScreen implements Screen{
+public abstract class LevelScreen implements FinishableScreen{
 
 	private static final boolean DRAW_PHYSICS = false;
 	protected LevelManager levelManager;
@@ -214,8 +214,8 @@ public abstract class LevelScreen implements Screen{
 	protected abstract Player createPlayer(); 
 	protected abstract void setupWorld();
 	
-	protected void finish() {
-		
+	public void finish() {
+		levelManager.level(alias);
 	}
 
 	@Override
