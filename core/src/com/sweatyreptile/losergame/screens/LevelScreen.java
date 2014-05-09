@@ -59,7 +59,7 @@ public abstract class LevelScreen implements FinishableScreen{
 		
 		Class<?> screenClass = null;
 		try {
-			screenClass = Class.forName(levelType);
+			screenClass = Class.forName("com.sweatyreptile.losergame.screens." + levelType);
 		} catch (ClassNotFoundException e) {
 			Gdx.app.error("Level Instantiation", 
 					"Level type " + levelType + " not found!", e);
