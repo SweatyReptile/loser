@@ -75,11 +75,40 @@ public abstract class LevelScreen extends FinishableScreen{
 		update(delta);
 		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
-		spriteRenderer.begin();
+		noClearRender(delta);
+		/*spriteRenderer.begin();
 		
 		spriteRenderer.disableBlending();		
 		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight);
+		spriteRenderer.enableBlending();
+		
+		for (Entity<?> entity : entities.values()){
+			entity.render(spriteRenderer);
+		}
+		
+		player.render(spriteRenderer);
+	
+		for (Entity<?> entity : entities.values()){
+			entity.renderSpeech(spriteRenderer, defaultSpeechFont);
+		}
+		
+		player.renderSpeech(spriteRenderer, defaultSpeechFont);
+		
+		spriteRenderer.end();
+		
+		if (limitedTime) levelTimer.render(shapeRenderer);
+		
+		if (DRAW_PHYSICS){
+			physRenderer.render(world, camera.combined);
+		}*/
+	}
+	
+	public void noClearRender(float delta){
+		update(delta);
+		spriteRenderer.begin();
+		
+		spriteRenderer.disableBlending();		
+		//spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight);
 		spriteRenderer.enableBlending();
 		
 		for (Entity<?> entity : entities.values()){
