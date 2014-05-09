@@ -72,7 +72,7 @@ public abstract class LevelScreen implements FinishableScreen{
 			Gdx.app.error("Level Instantiation", 
 					"Level type " + levelType + " could not be instantiated!");
 			Gdx.app.error("Level Instantiation", 
-					"This may be because it does not containt a nullary constructor, or is an abstract type", e);
+					"This may be because it is an abstract type, or does not contain a nullary constructor.", e);
 		} catch (IllegalAccessException e) {
 			Gdx.app.error("Level Instantiation", 
 					"Nullary constructor of " + levelType + " is not public");
