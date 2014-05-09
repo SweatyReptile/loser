@@ -17,6 +17,10 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 				viewportWidth, viewportHeight, timeLimit, alias, levelName);
 	}
 
+	public ScrollingLevelScreen() {
+		super();
+	}
+
 	@Override
 	public void update(float delta) {
 		if (player.hasVelocity()){

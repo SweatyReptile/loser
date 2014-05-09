@@ -23,6 +23,10 @@ public class TestLevelScreen extends LevelScreen{
 	private MusicPlayer radio;
 	private Sharbal sharbal;
 	
+	public TestLevelScreen() {
+		super();
+	}
+	
 	public TestLevelScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
 			float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName) {
