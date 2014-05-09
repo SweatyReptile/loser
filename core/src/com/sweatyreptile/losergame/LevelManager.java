@@ -34,6 +34,7 @@ public class LevelManager {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.screenFinishedListener = screenFinishedListener;
+		this.inputProcessor = inputProcessor;
 		
 		levels = new HashMap<String, LevelScreen>();
 		levelTitles = new HashMap<String, LevelTitleScreen>();

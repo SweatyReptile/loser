@@ -47,7 +47,7 @@ public abstract class LevelScreen implements FinishableScreen{
 	protected EntityFactory entityFactory;
 	protected Map<String, Entity<?>> entities;
 	protected Player player;
-	private PlayerInputProcessor playerInputProcessor;
+	protected PlayerInputProcessor playerInputProcessor;
 	protected AssetManagerPlus assets;
 	protected Texture background;
 	protected BitmapFont defaultSpeechFont;
