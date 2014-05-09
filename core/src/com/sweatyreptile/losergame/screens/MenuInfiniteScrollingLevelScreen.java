@@ -54,6 +54,14 @@ public class MenuInfiniteScrollingLevelScreen extends
 			}
 		});
 		
+		chunks.add(new LevelChunk() {
+			@Override protected void setup(){
+				background = (Texture) assets.get("background.png");
+				EntityFactory ef = new EntityFactory(assets, chunkEntities, world, contactListener, viewportWidth, width);
+				ef.create("book_yellow", BodyType.StaticBody, 0.5f, 1f, new WoodFixtureDef(assets, "book_yellow"), false);
+			}
+		});
+		
 		BodyDef groundDef = new BodyDef();
 		groundDef.type = BodyType.StaticBody;
 		groundDef.position.set(viewportWidth / 2, 0);

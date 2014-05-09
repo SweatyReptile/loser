@@ -14,7 +14,7 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen {
 
 	private float originY;
-	protected Stack<LevelChunk> chunks;
+	protected Stack<LevelChunk> chunks; //Should contain at least 2 chunks
 	protected float totalChunkHeight;
 	
 	public InfiniteScrollingLevelScreen(ScreenFinishedListener listener,
@@ -92,6 +92,7 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 
 	@Override
 	protected void setupWorld() {
+		updateChunkOrigins();
 		for (LevelChunk chunk : chunks){
 			totalChunkHeight += chunk.getHeight(height, viewportHeight);
 			chunk.updateEntityPositions(viewportHeight);
