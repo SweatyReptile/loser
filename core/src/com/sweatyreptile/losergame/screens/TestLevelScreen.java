@@ -25,9 +25,9 @@ public class TestLevelScreen extends LevelScreen{
 	
 	public TestLevelScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
-			float viewportWidth, float viewportHeight, float timeLimit) {
+			float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName) {
 		super(levelManager, batch, assets, playerInputProcessor, width, height, viewportWidth,
-				viewportHeight, timeLimit);
+				viewportHeight, timeLimit, alias, levelName);
 	}
 	
 	protected void setupWorld() {
