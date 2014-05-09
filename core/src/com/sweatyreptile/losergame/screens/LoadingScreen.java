@@ -1,15 +1,16 @@
 package com.sweatyreptile.losergame.screens;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.sweatyreptile.losergame.LevelManager;
 
 public class LoadingScreen implements FinishableScreen{
 
 	private AssetManager loader;
+	private LevelManager levelManager;
 	
-	public LoadingScreen(ScreenFinishedListener listener, AssetManager loader, Screen nextScreen) {
+	public LoadingScreen(AssetManager loader, LevelManager levelManager) {
 		new World(new Vector2(0, 0), false);
 		this.loader = loader;
 	}
@@ -59,6 +60,7 @@ public class LoadingScreen implements FinishableScreen{
 
 	@Override
 	public void finish() {
+		levelManager.level("test_home");
 	}
 
 }

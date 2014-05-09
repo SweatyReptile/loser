@@ -35,13 +35,8 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		
 		PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
 		
-		Screen testScreen = new TestScrollingLevelScreen(this, null, batch, assets, playerInputProcessor,
-				screenWidth, screenHeight, 3.2f, 1.8f, 30);
-		
-		Screen testTitleScreen = new LevelTitleScreen(batch, assets, screenWidth, screenHeight, 
-				this, testScreen, "WELCOME TO THE JUNGLE");
-		
-		Screen loadingScreen = new LoadingScreen(this, assets, testTitleScreen);
+		LevelManager levelManager = new LevelManager(assets, batch, playerInputProcessor, screenWidth, screenHeight);
+		Screen loadingScreen = new LoadingScreen(assets, levelManager);
 		
 		Gdx.input.setInputProcessor(playerInputProcessor);
 		
@@ -51,7 +46,6 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 	@Override
 	public void onFinish(FinishableScreen finished, Screen next) {
 		setScreen(next);
-		Gdx.app.log("A", next.getClass().toString());
 	}
 	
 }
