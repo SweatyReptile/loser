@@ -83,7 +83,7 @@ public abstract class LevelScreen implements FinishableScreen{
 				viewportWidth, viewportHeight, timeLimit, 
 				alias, levelName);
 		
-		return null;
+		return levelScreen;
 	}
 	
 	public LevelScreen(){
