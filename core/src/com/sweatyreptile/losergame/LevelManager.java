@@ -27,11 +27,13 @@ public class LevelManager {
 	
 	public LevelManager(AssetManagerPlus assets, SpriteBatch batch, 
 			PlayerInputProcessor inputProcessor, 
+			ScreenFinishedListener screenFinishedListener,
 			int screenWidth, int screenHeight){
 		this.batch = batch;
 		this.assets = assets;
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
+		this.screenFinishedListener = screenFinishedListener;
 		
 		levels = new HashMap<String, LevelScreen>();
 		levelTitles = new HashMap<String, LevelTitleScreen>();

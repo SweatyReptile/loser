@@ -35,7 +35,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		
 		PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
 		
-		LevelManager levelManager = new LevelManager(assets, batch, playerInputProcessor, screenWidth, screenHeight);
+		LevelManager levelManager = new LevelManager(assets, batch, playerInputProcessor, this, screenWidth, screenHeight);
 		Screen loadingScreen = new LoadingScreen(assets, levelManager);
 		
 		Gdx.input.setInputProcessor(playerInputProcessor);
