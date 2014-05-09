@@ -16,7 +16,7 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class LevelTitleScreen implements FinishableScreen {
 
-	private static final float SEC_PER_CHAR = 0.0025f;
+	private static final float SEC_PER_CHAR = 0.01f;
 	private int screenWidth;
 	private int screenHeight;
 	private SpriteBatch batch;
@@ -91,6 +91,7 @@ public class LevelTitleScreen implements FinishableScreen {
 		Sound quackSound = (Sound) assets.get("quack_dummy.ogg");
 		quackSound.play();
 		Gdx.graphics.setContinuousRendering(false);
+		Gdx.graphics.requestRendering();
 	}
 	
 	private float delaySeconds(String title){
