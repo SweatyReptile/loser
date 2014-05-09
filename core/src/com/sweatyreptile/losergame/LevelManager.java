@@ -53,7 +53,7 @@ public class LevelManager {
 		levels.put(alias, level);
 		levelTitles.put(alias, titleScreen);
 		
-		Gdx.app.log("LevelManager", "Instantiated " + alias);
+		Gdx.app.log("LevelManager", "Instantiated " + alias + " (" + typeName + ") " + levelName);
 	}
 	
 	public void level(String alias){
