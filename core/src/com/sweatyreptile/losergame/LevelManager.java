@@ -65,6 +65,7 @@ public class LevelManager {
 	public void level_notitle(String alias){
 		LevelScreen lvlScreen = levels.get(alias);
 		screenFinishedListener.onFinish(currentScreen, lvlScreen);
+		currentScreen = lvlScreen;
 	}
 	
 }
