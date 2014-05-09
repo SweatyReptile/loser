@@ -42,13 +42,10 @@ public abstract class LevelChunk {
 	public void updateEntityPositions(float viewportHeight){
 		for (Entity<?> entity : chunkEntities.values()){
 			Vector2 pos = entity.currentBody.getPosition();
-			float newY = Math.abs(pos.y % viewportHeight) + originY;
+			float newY;
+			if (pos.y >= 0) newY = Math.abs(pos.y % viewportHeight) + originY;
+			else newY = (viewportHeight - Math.abs(pos.y % viewportHeight)) + originY;
 			entity.currentBody.setTransform(pos.x, newY, entity.currentBody.getAngle());
-			System.out.println("ORIGIN: " + originY);
-			System.out.println("POSITION: " + pos.y);
-			System.out.println("NEW Y: " + newY);
-
-			//entity.update(delta);
 		}
 	}
 	

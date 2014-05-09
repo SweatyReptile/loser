@@ -42,7 +42,7 @@ public class MenuInfiniteScrollingLevelScreen extends
 			@Override protected void setup(){
 				background = (Texture) assets.get("background.png");
 				EntityFactory ef = new EntityFactory(assets, chunkEntities, world, contactListener, viewportWidth, width);
-				ef.create("book_blue", BodyType.StaticBody, 2f, 1f, new WoodFixtureDef(assets, "book_blue"), false);
+				ef.create("book_blue", BodyType.StaticBody, 2f, 1.5f, new WoodFixtureDef(assets, "book_blue"), false);
 			}
 		});
 		
