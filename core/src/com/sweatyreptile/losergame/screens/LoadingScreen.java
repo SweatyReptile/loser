@@ -13,6 +13,7 @@ public class LoadingScreen implements FinishableScreen{
 	public LoadingScreen(AssetManager loader, LevelManager levelManager) {
 		new World(new Vector2(0, 0), false);
 		this.loader = loader;
+		this.levelManager = levelManager;
 	}
 
 	@Override
