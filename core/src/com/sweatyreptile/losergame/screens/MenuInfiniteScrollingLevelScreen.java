@@ -45,18 +45,24 @@ public class MenuInfiniteScrollingLevelScreen extends
 		chunks.add(new LevelChunk() {
 			@Override protected void setup(){
 				background = (Texture) assets.get("menu_dummy_1.png");
+				
 				EntityFactory ef = new EntityFactory(assets, chunkEntities, world, contactListener, viewportWidth, width);
 				ef.create("menu_platform", BodyType.StaticBody, 0.125f, 0.4f, new EntityFixtureDef(assets, "menu_platform"), false);
+				
+				setupBorders(ef, viewportHeight, viewportWidth, assets, false, true);
 			}
 		});
 		
 		chunks.add(new LevelChunk() {
 			@Override protected void setup(){
 				background = (Texture) assets.get("menu_dummy_2.png");
+				
 				EntityFactory ef = new EntityFactory(assets, chunkEntities, world, contactListener, viewportWidth, width);
 				ef.create("menu_go_frame", BodyType.StaticBody, 2.4f, 3.1f, new EntityFixtureDef(assets, "menu_go_frame"), false);
 				ef.create("menu_reset_frame", BodyType.StaticBody, 2.1f, 2.45f, new EntityFixtureDef(assets, "menu_reset_frame"), false);
 				ef.create("menu_platform_2", BodyType.StaticBody, 0.71f, 0.4f, new EntityFixtureDef(assets, "menu_platform_2"), false);
+				
+				setupBorders(ef, viewportHeight, viewportWidth, assets, false, true);
 			}
 		});
 		

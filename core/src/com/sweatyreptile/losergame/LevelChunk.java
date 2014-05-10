@@ -6,6 +6,9 @@ import java.util.Map;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
+import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public abstract class LevelChunk {
 	
@@ -56,7 +59,18 @@ public abstract class LevelChunk {
 	public void setOriginY(float originY){
 		this.originY = originY;
 	}
-	
+
+	protected void setupBorders(EntityFactory entityFactory, float viewportHeight, float viewportWidth, 
+			AssetManagerPlus assets, boolean horizontal, boolean vertical){ //0.06 is the width of borders
+		if (horizontal){
+			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, viewportHeight, new EntityFixtureDef(assets, "horizontal_border"), false);
+			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, -0.06f, new EntityFixtureDef(assets, "horizontal_border"), false);
+		}
+		if (vertical){
+			entityFactory.create("vertical_border", BodyType.StaticBody, viewportWidth, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+			entityFactory.create("vertical_border", BodyType.StaticBody, -0.06f, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+		}
+	}
 	
 
 }
