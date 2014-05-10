@@ -30,7 +30,7 @@ public class MenuInfiniteScrollingLevelScreen extends
 	@Override
 	protected Player createPlayer() {
 		BodyDef def = new BodyDef();
-		def.position.set(0.45f, 0.8f);
+		def.position.set(0.45f, 0.45f);
 		def.fixedRotation = true;
 		def.type = BodyType.DynamicBody;
 		return new Player(world, contactListener, def, assets);
@@ -39,11 +39,13 @@ public class MenuInfiniteScrollingLevelScreen extends
 	@Override
 	protected void setupWorld() {
 		setOffsetY(viewportHeight / 3);
+		updateCamera();
+		setStrictlyDownwards(true);
 		chunks.add(new LevelChunk() {
 			@Override protected void setup(){
 				background = (Texture) assets.get("menu_dummy_1.png");
 				EntityFactory ef = new EntityFactory(assets, chunkEntities, world, contactListener, viewportWidth, width);
-				ef.create("menu_platform", BodyType.StaticBody, 0.125f, 0.375f, new EntityFixtureDef(assets, "menu_platform"), false);
+				ef.create("menu_platform", BodyType.StaticBody, 0.125f, 0.4f, new EntityFixtureDef(assets, "menu_platform"), false);
 			}
 		});
 		
@@ -56,15 +58,6 @@ public class MenuInfiniteScrollingLevelScreen extends
 				ef.create("menu_platform_2", BodyType.StaticBody, 0.71f, 0.4f, new EntityFixtureDef(assets, "menu_platform_2"), false);
 			}
 		});
-		
-		/*BodyDef groundDef = new BodyDef();
-		groundDef.type = BodyType.StaticBody;
-		groundDef.position.set(viewportWidth / 2, 0);
-		PolygonShape groundBox = new PolygonShape();
-		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
-		Body groundBody = world.createBody(groundDef);
-		groundBody.createFixture(groundBox, 0f);
-		groundBox.dispose();*/
 		
 		super.setupWorld();
 	}

@@ -17,6 +17,7 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 	protected boolean horizontal;
 	
 	protected float offsetY;
+	protected boolean strictlyDownwards;
 
 	public ScrollingLevelScreen(ScreenFinishedListener listener, Screen nextScreen,
 			SpriteBatch batch, AssetManagerPlus assets,
@@ -38,7 +39,9 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 
 	}
 
-	private void updateCamera() {
+	protected void updateCamera() {
+		float oldCamY = camera.position.y;
+		
 		float playerX = player.getX();
 		float camera0Horizontal = playerX - (viewportWidth / 2);
 		float cameraEndHorizontal = playerX + (viewportWidth / 2);
@@ -47,6 +50,7 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 		float camera0Vertical = playerY - (viewportHeight / 2);
 		float cameraEndVertical = playerY + (viewportHeight / 2);
 		
+
 		if (horizontal){
 			if ((levelEndHorizontal == 0 && level0Horizontal == 0) || 
 					camera0Horizontal > level0Horizontal && cameraEndHorizontal < levelEndHorizontal){
@@ -54,16 +58,21 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 			}
 		}
 		if (vertical){
-			if ((levelEndVertical == 0 && level0Vertical == 0) || 
-					camera0Vertical > level0Vertical && cameraEndVertical < levelEndVertical){
+			if (((levelEndVertical == 0 && level0Vertical == 0) || 
+					(camera0Vertical > level0Vertical && cameraEndVertical < levelEndVertical))
+					&& ((!strictlyDownwards) || Float.compare(oldCamY, (playerY + offsetY)) > 0)){
 				setCameraPosition(camera.position.x, playerY + offsetY);
-			}
+			}	
 		}
 				
 	}
 	
 	public void setOffsetY(float offsetY){
 		this.offsetY = offsetY;
+	}
+	
+	public void setStrictlyDownwards(boolean strictlyDownwards){
+		this.strictlyDownwards = strictlyDownwards;
 	}
 
 }
