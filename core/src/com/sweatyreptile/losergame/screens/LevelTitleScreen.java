@@ -18,7 +18,7 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class LevelTitleScreen extends FinishableScreen {
 
-	private static final float SEC_PER_CHAR = 0.0025f;
+	private static final float SEC_PER_CHAR = 0.05f;
 	private int screenWidth;
 	private int screenHeight;
 	private SpriteBatch batch;
