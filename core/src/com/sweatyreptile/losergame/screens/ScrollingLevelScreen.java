@@ -1,7 +1,7 @@
 package com.sweatyreptile.losergame.screens;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
@@ -10,12 +10,15 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 	protected float levelEnd;
 	protected float level0;
 
-	public ScrollingLevelScreen(ScreenFinishedListener listener, Screen nextScreen,
-			SpriteBatch batch, AssetManagerPlus assets,
+	public ScrollingLevelScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
-			float viewportWidth, float viewportHeight, float timeLimit) {
-		super(listener, nextScreen, batch, assets, playerInputProcessor, width, height,
-				viewportWidth, viewportHeight, timeLimit);
+			float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName) {
+		super(levelManager, batch, assets, playerInputProcessor, width, height,
+				viewportWidth, viewportHeight, timeLimit, alias, levelName);
+	}
+
+	public ScrollingLevelScreen() {
+		super();
 	}
 
 	@Override

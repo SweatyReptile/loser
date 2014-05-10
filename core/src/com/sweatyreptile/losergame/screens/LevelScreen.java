@@ -12,25 +12,28 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
+import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.LevelTimer;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
-public abstract class LevelScreen extends FinishableScreen{
+public abstract class LevelScreen implements FinishableScreen{
 
 	private static final boolean DRAW_PHYSICS = false;
-	
+	protected LevelManager levelManager;
+	protected String alias;
+	protected String levelName;
+	protected String nextLevel;
 	protected int width;
 	protected int height;
 	protected float viewportWidth;
@@ -44,16 +47,57 @@ public abstract class LevelScreen extends FinishableScreen{
 	protected EntityFactory entityFactory;
 	protected Map<String, Entity<?>> entities;
 	protected Player player;
-	private PlayerInputProcessor playerInputProcessor;
+	protected PlayerInputProcessor playerInputProcessor;
 	protected AssetManagerPlus assets;
 	protected Texture background;
 	protected BitmapFont defaultSpeechFont;
-	private LevelTimer levelTimer;
-
+	protected LevelTimer levelTimer;
+	protected float timeLimit;
 	
-	public LevelScreen(ScreenFinishedListener listener, Screen nextScreen, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
-			int width, int height, float viewportWidth, float viewportHeight, float timeLimit){
-		super(listener, nextScreen);
+	public static final LevelScreen newInstance(String levelType, LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
+			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName) {
+		
+		Class<?> screenClass = null;
+		try {
+			screenClass = Class.forName("com.sweatyreptile.losergame.screens." + levelType);
+		} catch (ClassNotFoundException e) {
+			Gdx.app.error("Level Instantiation", 
+					"Level type " + levelType + " not found!", e);
+		}
+		
+		LevelScreen levelScreen = null;
+		try {
+			levelScreen = (LevelScreen) screenClass.newInstance();
+		} catch (InstantiationException e) {
+			Gdx.app.error("Level Instantiation", 
+					"Level type " + levelType + " could not be instantiated!");
+			Gdx.app.error("Level Instantiation", 
+					"This may be because it is an abstract type, or does not contain a nullary constructor.", e);
+		} catch (IllegalAccessException e) {
+			Gdx.app.error("Level Instantiation", 
+					"Nullary constructor of " + levelType + " is not public");
+		}
+		
+		levelScreen.init(manager, batch, assets,
+				playerInputProcessor, width, height,
+				viewportWidth, viewportHeight, timeLimit, 
+				alias, levelName);
+		
+		return levelScreen;
+	}
+	
+	public LevelScreen(){
+		
+	}
+	
+	public LevelScreen(LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
+			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName){
+		init(manager, batch, assets, playerInputProcessor, width, height, viewportWidth, viewportHeight, timeLimit, alias, levelName);
+	}
+	
+	public final void init(LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
+			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName){
+		this.levelManager = manager;
 		this.spriteRenderer = batch;
 		this.assets = assets;
 		this.playerInputProcessor = playerInputProcessor;
@@ -61,9 +105,9 @@ public abstract class LevelScreen extends FinishableScreen{
 		this.height = height;
 		this.viewportWidth = viewportWidth;
 		this.viewportHeight = viewportHeight;
-		this.entities = new HashMap<String, Entity<?>>();
-		shapeRenderer = new ShapeRenderer();
-		levelTimer = new LevelTimer(this, viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
+		this.timeLimit = timeLimit;
+		this.levelName = levelName;
+		this.alias = alias;
 	}
 
 	@Override
@@ -122,6 +166,9 @@ public abstract class LevelScreen extends FinishableScreen{
 
 	@Override
 	public void show() {
+		entities = new HashMap<String, Entity<?>>();
+		shapeRenderer = new ShapeRenderer();
+		
 		camera = new OrthographicCamera(width, height);
 		camera.viewportHeight = viewportHeight;
 		camera.viewportWidth = viewportWidth;
@@ -149,6 +196,8 @@ public abstract class LevelScreen extends FinishableScreen{
 		setupFonts();
 		setupWorld();
 
+		levelTimer = new LevelTimer(this, viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
+		
 		levelTimer.start();
 	}
 	
@@ -164,6 +213,10 @@ public abstract class LevelScreen extends FinishableScreen{
 
 	protected abstract Player createPlayer(); 
 	protected abstract void setupWorld();
+	
+	public void finish() {
+		levelManager.level(alias);
+	}
 
 	@Override
 	public void hide() {
@@ -184,9 +237,57 @@ public abstract class LevelScreen extends FinishableScreen{
 	public void dispose() {
 		world.dispose();
 	}
-	
-	public void finish(){
-		super.finish();
+
+	public String getNextLevel() {
+		return nextLevel;
+	}
+
+	public void setNextLevel(String nextLevel) {
+		this.nextLevel = nextLevel;
+	}
+
+	public String getLevelName() {
+		return levelName;
+	}
+
+	public void setLevelName(String levelName) {
+		this.levelName = levelName;
+	}
+
+	public void setLevelManager(LevelManager levelManager) {
+		this.levelManager = levelManager;
+	}
+
+	public void setWidth(int width) {
+		this.width = width;
+	}
+
+	public void setHeight(int height) {
+		this.height = height;
+	}
+
+	public void setViewportWidth(float viewportWidth) {
+		this.viewportWidth = viewportWidth;
+	}
+
+	public void setViewportHeight(float viewportHeight) {
+		this.viewportHeight = viewportHeight;
+	}
+
+	public void setSpriteRenderer(SpriteBatch spriteRenderer) {
+		this.spriteRenderer = spriteRenderer;
+	}
+
+	public void setPlayerInputProcessor(PlayerInputProcessor playerInputProcessor) {
+		this.playerInputProcessor = playerInputProcessor;
+	}
+
+	public void setAssets(AssetManagerPlus assets) {
+		this.assets = assets;
+	}
+
+	public void setTimeLimit(float timeLimit) {
+		this.timeLimit = timeLimit;
 	}
 
 }

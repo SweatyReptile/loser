@@ -1,18 +1,19 @@
 package com.sweatyreptile.losergame.screens;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.sweatyreptile.losergame.LevelManager;
 
-public class LoadingScreen extends FinishableScreen{
+public class LoadingScreen implements FinishableScreen{
 
 	private AssetManager loader;
+	private LevelManager levelManager;
 	
-	public LoadingScreen(ScreenFinishedListener listener, AssetManager loader, Screen nextScreen) {
-		super(listener, nextScreen);
+	public LoadingScreen(AssetManager loader, LevelManager levelManager) {
 		new World(new Vector2(0, 0), false);
 		this.loader = loader;
+		this.levelManager = levelManager;
 	}
 
 	@Override
@@ -56,6 +57,11 @@ public class LoadingScreen extends FinishableScreen{
 	public void dispose() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void finish() {
+		levelManager.level("test_home");
 	}
 
 }
