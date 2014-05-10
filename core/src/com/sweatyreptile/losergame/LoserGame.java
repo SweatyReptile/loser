@@ -51,7 +51,6 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 	@Override
 	public void onFinish(FinishableScreen finished, Screen next) {
 		setScreen(next);
-		Gdx.app.log("A", next.getClass().toString());
 	}
 	
 }

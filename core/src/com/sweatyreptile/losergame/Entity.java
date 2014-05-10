@@ -155,7 +155,6 @@ public class Entity <T extends Entity<?>>{
 	
 	private String generatePhrase(String[] phrases){
 		int random = (int) (Math.random()*phrases.length);
-		System.out.println(random);
 		return phrases[random];
 	}
 

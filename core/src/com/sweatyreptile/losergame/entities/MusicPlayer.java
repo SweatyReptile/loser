@@ -87,8 +87,6 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 		
 		@Override
 		public void bodyAdded(Stack<Body> contents) {
-			Gdx.app.log("Radio", player.toString());
-			Gdx.app.log("Radio", "Added. Size: " + contents.size());
 			Body lastBody = contents.peek();
 			if (isPlayer(lastBody)){	
 				Player player = (Player) lastBody.getUserData();
@@ -100,7 +98,6 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 
 		@Override
 		public void bodyRemoved(Stack<Body> contents) {
-			Gdx.app.log("Radio", "Removed. Size: " + contents.size());
 			
 		}
 		

@@ -491,7 +491,6 @@ public class Player extends Entity<Player>{
 			group.add(entityFixture);
 			group.add(contacted);
 			startedContacts.push(group);
-			Gdx.app.log("Player", "Touched something, size: " + startedContacts.size());
 		}
 
 		@Override
@@ -507,11 +506,9 @@ public class Player extends Entity<Player>{
 					       // because only one contact was ended
 				}
 			}
-			Gdx.app.log("Player", "Stopped touching something!, size: " + startedContacts.size());
 		}
 		
 		public void flushContacts(LoserContactListener contactListener){
-			Gdx.app.log("Player", "Flushing contacts!");
 			while(!startedContacts.isEmpty()){
 				Array<Fixture> group = startedContacts.pop();
 				Fixture storedEntityFixture = group.get(0);
