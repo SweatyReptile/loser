@@ -15,6 +15,8 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 	
 	protected boolean vertical;
 	protected boolean horizontal;
+	
+	protected float offsetY;
 
 	public ScrollingLevelScreen(ScreenFinishedListener listener, Screen nextScreen,
 			SpriteBatch batch, AssetManagerPlus assets,
@@ -54,10 +56,14 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 		if (vertical){
 			if ((levelEndVertical == 0 && level0Vertical == 0) || 
 					camera0Vertical > level0Vertical && cameraEndVertical < levelEndVertical){
-				setCameraPosition(camera.position.x, playerY);
+				setCameraPosition(camera.position.x, playerY + offsetY);
 			}
 		}
 				
+	}
+	
+	public void setOffsetY(float offsetY){
+		this.offsetY = offsetY;
 	}
 
 }
