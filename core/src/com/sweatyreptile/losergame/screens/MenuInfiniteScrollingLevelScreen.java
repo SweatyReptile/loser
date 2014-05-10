@@ -38,6 +38,7 @@ public class MenuInfiniteScrollingLevelScreen extends
 
 	@Override
 	protected void setupWorld() {
+		player.standRight();
 		setOffsetY(viewportHeight / 3);
 		updateCamera();
 		setStrictlyDownwards(true);
