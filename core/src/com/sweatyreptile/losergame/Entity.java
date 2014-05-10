@@ -190,4 +190,8 @@ public class Entity <T extends Entity<?>>{
 		return sprite.getX() + sprite.getWidth()/2 - font.getBounds(speech).width/2; 
 	}
 	
+	public Body getBody(){
+		return currentBody;
+	}
+	
 }

@@ -467,10 +467,6 @@ public class Player extends Entity<Player>{
 		quackingSprite.setFlip(horizontal, false);
 		quackingDuckingSprite.setFlip(horizontal, false);
 	}
-
-	public Body getBody() {
-		return currentBody;
-	}
 	
 	public boolean isFlying(){
 		return flying;
