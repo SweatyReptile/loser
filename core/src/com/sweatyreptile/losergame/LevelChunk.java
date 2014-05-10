@@ -1,5 +1,6 @@
 package com.sweatyreptile.losergame;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,13 +43,13 @@ public abstract class LevelChunk {
 		
 	}
 	
-	public void updateEntityPositions(float viewportHeight){
+	public void updateEntityPositions(float viewportHeight){ //Only works in vertical direction right now
 		for (Entity<?> entity : chunkEntities.values()){
 			Vector2 pos = entity.currentBody.getPosition();
 			float newY;
-			if (pos.y >= 0) newY = Math.abs(pos.y % viewportHeight) + originY;
+			if (Float.compare(pos.y, 0f) >= 0f) newY = Math.abs(pos.y % viewportHeight) + originY;
 			else newY = (viewportHeight - Math.abs(pos.y % viewportHeight)) + originY;
-			entity.currentBody.setTransform(pos.x, newY, entity.currentBody.getAngle());
+			entity.currentBody.setTransform(pos.x, round(newY, 2), entity.currentBody.getAngle());
 		}
 	}
 	
@@ -64,13 +65,19 @@ public abstract class LevelChunk {
 			AssetManagerPlus assets, boolean horizontal, boolean vertical){ //0.06 is the width of borders
 		if (horizontal){
 			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, viewportHeight, new EntityFixtureDef(assets, "horizontal_border"), false);
-			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, -0.06f, new EntityFixtureDef(assets, "horizontal_border"), false);
+			entityFactory.create("horizontal_border_2", BodyType.StaticBody, 0f, -0.06f, new EntityFixtureDef(assets, "horizontal_border"), false);
 		}
 		if (vertical){
-			entityFactory.create("vertical_border", BodyType.StaticBody, viewportWidth, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
-			entityFactory.create("vertical_border", BodyType.StaticBody, -0.06f, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+			entityFactory.create("vertical_border", BodyType.StaticBody, viewportWidth-0.06f, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+			entityFactory.create("vertical_border_2", BodyType.StaticBody, 0f, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
 		}
 	}
+	
+	public static float round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
 	
 
 }
