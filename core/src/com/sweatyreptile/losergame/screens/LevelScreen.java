@@ -77,31 +77,6 @@ public abstract class LevelScreen extends FinishableScreen{
 		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		noClearRender(delta);
-		/*spriteRenderer.begin();
-		
-		spriteRenderer.disableBlending();		
-		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight);
-		spriteRenderer.enableBlending();
-		
-		for (Entity<?> entity : entities.values()){
-			entity.render(spriteRenderer);
-		}
-		
-		player.render(spriteRenderer);
-	
-		for (Entity<?> entity : entities.values()){
-			entity.renderSpeech(spriteRenderer, defaultSpeechFont);
-		}
-		
-		player.renderSpeech(spriteRenderer, defaultSpeechFont);
-		
-		spriteRenderer.end();
-		
-		if (limitedTime) levelTimer.render(shapeRenderer);
-		
-		if (DRAW_PHYSICS){
-			physRenderer.render(world, camera.combined);
-		}*/
 	}
 	
 	public void noClearRender(float delta){
@@ -109,7 +84,7 @@ public abstract class LevelScreen extends FinishableScreen{
 		spriteRenderer.begin();
 		
 		spriteRenderer.disableBlending();		
-		//spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight);
+		//spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight); //This background needs to be set by specific levels
 		spriteRenderer.enableBlending();
 		
 		for (Entity<?> entity : entities.values()){
@@ -197,16 +172,23 @@ public abstract class LevelScreen extends FinishableScreen{
 		generator.dispose();
 	}
 	
-	//not yet compatible with ScrollingLevelScreen
-	//should later update positions with scrolling
-	protected void setupBorders(boolean horizontal, boolean vertical){ //0.06 is the width of borders
-		if (horizontal){
+	protected void setupBorders(boolean horizontal, boolean vertical){
+		setupBorders(horizontal, horizontal, vertical, vertical);
+	}
+	
+	protected void setupBorders(boolean horizontalTop, boolean horizontalBottom, 
+			boolean verticalLeft, boolean verticalRight){ //0.06 is the width of borders
+		if (horizontalTop){
 			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, viewportHeight, new EntityFixtureDef(assets, "horizontal_border"), false);
-			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, -0.06f, new EntityFixtureDef(assets, "horizontal_border"), false);
 		}
-		if (vertical){
+		if (horizontalBottom){
+			entityFactory.create("horizontal_border_2", BodyType.StaticBody, 0f, -0.06f, new EntityFixtureDef(assets, "horizontal_border"), false);
+		}
+		if (verticalLeft){
 			entityFactory.create("vertical_border", BodyType.StaticBody, -0.06f, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
-			entityFactory.create("vertical_border", BodyType.StaticBody, viewportWidth, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+		}
+		if (verticalRight){
+			entityFactory.create("vertical_border_2", BodyType.StaticBody, viewportWidth, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
 		}
 	}
 

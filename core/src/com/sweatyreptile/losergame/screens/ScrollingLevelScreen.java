@@ -2,6 +2,7 @@ package com.sweatyreptile.losergame.screens;
 
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
@@ -55,17 +56,52 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 			if ((levelEndHorizontal == 0 && level0Horizontal == 0) || 
 					camera0Horizontal > level0Horizontal && cameraEndHorizontal < levelEndHorizontal){
 				setCameraPosition(playerX, camera.position.y);
+				updateBordersX(playerX - viewportWidth/2);
 			}
 		}
 		if (vertical){
 			if (((levelEndVertical == 0 && level0Vertical == 0) || 
 					(camera0Vertical > level0Vertical && cameraEndVertical < levelEndVertical))
-					&& ((!strictlyDownwards) || Float.compare(oldCamY, (playerY + offsetY)) > 0)){
+					&& (!strictlyDownwards || Float.compare(oldCamY, (playerY + offsetY)) > 0)){
 				setCameraPosition(camera.position.x, playerY + offsetY);
+				updateBordersY(playerY + offsetY - viewportHeight/2);
 			}	
 		}
-				
+		
 	}
+	
+	protected void updateBordersX(float newX){
+		updateBorderX("vertical_border", newX - 0.06f);
+		updateBorderX("vertical_border_2", newX + viewportWidth);
+		updateBorderX("horizontal_border", newX);
+		updateBorderX("horizontal_border_2", newX);
+
+	}
+	
+	protected void updateBordersY(float newY){
+		updateBorderY("vertical_border", newY);
+		updateBorderY("vertical_border_2", newY);
+		updateBorderY("horizontal_border", newY + viewportHeight);
+		updateBorderY("horizontal_border_2", newY - 0.06f);
+	}
+	
+	protected void updateBorderX(String borderName, float newX){
+		try {
+			Body border = entities.get(borderName).getBody();
+			border.setTransform(newX, border.getPosition().y, border.getAngle());
+		}
+		catch (NullPointerException e) {} ;
+	}
+	
+	protected void updateBorderY(String borderName, float newY){
+		try {
+			Body border = entities.get(borderName).getBody();
+			border.setTransform(border.getPosition().x, newY, border.getAngle());
+		}
+		catch (NullPointerException e) {} ;
+	}
+	
+
 	
 	public void setOffsetY(float offsetY){
 		this.offsetY = offsetY;

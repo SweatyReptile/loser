@@ -67,18 +67,6 @@ public abstract class LevelChunk {
 	public void setOriginY(float originY){
 		this.originY = originY;
 	}
-
-	protected void setupBorders(EntityFactory entityFactory, float viewportHeight, float viewportWidth, 
-			AssetManagerPlus assets, boolean horizontal, boolean vertical){ //0.06 is the width of borders
-		if (horizontal){
-			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, viewportHeight, new EntityFixtureDef(assets, "horizontal_border"), false);
-			entityFactory.create("horizontal_border_2", BodyType.StaticBody, 0f, -0.06f, new EntityFixtureDef(assets, "horizontal_border"), false);
-		}
-		if (vertical){
-			entityFactory.create("vertical_border", BodyType.StaticBody, viewportWidth, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
-			entityFactory.create("vertical_border_2", BodyType.StaticBody, -0.06f, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
-		}
-	}
 	
 	public static float round(float d, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(d));

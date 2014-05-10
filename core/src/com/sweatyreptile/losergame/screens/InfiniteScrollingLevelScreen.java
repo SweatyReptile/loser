@@ -42,7 +42,6 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 		float chunkHeight = originY;
 		for (int i = 0; i < chunks.size(); i++){
 			LevelChunk chunk = chunks.get(i);
-			//System.out.println(i + ": " + chunkHeight); TODO floats are slightly inaccurate, builds up over time
 			chunk.setOriginY(chunkHeight);
 			chunk.render(delta, spriteRenderer, 0, chunkHeight, viewportWidth, viewportHeight);
 			chunkHeight += chunk.getHeight(height, viewportHeight);
