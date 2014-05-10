@@ -12,11 +12,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
@@ -25,6 +25,7 @@ import com.sweatyreptile.losergame.LevelTimer;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
+import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public abstract class LevelScreen extends FinishableScreen{
@@ -167,6 +168,7 @@ public abstract class LevelScreen extends FinishableScreen{
 		
 		entityFactory = new EntityFactory(assets, entities,
 				world, contactListener, viewportWidth, Entity.DEFAULT_SCREEN_WIDTH);
+				
 		background = assets.get("background.png");
 		
 		contactListener = new LoserContactListener();
@@ -193,6 +195,17 @@ public abstract class LevelScreen extends FinishableScreen{
 		defaultSpeechFont.setScale(.0025f);
 		defaultSpeechFont.setColor(Color.BLACK);
 		generator.dispose();
+	}
+	
+	protected void setupBorders(boolean horizontal, boolean vertical){ //0.06 is the width of borders
+		if (horizontal){
+			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, viewportHeight, new EntityFixtureDef(assets, "horizontal_border"), false);
+			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, -0.06f, new EntityFixtureDef(assets, "horizontal_border"), false);
+		}
+		if (vertical){
+			entityFactory.create("vertical_border", BodyType.StaticBody, -0.06f, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+			entityFactory.create("vertical_border", BodyType.StaticBody, viewportWidth, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+		}
 	}
 
 	protected abstract Player createPlayer(); 
