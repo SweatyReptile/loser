@@ -197,6 +197,8 @@ public abstract class LevelScreen extends FinishableScreen{
 		generator.dispose();
 	}
 	
+	//not yet compatible with ScrollingLevelScreen
+	//should later update positions with scrolling
 	protected void setupBorders(boolean horizontal, boolean vertical){ //0.06 is the width of borders
 		if (horizontal){
 			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, viewportHeight, new EntityFixtureDef(assets, "horizontal_border"), false);

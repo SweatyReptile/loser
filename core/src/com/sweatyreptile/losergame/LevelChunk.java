@@ -45,10 +45,17 @@ public abstract class LevelChunk {
 	
 	public void updateEntityPositions(float viewportHeight){ //Only works in vertical direction right now
 		for (Entity<?> entity : chunkEntities.values()){
+			
 			Vector2 pos = entity.currentBody.getPosition();
+			float remainder = Math.abs(pos.y % viewportHeight);
+			float remainderApprox = round(remainder, 1);
+			float roundedOrigin = round(originY, 1);
 			float newY;
-			if (Float.compare(pos.y, 0f) >= 0f) newY = Math.abs(pos.y % viewportHeight) + originY;
-			else newY = (viewportHeight - Math.abs(pos.y % viewportHeight)) + originY;
+
+			if (Float.compare(remainderApprox, 0f) == 0) newY = roundedOrigin;
+			else if (Float.compare(pos.y, 0f) > 0) newY = remainder + roundedOrigin;
+			else newY = (viewportHeight - remainder) + roundedOrigin;
+			
 			entity.currentBody.setTransform(pos.x, round(newY, 2), entity.currentBody.getAngle());
 		}
 	}
@@ -68,8 +75,8 @@ public abstract class LevelChunk {
 			entityFactory.create("horizontal_border_2", BodyType.StaticBody, 0f, -0.06f, new EntityFixtureDef(assets, "horizontal_border"), false);
 		}
 		if (vertical){
-			entityFactory.create("vertical_border", BodyType.StaticBody, viewportWidth-0.06f, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
-			entityFactory.create("vertical_border_2", BodyType.StaticBody, 0f, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+			entityFactory.create("vertical_border", BodyType.StaticBody, viewportWidth, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+			entityFactory.create("vertical_border_2", BodyType.StaticBody, -0.06f, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
 		}
 	}
 	
