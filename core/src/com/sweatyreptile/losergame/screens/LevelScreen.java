@@ -30,7 +30,7 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public abstract class LevelScreen extends FinishableScreen{
 
-	private static final boolean DRAW_PHYSICS = true;
+	private static final boolean DRAW_PHYSICS = false;
 	
 	protected int width;
 	protected int height;
