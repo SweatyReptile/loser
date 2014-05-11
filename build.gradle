@@ -97,6 +97,7 @@ project(":core") {
         compile "com.badlogicgames.box2dlights:box2dlights:1.1"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        compile fileTree(dir: 'lib', include: '*.jar')
     }
 }
 

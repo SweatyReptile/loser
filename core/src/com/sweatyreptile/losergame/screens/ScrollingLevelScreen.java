@@ -1,12 +1,18 @@
 package com.sweatyreptile.losergame.screens;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquation;
+import aurelienribon.tweenengine.TweenEquations;
+
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
+import com.sweatyreptile.losergame.tween.LevelAccessor;
 
 public abstract class ScrollingLevelScreen extends LevelScreen {
 
+	protected Tween cameraTween;
 	protected float levelEnd;
 	protected float level0;
 
@@ -34,7 +40,17 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 		
 		if ((levelEnd == 0 && level0 == 0) || 
 				camera0 > level0 && cameraEnd < levelEnd){
-			setCameraPosition(playerX, viewportHeight / 2);
+			
+			if (cameraTween != null){
+				cameraTween.kill();
+			}
+			
+			cameraTween = Tween.to(this, LevelAccessor.CAMERA_POSITION, .5f)
+				.target(playerX, viewportHeight / 2)
+				.ease(TweenEquations.easeOutExpo)
+				.start(tweenManager);
+			
+			//setCameraPosition(playerX, viewportHeight / 2);
 		}
 	}
 

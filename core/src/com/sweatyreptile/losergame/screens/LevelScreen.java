@@ -3,6 +3,8 @@ package com.sweatyreptile.losergame.screens;
 import java.util.HashMap;
 import java.util.Map;
 
+import aurelienribon.tweenengine.TweenManager;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
@@ -12,9 +14,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -49,7 +51,7 @@ public abstract class LevelScreen extends FinishableScreen{
 	protected Texture background;
 	protected BitmapFont defaultSpeechFont;
 	private LevelTimer levelTimer;
-
+	protected TweenManager tweenManager;
 	
 	public LevelScreen(ScreenFinishedListener listener, Screen nextScreen, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight, float timeLimit){
@@ -101,12 +103,13 @@ public abstract class LevelScreen extends FinishableScreen{
 
 	public void update(float delta) {
 		world.step(1/60f, 6, 2); // TODO: Change step
-		
+
 		player.update(delta);
 		for (Entity<?> entity : entities.values()){
 			entity.update(delta);
 		}
 		levelTimer.update();
+		tweenManager.update(delta);
 	}
 
 	@Override
@@ -119,9 +122,15 @@ public abstract class LevelScreen extends FinishableScreen{
 		camera.update();
 		spriteRenderer.setProjectionMatrix(camera.combined);
 	}
+	
+	public Vector3 getCameraPosition(){
+		return camera.position;
+	}
 
 	@Override
 	public void show() {
+		tweenManager = new TweenManager();
+		
 		camera = new OrthographicCamera(width, height);
 		camera.viewportHeight = viewportHeight;
 		camera.viewportWidth = viewportWidth;
