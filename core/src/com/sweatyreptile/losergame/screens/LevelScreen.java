@@ -76,17 +76,16 @@ public abstract class LevelScreen extends FinishableScreen{
 		update(delta);
 		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		noClearRender(delta);
+		spriteRenderer.begin();
+		spriteRenderer.disableBlending();		
+		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight); //This background needs to be set by specific levels
+		spriteRenderer.enableBlending();
+		spriteRenderer.end();
+		renderTop(delta);
 	}
 	
-	public void noClearRender(float delta){
-		update(delta);
+	public void renderTop(float delta){
 		spriteRenderer.begin();
-		
-		spriteRenderer.disableBlending();		
-		//spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight); //This background needs to be set by specific levels
-		spriteRenderer.enableBlending();
-		
 		for (Entity<?> entity : entities.values()){
 			entity.render(spriteRenderer);
 		}

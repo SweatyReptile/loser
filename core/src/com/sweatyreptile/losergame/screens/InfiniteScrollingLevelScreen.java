@@ -37,6 +37,7 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 	
 	@Override
 	public void render(float delta){
+		update(delta);
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		float chunkHeight = originY;
@@ -46,7 +47,7 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 			chunk.render(delta, spriteRenderer, 0, chunkHeight, viewportWidth, viewportHeight);
 			chunkHeight += chunk.getHeight(height, viewportHeight);
 		}
-		super.noClearRender(delta);
+		super.renderTop(delta);
 	}
 	
 	@Override
