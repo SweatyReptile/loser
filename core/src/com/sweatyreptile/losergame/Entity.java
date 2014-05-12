@@ -1,12 +1,9 @@
 package com.sweatyreptile.losergame;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -187,6 +184,10 @@ public class Entity <T extends Entity<?>>{
 
 	private float getSpeechX(BitmapFont font) {
 		return sprite.getX() + sprite.getWidth()/2 - font.getBounds(speech).width/2; 
+	}
+	
+	public Body getBody(){
+		return currentBody;
 	}
 	
 }

@@ -12,11 +12,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
@@ -25,6 +25,7 @@ import com.sweatyreptile.losergame.LevelTimer;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
+import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public abstract class LevelScreen extends FinishableScreen{
@@ -49,6 +50,7 @@ public abstract class LevelScreen extends FinishableScreen{
 	protected Texture background;
 	protected BitmapFont defaultSpeechFont;
 	private LevelTimer levelTimer;
+	private boolean limitedTime;
 
 	
 	public LevelScreen(ScreenFinishedListener listener, Screen nextScreen, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
@@ -63,7 +65,10 @@ public abstract class LevelScreen extends FinishableScreen{
 		this.viewportHeight = viewportHeight;
 		this.entities = new HashMap<String, Entity<?>>();
 		shapeRenderer = new ShapeRenderer();
-		levelTimer = new LevelTimer(this, viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
+		if (timeLimit >= 0){
+			limitedTime = true;
+			levelTimer = new LevelTimer(this, viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
+		}
 	}
 
 	@Override
@@ -71,32 +76,44 @@ public abstract class LevelScreen extends FinishableScreen{
 		update(delta);
 		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
 		spriteRenderer.begin();
-		
 		spriteRenderer.disableBlending();		
-		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight);
+		renderBackground(delta);
 		spriteRenderer.enableBlending();
 		
-		for (Entity<?> entity : entities.values()){
-			entity.render(spriteRenderer);
-		}
+		renderBackground(delta);
+		renderEntities(delta);
+		renderPlayer(delta);
 		
-		player.render(spriteRenderer);
-	
+		renderSpeech(delta);
+		
+		spriteRenderer.end();
+		
+		if (limitedTime) levelTimer.render(shapeRenderer);
+		
+		if (DRAW_PHYSICS){
+			physRenderer.render(world, camera.combined);
+		}
+	}
+
+	protected void renderSpeech(float delta) {
 		for (Entity<?> entity : entities.values()){
 			entity.renderSpeech(spriteRenderer, defaultSpeechFont);
 		}
 		
 		player.renderSpeech(spriteRenderer, defaultSpeechFont);
-		
-		spriteRenderer.end();
-		
-		levelTimer.render(shapeRenderer);
-		
-		if (DRAW_PHYSICS){
-			physRenderer.render(world, camera.combined);
+	}
+	
+	protected void renderBackground(float delta) {
+		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight); //This background needs to be set by specific levels
+	}
+	protected void renderEntities(float delta) {
+		for (Entity<?> entity : entities.values()){
+			entity.render(spriteRenderer);
 		}
+	}
+	protected void renderPlayer(float delta) {
+		player.render(spriteRenderer);
 	}
 
 	public void update(float delta) {
@@ -106,7 +123,7 @@ public abstract class LevelScreen extends FinishableScreen{
 		for (Entity<?> entity : entities.values()){
 			entity.update(delta);
 		}
-		levelTimer.update();
+		if (limitedTime) levelTimer.update();
 	}
 
 	@Override
@@ -134,6 +151,7 @@ public abstract class LevelScreen extends FinishableScreen{
 		
 		entityFactory = new EntityFactory(assets, entities,
 				world, contactListener, viewportWidth, Entity.DEFAULT_SCREEN_WIDTH);
+				
 		background = assets.get("background.png");
 		
 		contactListener = new LoserContactListener();
@@ -149,7 +167,7 @@ public abstract class LevelScreen extends FinishableScreen{
 		setupFonts();
 		setupWorld();
 
-		levelTimer.start();
+		if (limitedTime) levelTimer.start();
 	}
 	
 	protected void setupFonts() {
@@ -160,6 +178,26 @@ public abstract class LevelScreen extends FinishableScreen{
 		defaultSpeechFont.setScale(.0025f);
 		defaultSpeechFont.setColor(Color.BLACK);
 		generator.dispose();
+	}
+	
+	protected void setupBorders(boolean horizontal, boolean vertical){
+		setupBorders(horizontal, horizontal, vertical, vertical);
+	}
+	
+	protected void setupBorders(boolean horizontalTop, boolean horizontalBottom, 
+			boolean verticalLeft, boolean verticalRight){ //0.06 is the width of borders
+		if (horizontalTop){
+			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, viewportHeight, new EntityFixtureDef(assets, "horizontal_border"), false);
+		}
+		if (horizontalBottom){
+			entityFactory.create("horizontal_border_2", BodyType.StaticBody, 0f, -0.06f, new EntityFixtureDef(assets, "horizontal_border"), false);
+		}
+		if (verticalLeft){
+			entityFactory.create("vertical_border", BodyType.StaticBody, -0.06f, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+		}
+		if (verticalRight){
+			entityFactory.create("vertical_border_2", BodyType.StaticBody, viewportWidth, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+		}
 	}
 
 	protected abstract Player createPlayer(); 

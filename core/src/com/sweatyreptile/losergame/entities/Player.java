@@ -439,6 +439,11 @@ public class Player extends Entity<Player>{
 		else body.setTransform(currentBody.getPosition(), 0f);
 	}
 	
+	public void standRight(){
+		switchBody(currentBody, rightBody, false);
+		flipSprites(true);
+	}
+	
 	private float extractBodyHeight(Body body){
 		Vector2 currentPos = currentBody.getPosition();
 		float lowestValue = currentPos.x;
@@ -461,10 +466,6 @@ public class Player extends Entity<Player>{
 		duckingSprite.setFlip(horizontal, false);
 		quackingSprite.setFlip(horizontal, false);
 		quackingDuckingSprite.setFlip(horizontal, false);
-	}
-
-	public Body getBody() {
-		return currentBody;
 	}
 	
 	public boolean isFlying(){
