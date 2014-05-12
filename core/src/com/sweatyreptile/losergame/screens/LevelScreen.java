@@ -78,20 +78,14 @@ public abstract class LevelScreen extends FinishableScreen{
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		spriteRenderer.begin();
 		spriteRenderer.disableBlending();		
-		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight); //This background needs to be set by specific levels
+		renderBackground(delta);
 		spriteRenderer.enableBlending();
 		
-		for (Entity<?> entity : entities.values()){
-			entity.render(spriteRenderer);
-		}
+		renderBackground(delta);
+		renderEntities(delta);
+		renderPlayer(delta);
 		
-		player.render(spriteRenderer);
-	
-		for (Entity<?> entity : entities.values()){
-			entity.renderSpeech(spriteRenderer, defaultSpeechFont);
-		}
-		
-		player.renderSpeech(spriteRenderer, defaultSpeechFont);
+		renderSpeech(delta);
 		
 		spriteRenderer.end();
 		
@@ -100,6 +94,26 @@ public abstract class LevelScreen extends FinishableScreen{
 		if (DRAW_PHYSICS){
 			physRenderer.render(world, camera.combined);
 		}
+	}
+
+	protected void renderSpeech(float delta) {
+		for (Entity<?> entity : entities.values()){
+			entity.renderSpeech(spriteRenderer, defaultSpeechFont);
+		}
+		
+		player.renderSpeech(spriteRenderer, defaultSpeechFont);
+	}
+	
+	protected void renderBackground(float delta) {
+		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight); //This background needs to be set by specific levels
+	}
+	protected void renderEntities(float delta) {
+		for (Entity<?> entity : entities.values()){
+			entity.render(spriteRenderer);
+		}
+	}
+	protected void renderPlayer(float delta) {
+		player.render(spriteRenderer);
 	}
 
 	public void update(float delta) {
