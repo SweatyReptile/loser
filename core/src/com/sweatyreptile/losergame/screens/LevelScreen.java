@@ -30,7 +30,7 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public abstract class LevelScreen extends FinishableScreen{
 
-	private static final boolean DRAW_PHYSICS = true;
+	private static final boolean DRAW_PHYSICS = false;
 	
 	protected int width;
 	protected int height;
@@ -76,28 +76,16 @@ public abstract class LevelScreen extends FinishableScreen{
 		update(delta);
 		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		noClearRender(delta);
-	}
-	
-	public void noClearRender(float delta){
-		update(delta);
 		spriteRenderer.begin();
-		
 		spriteRenderer.disableBlending();		
-		//spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight); //This background needs to be set by specific levels
+		renderBackground(delta);
 		spriteRenderer.enableBlending();
 		
-		for (Entity<?> entity : entities.values()){
-			entity.render(spriteRenderer);
-		}
+		renderBackground(delta);
+		renderEntities(delta);
+		renderPlayer(delta);
 		
-		player.render(spriteRenderer);
-	
-		for (Entity<?> entity : entities.values()){
-			entity.renderSpeech(spriteRenderer, defaultSpeechFont);
-		}
-		
-		player.renderSpeech(spriteRenderer, defaultSpeechFont);
+		renderSpeech(delta);
 		
 		spriteRenderer.end();
 		
@@ -106,6 +94,26 @@ public abstract class LevelScreen extends FinishableScreen{
 		if (DRAW_PHYSICS){
 			physRenderer.render(world, camera.combined);
 		}
+	}
+
+	protected void renderSpeech(float delta) {
+		for (Entity<?> entity : entities.values()){
+			entity.renderSpeech(spriteRenderer, defaultSpeechFont);
+		}
+		
+		player.renderSpeech(spriteRenderer, defaultSpeechFont);
+	}
+	
+	protected void renderBackground(float delta) {
+		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight); //This background needs to be set by specific levels
+	}
+	protected void renderEntities(float delta) {
+		for (Entity<?> entity : entities.values()){
+			entity.render(spriteRenderer);
+		}
+	}
+	protected void renderPlayer(float delta) {
+		player.render(spriteRenderer);
 	}
 
 	public void update(float delta) {

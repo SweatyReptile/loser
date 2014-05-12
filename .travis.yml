@@ -9,7 +9,9 @@ language: java
 jdk: oraclejdk7
 
 branches:
-  only: master
+  only: 
+  - master
+  - develop
 
 before_install:
   - chmod +x gradlew
