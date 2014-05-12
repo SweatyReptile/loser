@@ -80,12 +80,7 @@ public abstract class LevelScreen extends FinishableScreen{
 		spriteRenderer.disableBlending();		
 		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight); //This background needs to be set by specific levels
 		spriteRenderer.enableBlending();
-		spriteRenderer.end();
-		renderTop(delta);
-	}
-	
-	public void renderTop(float delta){
-		spriteRenderer.begin();
+		
 		for (Entity<?> entity : entities.values()){
 			entity.render(spriteRenderer);
 		}
