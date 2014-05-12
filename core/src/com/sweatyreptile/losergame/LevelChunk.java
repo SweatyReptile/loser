@@ -24,15 +24,14 @@ public abstract class LevelChunk {
 	
 	protected abstract void setup();
 	
-	public void render(float delta, SpriteBatch renderer, float x, float y, float viewportWidth, float viewportHeight) {
-		renderer.begin();
-		renderer.disableBlending();
-		renderer.draw(background, x, y, viewportWidth, viewportHeight);
-		renderer.enableBlending();
+	public void renderBackground(float delta, SpriteBatch renderer, float viewportWidth, float viewportHeight) { 
+		renderer.draw(background, 0, originY, viewportWidth, viewportHeight);
+	}
+	
+	public void renderEntities(float delta, SpriteBatch renderer) {
 		for (Entity<?> entity : chunkEntities.values()){
 			entity.render(renderer);
 		}
-		renderer.end();
 		
 	}
 
