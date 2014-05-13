@@ -1,13 +1,20 @@
 package com.sweatyreptile.losergame.screens;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquation;
+import aurelienribon.tweenengine.TweenEquations;
+
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
+import com.sweatyreptile.losergame.tween.LevelAccessor;
 
 public abstract class ScrollingLevelScreen extends LevelScreen {
 
+	protected Tween cameraTweenHorizontal;
+	protected Tween cameraTweenVertical;
 	protected float levelEndHorizontal;
 	protected float level0Horizontal;
 	
@@ -55,7 +62,13 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 		if (horizontal){
 			if ((levelEndHorizontal == 0 && level0Horizontal == 0) || 
 					camera0Horizontal > level0Horizontal && cameraEndHorizontal < levelEndHorizontal){
-				setCameraPosition(playerX, camera.position.y);
+				if (cameraTweenHorizontal != null){
+					cameraTweenHorizontal.kill();
+				}
+				cameraTweenHorizontal = Tween.to(this, LevelAccessor.CAMERA_POSITION, .5f)
+					.target(playerX, viewportHeight / 2)
+					.ease(TweenEquations.easeOutExpo)
+					.start(tweenManager);
 				updateBordersX(playerX - viewportWidth/2);
 			}
 		}
@@ -63,7 +76,13 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 			if (((levelEndVertical == 0 && level0Vertical == 0) || 
 					(camera0Vertical > level0Vertical && cameraEndVertical < levelEndVertical))
 					&& (!strictlyDownwards || Float.compare(oldCamY, (playerY + offsetY)) > 0)){
-				setCameraPosition(camera.position.x, playerY + offsetY);
+				if (cameraTweenVertical != null){
+					cameraTweenVertical.kill();
+				}
+				cameraTweenVertical = Tween.to(this, LevelAccessor.CAMERA_POSITION, .5f)
+					.target(camera.position.x, playerY + offsetY)
+					.ease(TweenEquations.easeOutExpo)
+					.start(tweenManager);
 				updateBordersY(playerY + offsetY - viewportHeight/2);
 			}	
 		}

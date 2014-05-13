@@ -1,6 +1,7 @@
 package com.sweatyreptile.losergame;
 
 import aurelienribon.bodyeditor.FixedBodyEditorLoader;
+import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -11,18 +12,23 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.screens.FinishableScreen;
+import com.sweatyreptile.losergame.screens.LevelScreen;
 import com.sweatyreptile.losergame.screens.LevelTitleScreen;
 import com.sweatyreptile.losergame.screens.LoadingScreen;
 import com.sweatyreptile.losergame.screens.MenuInfiniteScrollingLevelScreen;
 import com.sweatyreptile.losergame.screens.ScreenFinishedListener;
 import com.sweatyreptile.losergame.screens.TestScrollingLevelScreen;
+import com.sweatyreptile.losergame.tween.LevelAccessor;
 
 public class LoserGame extends Game implements ScreenFinishedListener{
 	SpriteBatch batch;
 	AssetManagerPlus assets;
 	
 	@Override
-	public void create () {
+	public void create () {	
+		
+		Tween.registerAccessor(LevelScreen.class, new LevelAccessor());
+		
 		assets = new AssetManagerPlus();
 		batch = new SpriteBatch();
 		int screenWidth = Gdx.graphics.getWidth();
