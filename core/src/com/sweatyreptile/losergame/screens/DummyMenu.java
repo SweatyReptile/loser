@@ -14,10 +14,10 @@ import com.sweatyreptile.losergame.entities.Player;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
-public class MenuInfiniteScrollingLevelScreen extends
+public class DummyMenu extends
 		InfiniteScrollingLevelScreen {
 
-	public MenuInfiniteScrollingLevelScreen(ScreenFinishedListener listener,
+	public DummyMenu(ScreenFinishedListener listener,
 			Screen nextScreen, SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
 			float viewportWidth, float viewportHeight) {
