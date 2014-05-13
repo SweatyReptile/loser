@@ -14,11 +14,8 @@ public class LevelTimer {
 	private LevelScreen level;
 	
 	private float totalSeconds;
-	private float elapsedSeconds;
-	private float startTime;
-	private float endTime;
-	
-	private boolean timesUp;
+	private boolean on;
+	private float timePassed;
 		
 	public LevelTimer(LevelScreen level, float viewportWidth, float viewportHeight, float totalSeconds){
 		this.level = level;
@@ -28,8 +25,7 @@ public class LevelTimer {
 	}
 	
 	public void start(){
-		startTime = (float) TimeUtils.nanoTime();
-		endTime = startTime + (totalSeconds * (float) Math.pow(10, 9));
+		on = true;
 	}
 	
 	public void render(ShapeRenderer shapeRenderer){
@@ -41,23 +37,22 @@ public class LevelTimer {
 		shapeRenderer.end();
 	}
 	
-	public void update(){
-		if (!timesUp){
-			float nanoTime = (float) TimeUtils.nanoTime();
-			if (nanoTime >= endTime){
-				timesUp =  true;
+	public void update(float delta){
+		if (on) {
+			timePassed += delta;
+			if (timePassed >= totalSeconds) {
+				on = false;
 				level.finish();
 			}
-			elapsedSeconds = (nanoTime - startTime) / (float) Math.pow(10, 9) ;
 		}
 	}
 	
 	private float calculateWidth(){
-		return (viewportWidth - ((elapsedSeconds / totalSeconds) * viewportWidth));
+		return viewportWidth - ((timePassed / totalSeconds) * viewportWidth);
 	}
 	
-	public boolean timesUp(){
-		return timesUp;
+	public boolean isOn(){
+		return on;
 	}
 
 }

@@ -44,7 +44,6 @@ public class LevelTitleScreen implements FinishableScreen {
 		finishTask = new Task() {
 			@Override
 			public void run() {
-				Gdx.graphics.setContinuousRendering(true);
 				finish();
 			}
 		};
@@ -90,8 +89,6 @@ public class LevelTitleScreen implements FinishableScreen {
 		Timer.schedule(finishTask, timeInSeconds);
 		Sound quackSound = (Sound) assets.get("quack_dummy.ogg");
 		quackSound.play();
-		Gdx.graphics.setContinuousRendering(false);
-		Gdx.graphics.requestRendering();
 	}
 	
 	private float delaySeconds(String title){
