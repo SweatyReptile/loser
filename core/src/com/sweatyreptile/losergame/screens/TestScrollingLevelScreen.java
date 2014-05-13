@@ -48,6 +48,8 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 	@Override
 	protected void setupWorld() {
 		
+		horizontal = true;
+		
 		level0Horizontal = -1.5f;
 		levelEndHorizontal = viewportWidth + 1.5f;
 		
