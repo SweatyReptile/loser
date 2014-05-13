@@ -28,14 +28,6 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 		super();
 	}
 	
-	public TestScrollingLevelScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
-			PlayerInputProcessor playerInputProcessor, int width, int height,
-			float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName) {
-		super(levelManager, batch, assets, playerInputProcessor, width, height,
-				viewportWidth, viewportHeight, timeLimit, alias, levelName, true, false);
-		
-	}
-	
 	@Override
 	protected Player createPlayer() {
 		BodyDef def = new BodyDef();
