@@ -1,29 +1,28 @@
 package com.sweatyreptile.losergame.screens;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.sweatyreptile.losergame.EntityFactory;
 import com.sweatyreptile.losergame.LevelChunk;
+import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
-public class DummyMenu extends
-		InfiniteScrollingLevelScreen {
+public class DummyMenu extends InfiniteScrollingLevelScreen {
 
-	public DummyMenu(ScreenFinishedListener listener,
-			Screen nextScreen, SpriteBatch batch, AssetManagerPlus assets,
+	public DummyMenu() {
+		super();
+	}
+	
+	public DummyMenu(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
-			float viewportWidth, float viewportHeight) {
-		super(listener, nextScreen, batch, assets, playerInputProcessor, width, height,
-				viewportWidth, viewportHeight, false, true);
-		// TODO Auto-generated constructor stub
+			float viewportWidth, float viewportHeight, String alias, String levelName) {
+		super(levelManager, batch, assets, playerInputProcessor, width, height,
+				viewportWidth, viewportHeight, alias, levelName, false, true);
 	}
 	
 
@@ -42,6 +41,7 @@ public class DummyMenu extends
 		player.standRight();
 		setOffsetY(viewportHeight / 3);
 		updateCamera();
+		vertical = true;
 		setStrictlyDownwards(true);
 		chunks.add(new LevelChunk() {
 			@Override protected void setup(){

@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sweatyreptile.losergame.LevelChunk;
+import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
@@ -17,22 +18,24 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 	protected Stack<LevelChunk> chunks; //Should contain at least 2 chunks
 	protected float totalChunkHeight;
 	
-	public InfiniteScrollingLevelScreen(ScreenFinishedListener listener,
-			Screen nextScreen, SpriteBatch batch, AssetManagerPlus assets,
+	public InfiniteScrollingLevelScreen() {
+		super();
+	}
+	
+	public InfiniteScrollingLevelScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
-			float viewportWidth, float viewportHeight, float timeLimit,
+			float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName, 
 			boolean horizontalScrolling, boolean verticalScrolling) {
-		super(listener, nextScreen, batch, assets, playerInputProcessor, width, height,
-				viewportWidth, viewportHeight, timeLimit, horizontalScrolling, verticalScrolling);
+		super(levelManager, batch, assets, playerInputProcessor, width, height,
+				viewportWidth, viewportHeight, timeLimit, alias, levelName, horizontalScrolling, verticalScrolling);
 		chunks = new Stack<LevelChunk>();
 	}
-	public InfiniteScrollingLevelScreen(ScreenFinishedListener listener,
-			Screen nextScreen, SpriteBatch batch, AssetManagerPlus assets,
+	public InfiniteScrollingLevelScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
-			float viewportWidth, float viewportHeight, boolean horizontalScrolling,
+			float viewportWidth, float viewportHeight, String alias, String levelName, boolean horizontalScrolling,
 			boolean verticalScrolling) {
-		this(listener, nextScreen, batch, assets, playerInputProcessor, width, height,
-				viewportWidth, viewportHeight, -1, horizontalScrolling, verticalScrolling); //Use this constructor for unlimited time
+		this(levelManager, batch, assets, playerInputProcessor, width, height,
+				viewportWidth, viewportHeight, -1, alias, levelName, horizontalScrolling, verticalScrolling); //Use this constructor for unlimited time
 	}
 	
 	@Override

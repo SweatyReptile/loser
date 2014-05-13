@@ -7,6 +7,7 @@ import aurelienribon.tweenengine.TweenEquations;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.tween.LevelAccessor;
@@ -27,15 +28,18 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 	protected float offsetY;
 	protected boolean strictlyDownwards;
 
-	public ScrollingLevelScreen(ScreenFinishedListener listener, Screen nextScreen,
-			SpriteBatch batch, AssetManagerPlus assets,
+	public ScrollingLevelScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
-			float viewportWidth, float viewportHeight, float timeLimit,
+			float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName, 
 			boolean horizontalScrolling, boolean verticalScrolling) {
-		super(listener, nextScreen, batch, assets, playerInputProcessor, width, height,
-				viewportWidth, viewportHeight, timeLimit);
+		super(levelManager, batch, assets, playerInputProcessor, width, height,
+				viewportWidth, viewportHeight, timeLimit, alias, levelName);
 		this.vertical = verticalScrolling;
 		this.horizontal = horizontalScrolling;
+	}
+
+	public ScrollingLevelScreen() {
+		super();
 	}
 
 	@Override
