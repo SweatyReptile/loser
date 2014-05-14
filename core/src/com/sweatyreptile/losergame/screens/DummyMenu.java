@@ -69,8 +69,8 @@ public class DummyMenu extends InfiniteScrollingLevelScreen {
 					@Override
 					public void beginContact(Entity entity,
 							FixtureWrapper entityFixture, FixtureWrapper contactee) {
-						if (contactee.isPlayer()) {
-							Player player = (Player) contactee.getBody().getUserData();
+						Player player = contactee.getPlayer();
+						if (player != null) {
 							if (player.isQuacking()) {
 								//do stuff
 							}

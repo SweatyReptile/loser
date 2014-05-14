@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.physics.box2d.Shape.Type;
+import com.sweatyreptile.losergame.entities.Player;
 
 public class FixtureWrapper {
 
@@ -17,6 +18,21 @@ public class FixtureWrapper {
 	
 	public Fixture getFixture() {
 		return fixture;
+	}
+	
+	
+	/**
+	 * 
+	 * @return Player if this is a fixture on the player, otherwise null
+	 */
+	
+	public Player getPlayer() {
+		if (isPlayer()) {
+			return (Player) getBody().getUserData();
+		}
+		else{
+			return null;
+		}
 	}
 	
 	public boolean isPlayer(){
