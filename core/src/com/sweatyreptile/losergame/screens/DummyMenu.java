@@ -4,7 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
+import com.sweatyreptile.losergame.EntityListener;
+import com.sweatyreptile.losergame.FixtureWrapper;
 import com.sweatyreptile.losergame.LevelChunk;
 import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
@@ -53,6 +56,7 @@ public class DummyMenu extends InfiniteScrollingLevelScreen {
 		});
 		
 		chunks.add(new LevelChunk() {
+			@SuppressWarnings("unchecked")
 			@Override protected void setup(){
 				background = (Texture) assets.get("menu_dummy_2.png");
 				
@@ -60,6 +64,24 @@ public class DummyMenu extends InfiniteScrollingLevelScreen {
 				ef.create("menu_go_frame", BodyType.StaticBody, 2.4f, 3.1f, new EntityFixtureDef(assets, "menu_go_frame"), false);
 				ef.create("menu_reset_frame", BodyType.StaticBody, 2.1f, 2.45f, new EntityFixtureDef(assets, "menu_reset_frame"), false);
 				ef.create("menu_platform_2", BodyType.StaticBody, 0.71f, 0.4f, new EntityFixtureDef(assets, "menu_platform_2"), false);
+				
+				chunkEntities.get("menu_go_frame").addListener(new EntityListener() {
+					@Override
+					public void beginContact(Entity entity,
+							FixtureWrapper entityFixture, FixtureWrapper contactee) {
+						if (contactee.isPlayer()) {
+							Player player = (Player) contactee.getBody().getUserData();
+							if (player.isQuacking()) {
+								//do stuff
+							}
+						}
+					}
+					@Override
+					public void endContact(Entity entity,
+							FixtureWrapper entityFixture, FixtureWrapper contactee) {
+					}
+					
+				});
 			}
 		});
 		
