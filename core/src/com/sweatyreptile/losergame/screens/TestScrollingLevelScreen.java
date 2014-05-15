@@ -1,15 +1,11 @@
 package com.sweatyreptile.losergame.screens;
 
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
-import com.sweatyreptile.losergame.LevelManager;
-import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.MusicPlayer;
 import com.sweatyreptile.losergame.entities.Player;
 import com.sweatyreptile.losergame.entities.Sharbal;
@@ -17,7 +13,6 @@ import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.fixtures.MetalFixtureDef;
 import com.sweatyreptile.losergame.fixtures.WoodFixtureDef;
-import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 	

@@ -2,9 +2,6 @@ package com.sweatyreptile.losergame.screens;
 
 import java.util.Stack;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sweatyreptile.losergame.LevelChunk;
 import com.sweatyreptile.losergame.LevelManager;

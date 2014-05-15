@@ -3,7 +3,6 @@ package com.sweatyreptile.losergame;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.sweatyreptile.losergame.screens.LevelScreen;
 
 public class LevelTimer {

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -488,23 +487,23 @@ public class Player extends Entity<Player>{
 		
 		@Override
 		public void beginContact(Player entity, Fixture entityFixture, Fixture contacted) {
-			Array<Fixture> group = new Array<Fixture>(2);
-			group.add(entityFixture);
-			group.add(contacted);
-			startedContacts.push(group);
+			Array<Fixture> collisionCouple = new Array<Fixture>(2);
+			collisionCouple.add(entityFixture);
+			collisionCouple.add(contacted);
+			startedContacts.push(collisionCouple);
 		}
 
 		@Override
 		public void endContact(Player entity, Fixture entityFixture, Fixture contacted) {
 			for (int i = 0; i < startedContacts.size(); i++){
-				Array<Fixture> group = startedContacts.get(i);
-				Fixture storedEntityFixture = group.get(0);
-				Fixture storedContactedFixture = group.get(1);
+				Array<Fixture> collisionCouple = startedContacts.get(i);
+				Fixture storedEntityFixture = collisionCouple.get(0);
+				Fixture storedContactedFixture = collisionCouple.get(1);
 				if (entityFixture.equals(storedEntityFixture) &&
 						contacted.equals(storedContactedFixture)){
-					startedContacts.remove(group);
-					break; // We only need remove one instance of this group
-					       // because only one contact was ended
+					startedContacts.remove(collisionCouple);
+					break; // We only need remove one instance of these
+					       // fixtures because only one contact was ended
 				}
 			}
 		}

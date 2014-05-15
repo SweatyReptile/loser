@@ -48,6 +48,8 @@ public class LevelManager {
 	public void instantiate(String alias, String typeName, String levelName,
 			float viewportWidth, float viewportHeight, float timeLimit){
 		
+		Gdx.app.log("LevelManager", "Instantiate " + alias + " " + levelName + " (" + typeName + ")");
+		
 		LevelTitleScreen titleScreen = new LevelTitleScreen(
 				this, batch, assets, screenWidth, screenHeight, alias, levelName);
 		
@@ -58,19 +60,18 @@ public class LevelManager {
 		
 		levels.put(alias, level);
 		levelTitles.put(alias, titleScreen);
-		
-		Gdx.app.log("LevelManager", "Instantiated " + alias + " (" + typeName + ") " + levelName);
+
 	}
 	
 	public void level(String alias){
-		Gdx.app.log("LevelManager", "Switch to \"" + alias + "\" title screen");
+		Gdx.app.log("LevelManager", "Switch to " + alias + " title screen");
 		LevelTitleScreen ltScreen = levelTitles.get(alias);
 		screenFinishedListener.onFinish(currentScreen, ltScreen);
 		currentScreen = ltScreen;
 	}
 	
 	public void level_notitle(String alias){
-		Gdx.app.log("LevelManager", "Switch to \"" + alias + "\"");
+		Gdx.app.log("LevelManager", "Switch to " + alias);
 		LevelScreen lvlScreen = levels.get(alias);
 		screenFinishedListener.onFinish(currentScreen, lvlScreen);
 		currentScreen = lvlScreen;
