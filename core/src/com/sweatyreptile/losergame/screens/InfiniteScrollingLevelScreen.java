@@ -20,6 +20,7 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 	
 	public InfiniteScrollingLevelScreen() {
 		super();
+		chunks = new Stack<LevelChunk>();
 	}
 	
 	public InfiniteScrollingLevelScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,

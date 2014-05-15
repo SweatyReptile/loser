@@ -61,7 +61,7 @@ public class LoadingScreen implements FinishableScreen{
 
 	@Override
 	public void finish() {
-		levelManager.level("test_home");
+		levelManager.level("test_menu");
 	}
 
 }

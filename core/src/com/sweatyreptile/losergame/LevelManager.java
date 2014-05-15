@@ -12,7 +12,9 @@ import com.sweatyreptile.losergame.screens.LevelTitleScreen;
 import com.sweatyreptile.losergame.screens.ScreenFinishedListener;
 
 public class LevelManager {
-
+	
+	private static final float DVWIDTH = 3.2f;
+	private static final float DVHEIGHT = 1.8f;
 	private Map<String, LevelTitleScreen> levelTitles;
 	private Map<String, LevelScreen> levels;
 	private FinishableScreen currentScreen;
@@ -39,7 +41,8 @@ public class LevelManager {
 		levels = new HashMap<String, LevelScreen>();
 		levelTitles = new HashMap<String, LevelTitleScreen>();
 		
-		instantiate("test_home", "TestScrollingLevelScreen", "WELCOME TO THE JUNGLE", 3.2f, 1.8f, 5f);
+		instantiate("test_menu", "DummyMenu", "DUCK GAME", DVWIDTH, DVHEIGHT, -1);
+		instantiate("test_home", "TestScrollingLevelScreen", "WELCOME TO THE JUNGLE", DVWIDTH, DVHEIGHT, 5f);
 	}
 	
 	public void instantiate(String alias, String typeName, String levelName,
