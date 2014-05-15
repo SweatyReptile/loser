@@ -5,6 +5,7 @@ import java.util.Stack;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
+import com.sweatyreptile.losergame.FixtureWrapper;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
@@ -43,7 +44,7 @@ public class ContentSensor extends Sensor {
 	}
 
 	@Override
-	public void beginContact(Fixture sensor, Fixture sensee) {
+	public void beginContact(FixtureWrapper sensor, FixtureWrapper sensee) {
 		Body senseeBody = sensee.getBody();
 		//if (!contents.contains(senseeBody)) 
 		contents.add(senseeBody);
@@ -53,7 +54,7 @@ public class ContentSensor extends Sensor {
 	}
 
 	@Override
-	public void endContact(Fixture sensor, Fixture sensee) {
+	public void endContact(FixtureWrapper sensor, FixtureWrapper sensee) {
 		Body senseeBody = sensee.getBody();
 		if (contents.contains(senseeBody)) {
 			contents.remove(senseeBody);

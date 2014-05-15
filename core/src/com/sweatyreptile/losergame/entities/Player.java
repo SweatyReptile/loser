@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.sweatyreptile.losergame.DuckQuackTopFixtureDef;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityListener;
+import com.sweatyreptile.losergame.FixtureWrapper;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckQuackFixtureDef;
@@ -483,22 +484,22 @@ public class Player extends Entity<Player>{
 		
 		// Holds current player contacts so that they may be flushed
 		// when the player switches bodies
-		private Stack<Array<Fixture>> startedContacts = new Stack<Array<Fixture>>();
+		private Stack<Array<FixtureWrapper>> startedContacts = new Stack<Array<FixtureWrapper>>();
 		
 		@Override
-		public void beginContact(Player entity, Fixture entityFixture, Fixture contacted) {
-			Array<Fixture> collisionCouple = new Array<Fixture>(2);
+		public void beginContact(Player entity, FixtureWrapper entityFixture, FixtureWrapper contacted) {
+			Array<FixtureWrapper> collisionCouple = new Array<FixtureWrapper>(2);
 			collisionCouple.add(entityFixture);
 			collisionCouple.add(contacted);
 			startedContacts.push(collisionCouple);
 		}
 
 		@Override
-		public void endContact(Player entity, Fixture entityFixture, Fixture contacted) {
+		public void endContact(Player entity, FixtureWrapper entityFixture, FixtureWrapper contacted) {
 			for (int i = 0; i < startedContacts.size(); i++){
-				Array<Fixture> collisionCouple = startedContacts.get(i);
-				Fixture storedEntityFixture = collisionCouple.get(0);
-				Fixture storedContactedFixture = collisionCouple.get(1);
+				Array<FixtureWrapper> collisionCouple = startedContacts.get(i);
+				FixtureWrapper storedEntityFixture = collisionCouple.get(0);
+				FixtureWrapper storedContactedFixture = collisionCouple.get(1);
 				if (entityFixture.equals(storedEntityFixture) &&
 						contacted.equals(storedContactedFixture)){
 					startedContacts.remove(collisionCouple);
@@ -510,11 +511,11 @@ public class Player extends Entity<Player>{
 		
 		public void flushContacts(LoserContactListener contactListener){
 			while(!startedContacts.isEmpty()){
-				Array<Fixture> group = startedContacts.pop();
-				Fixture storedEntityFixture = group.get(0);
-				Fixture storedContactedFixture = group.get(1);
-				contactListener.processFixture(storedEntityFixture, storedContactedFixture, false);
-				contactListener.processFixture(storedContactedFixture, storedEntityFixture, false);
+				Array<FixtureWrapper> group = startedContacts.pop();
+				FixtureWrapper storedEntityFixture = group.get(0);
+				FixtureWrapper storedContactedFixture = group.get(1);
+				contactListener.processFixture(storedEntityFixture.getFixture(), storedContactedFixture.getFixture(), false);
+				contactListener.processFixture(storedContactedFixture.getFixture(), storedEntityFixture.getFixture(), false);
 			}
 		}
 		

@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
+import com.sweatyreptile.losergame.FixtureWrapper;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
@@ -108,10 +109,10 @@ public abstract class Sensor implements SensorListener{
 	}
 
 	@Override
-	public abstract void beginContact(Fixture sensor, Fixture sensee);
+	public abstract void beginContact(FixtureWrapper sensor, FixtureWrapper sensee);
 	
 	@Override
-	public abstract void endContact(Fixture sensor, Fixture sensee);
+	public abstract void endContact(FixtureWrapper sensor, FixtureWrapper sensee);
 	
 	public abstract void update(float delta);
 	

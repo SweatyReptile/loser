@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityListener;
+import com.sweatyreptile.losergame.FixtureWrapper;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
@@ -111,8 +112,8 @@ public class Sharbal extends Entity<Sharbal> {
 		Body fastBody;
 		
 		@Override
-		public void beginContact(Sharbal entity, Fixture entityFixture,
-				Fixture contactee) {
+		public void beginContact(Sharbal entity, FixtureWrapper entityFixture,
+				FixtureWrapper contactee) {
 			Vector2 velocityVector = contactee.getBody().getLinearVelocity();
 			float velocity = (float) Math.pow((float) Math.pow(velocityVector.x, 2) + (float) Math.pow(velocityVector.y, 2), 0.5);
 			if (velocity > PAINFUL_VELOCITY && fastBody == null){
@@ -123,8 +124,8 @@ public class Sharbal extends Entity<Sharbal> {
 		}
 
 		@Override
-		public void endContact(Sharbal entity, Fixture entityFixture,
-				Fixture contactee) {
+		public void endContact(Sharbal entity, FixtureWrapper entityFixture,
+				FixtureWrapper contactee) {
 			if (contactee.getBody() == fastBody) fastBody = null;
 			
 		}
