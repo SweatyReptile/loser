@@ -94,12 +94,6 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 	}
 
 	@Override
-	protected Player createPlayer() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	protected void setupWorld() {
 		updateChunkOrigins();
 		for (LevelChunk chunk : chunks){
