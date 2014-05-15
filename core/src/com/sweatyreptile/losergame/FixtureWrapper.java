@@ -37,7 +37,8 @@ public class FixtureWrapper {
 	
 	public boolean isPlayer(){
 		Body body = fixture.getBody();
-		if (body != null && body.getUserData() != null && 
+		if (!fixture.isSensor() &&
+				body != null && body.getUserData() != null && 
 				((Entity<?>)(body.getUserData()))
 					.getName().equals("duck")) return true;
 		return false;

@@ -66,13 +66,17 @@ public class DummyMenu extends InfiniteScrollingLevelScreen {
 				ef.create("menu_platform_2", BodyType.StaticBody, 0.71f, 0.4f, new EntityFixtureDef(assets, "menu_platform_2"), false);
 				
 				chunkEntities.get("menu_go_frame").addListener(new EntityListener() {
+					
+					private boolean switchCalled;
+					
 					@Override
 					public void beginContact(Entity entity,
 							FixtureWrapper entityFixture, FixtureWrapper contactee) {
 						Player player = contactee.getPlayer();
 						if (player != null) {
-							if (player.isQuacking()) {
-								//do stuff
+							if (player.isQuacking() && !switchCalled) {
+								levelManager.level("test_home");
+								switchCalled = true;
 							}
 						}
 					}
