@@ -1,10 +1,8 @@
 package com.sweatyreptile.losergame.screens;
 
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenEquation;
 import aurelienribon.tweenengine.TweenEquations;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.sweatyreptile.losergame.LevelManager;
@@ -109,19 +107,17 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 	}
 	
 	protected void updateBorderX(String borderName, float newX){
-		try {
+		if (entities.containsKey(borderName)){
 			Body border = entities.get(borderName).getBody();
 			border.setTransform(newX, border.getPosition().y, border.getAngle());
 		}
-		catch (NullPointerException e) {} ;
 	}
 	
 	protected void updateBorderY(String borderName, float newY){
-		try {
+		if (entities.containsKey(borderName)){
 			Body border = entities.get(borderName).getBody();
 			border.setTransform(border.getPosition().x, newY, border.getAngle());
 		}
-		catch (NullPointerException e) {} ;
 	}
 	
 

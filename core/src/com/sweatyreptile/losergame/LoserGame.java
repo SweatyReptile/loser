@@ -13,11 +13,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.screens.FinishableScreen;
 import com.sweatyreptile.losergame.screens.LevelScreen;
-import com.sweatyreptile.losergame.screens.LevelTitleScreen;
 import com.sweatyreptile.losergame.screens.LoadingScreen;
-import com.sweatyreptile.losergame.screens.DummyMenu;
 import com.sweatyreptile.losergame.screens.ScreenFinishedListener;
-import com.sweatyreptile.losergame.screens.TestScrollingLevelScreen;
 import com.sweatyreptile.losergame.tween.LevelAccessor;
 
 public class LoserGame extends Game implements ScreenFinishedListener{

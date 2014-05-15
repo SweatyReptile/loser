@@ -2,14 +2,10 @@ package com.sweatyreptile.losergame.entities;
 
 import java.util.Stack;
 
-import sun.rmi.runtime.Log;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.LoserContactListener;
@@ -39,8 +35,6 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 		music = assets.get(musicName);
 		music.setLooping(true);
 		if (autoPlay) music.play();
-		
-		Gdx.app.log("Radio", this.player.toString());
 		
 		ContentSensorListener quackSensorListener = new MusicPlayerContentSensorListener();
 		quackSensor = new ContentSensor(contactListener, quackSensorListener, world, assets, "default_sensor", .5f, 0, 0);

@@ -488,23 +488,23 @@ public class Player extends Entity<Player>{
 		
 		@Override
 		public void beginContact(Player entity, FixtureWrapper entityFixture, FixtureWrapper contacted) {
-			Array<FixtureWrapper> group = new Array<FixtureWrapper>(2);
-			group.add(entityFixture);
-			group.add(contacted);
-			startedContacts.push(group);
+			Array<FixtureWrapper> collisionCouple = new Array<FixtureWrapper>(2);
+			collisionCouple.add(entityFixture);
+			collisionCouple.add(contacted);
+			startedContacts.push(collisionCouple);
 		}
 
 		@Override
 		public void endContact(Player entity, FixtureWrapper entityFixture, FixtureWrapper contacted) {
 			for (int i = 0; i < startedContacts.size(); i++){
-				Array<FixtureWrapper> group = startedContacts.get(i);
-				FixtureWrapper storedEntityFixture = group.get(0);
-				FixtureWrapper storedContactedFixture = group.get(1);
+				Array<FixtureWrapper> collisionCouple = startedContacts.get(i);
+				FixtureWrapper storedEntityFixture = collisionCouple.get(0);
+				FixtureWrapper storedContactedFixture = collisionCouple.get(1);
 				if (entityFixture.equals(storedEntityFixture) &&
 						contacted.equals(storedContactedFixture)){
-					startedContacts.remove(group);
-					break; // We only need remove one instance of this group
-					       // because only one contact was ended
+					startedContacts.remove(collisionCouple);
+					break; // We only need remove one instance of these
+					       // fixtures because only one contact was ended
 				}
 			}
 		}

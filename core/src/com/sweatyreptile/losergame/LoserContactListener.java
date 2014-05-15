@@ -58,7 +58,10 @@ public class LoserContactListener implements ContactListener {
 			}
 			else if (!contactor.isSensor()){
 				Entity<?> entity = (Entity<?>) contactor.getBody().getUserData();
-				EntityListener<Entity<?>> listener = (EntityListener<Entity<?>>) entityListeners.get(entity.getName());
+				
+				@SuppressWarnings("unchecked")
+					EntityListener<Entity<?>> listener = (EntityListener<Entity<?>>) entityListeners.get(entity.getName());
+				
 				if (listener != null){
 					if (beginContact) {
 						listener.beginContact(entity, new FixtureWrapper(contactor), new FixtureWrapper(contactee));
@@ -79,13 +82,11 @@ public class LoserContactListener implements ContactListener {
 
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
-		// TODO Auto-generated method stub
 
 	}
 

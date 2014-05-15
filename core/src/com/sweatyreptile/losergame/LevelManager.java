@@ -12,7 +12,9 @@ import com.sweatyreptile.losergame.screens.LevelTitleScreen;
 import com.sweatyreptile.losergame.screens.ScreenFinishedListener;
 
 public class LevelManager {
-
+	
+	private static final float DVWIDTH = 3.2f;
+	private static final float DVHEIGHT = 1.8f;
 	private Map<String, LevelTitleScreen> levelTitles;
 	private Map<String, LevelScreen> levels;
 	private FinishableScreen currentScreen;
@@ -39,11 +41,14 @@ public class LevelManager {
 		levels = new HashMap<String, LevelScreen>();
 		levelTitles = new HashMap<String, LevelTitleScreen>();
 		
-		instantiate("test_home", "TestScrollingLevelScreen", "WELCOME TO THE JUNGLE", 3.2f, 1.8f, 5f);
+		instantiate("test_menu", "DummyMenu", "DUCK GAME", DVWIDTH, DVHEIGHT, -1);
+		instantiate("test_home", "TestScrollingLevelScreen", "WELCOME TO THE JUNGLE", DVWIDTH, DVHEIGHT, 5f);
 	}
 	
 	public void instantiate(String alias, String typeName, String levelName,
 			float viewportWidth, float viewportHeight, float timeLimit){
+		
+		Gdx.app.log("LevelManager", "Instantiate " + alias + " " + levelName + " (" + typeName + ")");
 		
 		LevelTitleScreen titleScreen = new LevelTitleScreen(
 				this, batch, assets, screenWidth, screenHeight, alias, levelName);
@@ -55,19 +60,18 @@ public class LevelManager {
 		
 		levels.put(alias, level);
 		levelTitles.put(alias, titleScreen);
-		
-		Gdx.app.log("LevelManager", "Instantiated " + alias + " (" + typeName + ") " + levelName);
+
 	}
 	
 	public void level(String alias){
-		Gdx.app.log("LevelManager", "Switch to \"" + alias + "\" title screen");
+		Gdx.app.log("LevelManager", "Switch to " + alias + " title screen");
 		LevelTitleScreen ltScreen = levelTitles.get(alias);
 		screenFinishedListener.onFinish(currentScreen, ltScreen);
 		currentScreen = ltScreen;
 	}
 	
 	public void level_notitle(String alias){
-		Gdx.app.log("LevelManager", "Switch to \"" + alias + "\"");
+		Gdx.app.log("LevelManager", "Switch to " + alias);
 		LevelScreen lvlScreen = levels.get(alias);
 		screenFinishedListener.onFinish(currentScreen, lvlScreen);
 		currentScreen = lvlScreen;
