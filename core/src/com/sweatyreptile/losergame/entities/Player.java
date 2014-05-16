@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
+import com.sun.org.apache.xpath.internal.operations.And;
 import com.sweatyreptile.losergame.DuckQuackTopFixtureDef;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityListener;
@@ -184,6 +185,12 @@ public class Player extends Entity<Player>{
 				if (!ducking) currentBody.setLinearVelocity(MAX_VELOCITY, velocity.y);
 				else currentBody.setLinearVelocity(MAX_VELOCITY/2, velocity.y);
 	
+			}
+		}
+		if (!isMoving() && isFlying()) {
+			Vector2 velocity = currentBody.getLinearVelocity();
+			if (Float.compare(velocity.x, 0f) != 0) {
+				currentBody.applyForceToCenter(-velocity.x/3, 0f, true);
 			}
 		}
 		
@@ -402,7 +409,7 @@ public class Player extends Entity<Player>{
 			currentBody.setLinearVelocity(velocity.x*2/3, velocity.y);
 		}
 	}
-	
+				
 	public void stopMovingRight(){
 		if (movingDirection == Direction.RIGHT){
 			movingDirection = Direction.NONE;
