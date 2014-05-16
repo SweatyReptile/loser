@@ -15,7 +15,7 @@ import com.sweatyreptile.losergame.screens.FinishableScreen;
 import com.sweatyreptile.losergame.screens.LevelScreen;
 import com.sweatyreptile.losergame.screens.LoadingScreen;
 import com.sweatyreptile.losergame.screens.ScreenFinishedListener;
-import com.sweatyreptile.losergame.tween.LevelAccessor;
+import com.sweatyreptile.losergame.tween.ScrollingLevelAccessor;
 
 public class LoserGame extends Game implements ScreenFinishedListener{
 	SpriteBatch batch;
@@ -24,7 +24,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 	@Override
 	public void create () {	
 		
-		Tween.registerAccessor(LevelScreen.class, new LevelAccessor());
+		Tween.registerAccessor(LevelScreen.class, new ScrollingLevelAccessor());
 		
 		assets = new AssetManagerPlus();
 		batch = new SpriteBatch();
