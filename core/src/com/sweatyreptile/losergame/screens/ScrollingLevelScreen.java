@@ -1,6 +1,7 @@
 package com.sweatyreptile.losergame.screens;
 
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquation;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -8,14 +9,18 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
-import com.sweatyreptile.losergame.tween.LevelAccessor;
+import com.sweatyreptile.losergame.tween.ScrollingLevelAccessor;
 
 public abstract class ScrollingLevelScreen extends LevelScreen {
 
+	private static final float TWEEN_TIME = .5f;
 	protected Tween cameraTweenHorizontal;
 	protected Tween cameraTweenVertical;
 	protected float levelEndHorizontal;
 	protected float level0Horizontal;
+	
+	protected Tween borderTweenX;
+	protected Tween borderTweenY;
 	
 	protected float levelEndVertical;
 	protected float level0Vertical;
@@ -25,6 +30,9 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 	
 	protected float offsetY;
 	protected boolean strictlyDownwards;
+	
+	protected float borderX;
+	protected float borderY;
 
 	public ScrollingLevelScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
 			PlayerInputProcessor playerInputProcessor, int width, int height,
@@ -67,11 +75,18 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 				if (cameraTweenHorizontal != null){
 					cameraTweenHorizontal.kill();
 				}
-				cameraTweenHorizontal = Tween.to(this, LevelAccessor.CAMERA_POSITION, .5f)
+				if (borderTweenX != null){
+					borderTweenX.kill();
+				}
+				cameraTweenHorizontal = Tween.to(this, ScrollingLevelAccessor.CAMERA_POSITION, TWEEN_TIME)
 					.target(playerX, viewportHeight / 2)
 					.ease(TweenEquations.easeOutExpo)
 					.start(tweenManager);
-				updateBordersX(playerX - viewportWidth/2);
+				
+				borderTweenX = Tween.to(this, ScrollingLevelAccessor.BORDER_X, TWEEN_TIME)
+						.target(playerX - viewportWidth/2)
+						.ease(TweenEquations.easeOutExpo)
+						.start(tweenManager);
 			}
 		}
 		if (vertical){
@@ -81,17 +96,33 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 				if (cameraTweenVertical != null){
 					cameraTweenVertical.kill();
 				}
-				cameraTweenVertical = Tween.to(this, LevelAccessor.CAMERA_POSITION, .5f)
+				if (borderTweenY != null){
+					borderTweenY.kill();
+				}
+				cameraTweenVertical = Tween.to(this, ScrollingLevelAccessor.CAMERA_POSITION, TWEEN_TIME)
 					.target(camera.position.x, playerY + offsetY)
 					.ease(TweenEquations.easeOutExpo)
 					.start(tweenManager);
-				updateBordersY(playerY + offsetY - viewportHeight/2);
+				
+				borderTweenY = Tween.to(this, ScrollingLevelAccessor.BORDER_Y, TWEEN_TIME)
+						.target(playerY + offsetY - viewportHeight/2)
+						.ease(TweenEquations.easeOutExpo)
+						.start(tweenManager);
 			}	
 		}
 		
 	}
 	
-	protected void updateBordersX(float newX){
+	public float getBorderX() {
+		return borderX;
+	}
+	
+	public float getBorderY() {
+		return borderY;
+	}
+	
+	public void updateBordersX(float newX){
+		borderX = newX;
 		updateBorderX("vertical_border", newX - 0.06f);
 		updateBorderX("vertical_border_2", newX + viewportWidth);
 		updateBorderX("horizontal_border", newX);
@@ -99,7 +130,8 @@ public abstract class ScrollingLevelScreen extends LevelScreen {
 
 	}
 	
-	protected void updateBordersY(float newY){
+	public void updateBordersY(float newY){
+		borderY = newY;
 		updateBorderY("vertical_border", newY);
 		updateBorderY("vertical_border_2", newY);
 		updateBorderY("horizontal_border", newY + viewportHeight);
