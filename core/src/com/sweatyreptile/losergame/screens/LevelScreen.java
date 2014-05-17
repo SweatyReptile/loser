@@ -144,6 +144,8 @@ public abstract class LevelScreen implements FinishableScreen{
 	}
 
 	protected void renderSpeech(float delta) {
+		defaultSpeechFont.setScale(.0025f);
+		defaultSpeechFont.setColor(Color.BLACK);
 		for (Entity<?> entity : entities.values()){
 			entity.renderSpeech(spriteRenderer, defaultSpeechFont);
 		}
@@ -233,8 +235,6 @@ public abstract class LevelScreen implements FinishableScreen{
 	
 	protected void setupFonts() {
 		defaultSpeechFont = assets.get("corbelb.ttf");
-		defaultSpeechFont.setScale(.0025f);
-		defaultSpeechFont.setColor(Color.BLACK);
 	}
 	
 	protected void setupBorders(boolean horizontal, boolean vertical){
