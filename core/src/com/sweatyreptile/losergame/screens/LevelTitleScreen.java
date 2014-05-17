@@ -7,12 +7,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
+import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
 
 public class LevelTitleScreen implements FinishableScreen {
 
@@ -55,7 +54,8 @@ public class LevelTitleScreen implements FinishableScreen {
 	}
 	
 	private BitmapFont generateFont() {
-		return assets.get("corbelb.ttf");
+		BitmapFontGroup corbel = assets.get("corbelb.ttf");
+		return corbel.get("title");
 	}
 
 	@Override

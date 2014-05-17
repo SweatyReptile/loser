@@ -13,8 +13,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -30,6 +28,7 @@ import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
+import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
 
 public abstract class LevelScreen implements FinishableScreen{
 
@@ -144,7 +143,7 @@ public abstract class LevelScreen implements FinishableScreen{
 	}
 
 	protected void renderSpeech(float delta) {
-		defaultSpeechFont.setScale(.0008f);
+		defaultSpeechFont.setScale(.0025f);
 		defaultSpeechFont.setColor(Color.BLACK);
 		for (Entity<?> entity : entities.values()){
 			entity.renderSpeech(spriteRenderer, defaultSpeechFont);
@@ -234,7 +233,8 @@ public abstract class LevelScreen implements FinishableScreen{
 	}
 	
 	protected void setupFonts() {
-		defaultSpeechFont = assets.get("corbelb.ttf");
+		BitmapFontGroup corbel = assets.get("corbelb.ttf"); 
+		defaultSpeechFont = corbel.get("speech");
 	}
 	
 	protected void setupBorders(boolean horizontal, boolean vertical){

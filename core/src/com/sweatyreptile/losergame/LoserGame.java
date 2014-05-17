@@ -12,7 +12,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
+import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
 import com.sweatyreptile.losergame.loaders.FreeTypeFontLoader;
 import com.sweatyreptile.losergame.loaders.FreeTypeFontParameters;
 import com.sweatyreptile.losergame.screens.FinishableScreen;
@@ -31,17 +33,15 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		Tween.registerAccessor(LevelScreen.class, new ScrollingLevelAccessor());
 		
 		assets = new AssetManagerPlus();
-		assets.setLoader(BitmapFont.class, new FreeTypeFontLoader(new InternalFileHandleResolver()));
+		assets.setLoader(BitmapFontGroup.class, new FreeTypeFontLoader(new InternalFileHandleResolver()));
 		
 		batch = new SpriteBatch();
 		int screenWidth = Gdx.graphics.getWidth();
 		int screenHeight = Gdx.graphics.getHeight();
 
+		FreeTypeFontParameters corbelParams = makeCorbelParams();
 		
-		FreeTypeFontParameters speechParameter = new FreeTypeFontParameters();
-		speechParameter.parameters.size = 72;
-		
-		assets.load("corbelb.ttf", BitmapFont.class, speechParameter);
+		assets.load("corbelb.ttf", BitmapFontGroup.class, corbelParams);
 		
 		assets.load("badlogic.jpg", Texture.class);
 		assets.load("duck.json", FixedBodyEditorLoader.class);
@@ -61,6 +61,17 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		Gdx.input.setInputProcessor(playerInputProcessor);
 		
 		setScreen(loadingScreen);
+	}
+
+	private FreeTypeFontParameters makeCorbelParams() {
+		FreeTypeFontParameters corbelFontParams = new FreeTypeFontParameters();
+		FreeTypeFontParameter speechTypeParams = new FreeTypeFontParameter();
+		speechTypeParams.size = 18;
+		FreeTypeFontParameter titleTypeParams = new FreeTypeFontParameter();
+		titleTypeParams.size = 72;
+		corbelFontParams.fontTypes.put("speech", speechTypeParams);
+		corbelFontParams.fontTypes.put("title", titleTypeParams);
+		return corbelFontParams;
 	}
 
 	@Override
