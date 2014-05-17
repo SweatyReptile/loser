@@ -232,13 +232,9 @@ public abstract class LevelScreen implements FinishableScreen{
 	}
 	
 	protected void setupFonts() {
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("corbelb.ttf"));
-		FreeTypeFontParameter fontParameter = new FreeTypeFontParameter();
-		fontParameter.size = 18;
-		defaultSpeechFont = generator.generateFont(fontParameter);
+		defaultSpeechFont = assets.get("corbelb.ttf");
 		defaultSpeechFont.setScale(.0025f);
 		defaultSpeechFont.setColor(Color.BLACK);
-		generator.dispose();
 	}
 	
 	protected void setupBorders(boolean horizontal, boolean vertical){
