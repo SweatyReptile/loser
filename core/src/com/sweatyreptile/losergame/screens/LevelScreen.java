@@ -231,6 +231,13 @@ public abstract class LevelScreen implements FinishableScreen{
 		if (limitedTime) levelTimer.start();
 	}
 	
+	@Override
+	public void dispose() {
+		//world.dispose();
+		shapeRenderer.dispose();
+		physRenderer.dispose();
+	}
+
 	protected void setupFonts() {
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("corbelb.ttf"));
 		FreeTypeFontParameter fontParameter = new FreeTypeFontParameter();
@@ -270,7 +277,7 @@ public abstract class LevelScreen implements FinishableScreen{
 
 	@Override
 	public void hide() {
-	
+		dispose();
 	}
 
 	@Override
@@ -281,11 +288,6 @@ public abstract class LevelScreen implements FinishableScreen{
 	@Override
 	public void resume() {
 	
-	}
-
-	@Override
-	public void dispose() {
-		world.dispose();
 	}
 
 	public String getNextLevel() {
