@@ -39,7 +39,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 
 		
 		FreeTypeFontParameters speechParameter = new FreeTypeFontParameters();
-		speechParameter.parameters.size = 18;
+		speechParameter.parameters.size = 72;
 		
 		assets.load("corbelb.ttf", BitmapFont.class, speechParameter);
 		
