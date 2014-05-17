@@ -1,5 +1,6 @@
 package com.sweatyreptile.losergame;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
@@ -41,7 +42,12 @@ public class LevelTimer {
 			timePassed += delta;
 			if (timePassed >= totalSeconds) {
 				on = false;
-				level.finish();
+				Gdx.app.postRunnable(new Runnable() {
+					@Override
+					public void run() {
+						level.finish();
+					}
+				});
 			}
 		}
 	}
