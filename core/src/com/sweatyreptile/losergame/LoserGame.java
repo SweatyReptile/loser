@@ -16,7 +16,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
 import com.sweatyreptile.losergame.loaders.FreeTypeFontLoader;
-import com.sweatyreptile.losergame.loaders.FreeTypeFontParameters;
+import com.sweatyreptile.losergame.loaders.FontGroupParameters;
 import com.sweatyreptile.losergame.screens.FinishableScreen;
 import com.sweatyreptile.losergame.screens.LevelScreen;
 import com.sweatyreptile.losergame.screens.LoadingScreen;
@@ -39,7 +39,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		int screenWidth = Gdx.graphics.getWidth();
 		int screenHeight = Gdx.graphics.getHeight();
 
-		FreeTypeFontParameters corbelParams = makeCorbelParams();
+		FontGroupParameters corbelParams = makeCorbelParams();
 		
 		assets.load("corbelb.ttf", BitmapFontGroup.class, corbelParams);
 		
@@ -63,8 +63,8 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		setScreen(loadingScreen);
 	}
 
-	private FreeTypeFontParameters makeCorbelParams() {
-		FreeTypeFontParameters corbelFontParams = new FreeTypeFontParameters();
+	private FontGroupParameters makeCorbelParams() {
+		FontGroupParameters corbelFontParams = new FontGroupParameters();
 		FreeTypeFontParameter speechTypeParams = new FreeTypeFontParameter();
 		speechTypeParams.size = 18;
 		FreeTypeFontParameter titleTypeParams = new FreeTypeFontParameter();

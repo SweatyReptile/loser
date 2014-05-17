@@ -10,7 +10,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.utils.Array;
 
-public class FreeTypeFontLoader extends AsynchronousAssetLoader<BitmapFontGroup, FreeTypeFontParameters> {
+public class FreeTypeFontLoader extends AsynchronousAssetLoader<BitmapFontGroup, FontGroupParameters> {
 
 	private FreeTypeFontGenerator currentGenerator;
 	
@@ -20,13 +20,13 @@ public class FreeTypeFontLoader extends AsynchronousAssetLoader<BitmapFontGroup,
 
 	@Override
 	public void loadAsync(AssetManager manager, String fileName,
-			FileHandle file, FreeTypeFontParameters parameter) {
+			FileHandle file, FontGroupParameters parameter) {
 		currentGenerator = new FreeTypeFontGenerator(file);
 	}
 
 	@Override
 	public BitmapFontGroup loadSync(AssetManager manager, String fileName,
-			FileHandle file, FreeTypeFontParameters parameter) {
+			FileHandle file, FontGroupParameters parameter) {
 		
 		BitmapFontGroup fontTypes = new BitmapFontGroup();
 		
@@ -43,7 +43,7 @@ public class FreeTypeFontLoader extends AsynchronousAssetLoader<BitmapFontGroup,
 	@Override
 	@SuppressWarnings("rawtypes")
 	public Array<AssetDescriptor> getDependencies(String fileName,
-			FileHandle file, FreeTypeFontParameters parameter) {
+			FileHandle file, FontGroupParameters parameter) {
 		return null; // No dependencies required
 	}
 	
