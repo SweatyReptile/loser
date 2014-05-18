@@ -18,7 +18,7 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 
 	private ContentSensor quackSensor;
 	private Music music;
-	private static final float MAX_DISTANCE = 2;
+	private static final float MAX_DISTANCE = 5;
 	
 	private Player player;
 	private AssetManagerPlus assets;
