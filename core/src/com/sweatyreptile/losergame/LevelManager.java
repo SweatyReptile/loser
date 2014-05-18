@@ -42,7 +42,7 @@ public class LevelManager {
 		levelTitles = new HashMap<String, LevelTitleScreen>();
 		
 		instantiate("test_menu", "DummyMenu", "DUCK GAME", DVWIDTH, DVHEIGHT, -1);
-		instantiate("test_home", "TestScrollingLevelScreen", "WELCOME TO THE JUNGLE", DVWIDTH, DVHEIGHT, 5f);
+		instantiate("test_home", "TestScrollingLevelScreen", "WELCOME TO THE JUNGLE", DVWIDTH, DVHEIGHT, 20f);
 	}
 	
 	public void instantiate(String alias, String typeName, String levelName,

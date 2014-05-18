@@ -37,8 +37,10 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 		
 		horizontal = true;
 		
-		level0Horizontal = -1.5f;
-		levelEndHorizontal = viewportWidth + 1.5f;
+		setupBorders(true, false);
+		
+		level0Horizontal = 0f;
+		levelEndHorizontal = bgWidth;
 		
 		EntityFactory ef = entityFactory;
 		
@@ -70,9 +72,9 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 		
 		BodyDef groundDef = new BodyDef();
 		groundDef.type = BodyType.StaticBody;
-		groundDef.position.set(viewportWidth / 2, 0);
+		groundDef.position.set(bgWidth / 2, 0);
 		PolygonShape groundBox = new PolygonShape();
-		groundBox.setAsBox(camera.viewportWidth / 2, .1f);
+		groundBox.setAsBox(bgWidth, .1f);
 		Body groundBody = world.createBody(groundDef);
 		groundBody.createFixture(groundBox, 0f);
 		groundBox.dispose();
