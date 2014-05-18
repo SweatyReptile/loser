@@ -53,6 +53,8 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 		ef.create("book_yellow", BodyType.DynamicBody, 1.2f, 1.1f, new WoodFixtureDef(assets, "book_yellow"), false);
 		ef.create("shelf", BodyType.StaticBody, 1f, 1f, new EntityFixtureDef(assets, "shelf"), false);
 		ef.create("pencil", BodyType.DynamicBody, 1.6f, 0.7f, new WoodFixtureDef(assets, "pencil"), false);
+		ef.create("wall_left", BodyType.StaticBody, -BORDER_WIDTH, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+		ef.create("wall_right", BodyType.StaticBody, bgWidth, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
 		
 		BodyDef radioBodyDef = new BodyDef();
 		radioBodyDef.type = BodyType.DynamicBody;
