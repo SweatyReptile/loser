@@ -34,6 +34,7 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 public abstract class LevelScreen implements FinishableScreen{
 
 	private static final boolean DRAW_PHYSICS = false;
+	protected final static float BORDER_WIDTH = 0.06f; //according to image size
 	protected LevelManager levelManager;
 	protected String alias;
 	protected String levelName;
@@ -257,15 +258,15 @@ public abstract class LevelScreen implements FinishableScreen{
 	}
 	
 	protected void setupBorders(boolean horizontalTop, boolean horizontalBottom, 
-			boolean verticalLeft, boolean verticalRight){ //0.06 is the width of borders
+			boolean verticalLeft, boolean verticalRight){
 		if (horizontalTop){
 			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, viewportHeight, new EntityFixtureDef(assets, "horizontal_border"), false);
 		}
 		if (horizontalBottom){
-			entityFactory.create("horizontal_border_2", BodyType.StaticBody, 0f, -0.06f, new EntityFixtureDef(assets, "horizontal_border"), false);
+			entityFactory.create("horizontal_border_2", BodyType.StaticBody, 0f, -BORDER_WIDTH, new EntityFixtureDef(assets, "horizontal_border"), false);
 		}
 		if (verticalLeft){
-			entityFactory.create("vertical_border", BodyType.StaticBody, -0.06f, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+			entityFactory.create("vertical_border", BodyType.StaticBody, -BORDER_WIDTH, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
 		}
 		if (verticalRight){
 			entityFactory.create("vertical_border_2", BodyType.StaticBody, viewportWidth, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
