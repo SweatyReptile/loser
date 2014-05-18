@@ -10,19 +10,29 @@ import com.badlogic.gdx.math.Vector2;
 
 public abstract class LevelChunk {
 	
+	protected float viewportWidth;
+	protected float viewportHeight;
+	protected float screenWidth;
+	protected float screenHeight;
 	protected float originY;
 	protected Map<String, Entity<?>> chunkEntities;
 	protected Texture background;
+	float bgWidth;
+	float bgHeight;
 	
-	public LevelChunk(){
+	public LevelChunk(float viewportWidth, float viewportHeight, float screenWidth, float screenHeight){
+		this.viewportHeight = viewportHeight;
+		this.viewportWidth = viewportWidth;
+		this.screenHeight = screenHeight;
+		this.screenWidth = screenWidth;
 		chunkEntities = new HashMap<String, Entity<?>>();
 		setup();
 	}
 	
 	protected abstract void setup();
 	
-	public void renderBackground(float delta, SpriteBatch renderer, float viewportWidth, float viewportHeight) { 
-		renderer.draw(background, 0, originY, viewportWidth, viewportHeight);
+	public void renderBackground(float delta, SpriteBatch renderer) { 
+		renderer.draw(background, 0, originY, viewportWidth, viewportHeight); //needs fixin TODO
 	}
 	
 	public void renderEntities(float delta, SpriteBatch renderer) {
@@ -39,7 +49,7 @@ public abstract class LevelChunk {
 		
 	}
 	
-	public void updateEntityPositions(float viewportHeight){ //Only works in vertical direction right now
+	public void updateEntityPositions(){ //Only works in vertical direction right now
 		for (Entity<?> entity : chunkEntities.values()){
 			
 			Vector2 pos = entity.currentBody.getPosition();
@@ -56,8 +66,8 @@ public abstract class LevelChunk {
 		}
 	}
 	
-	public float getHeight(float screenHeight, float viewportHeight){
-		return ((float) background.getHeight() / screenHeight) * viewportHeight;
+	public float getHeight(){
+		return bgHeight;
 	}
 	
 	public void setOriginY(float originY){
@@ -69,6 +79,12 @@ public abstract class LevelChunk {
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         return bd.floatValue();
     }
+	
+	protected void setBackground(Texture bg){
+		background = bg;
+		bgHeight = ((float) background.getHeight() / screenHeight) * viewportHeight;
+		bgWidth = ((float) background.getWidth() / screenWidth) * viewportWidth;
+	}
 	
 
 }

@@ -41,7 +41,7 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 		super.renderBackground(delta);
 		for (int i = 0; i < chunks.size(); i++){
 			LevelChunk chunk = chunks.get(i);
-			chunk.renderBackground(delta, spriteRenderer, viewportWidth, viewportHeight);
+			chunk.renderBackground(delta, spriteRenderer);
 		}
 	}
 	
@@ -60,7 +60,7 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 		for (int i = 0; i < chunks.size(); i++){
 			LevelChunk chunk = chunks.get(i);
 			chunk.setOriginY(chunkHeight);
-			chunkHeight += chunk.getHeight(height, viewportHeight);
+			chunkHeight += chunk.getHeight();
 		}
 		for (LevelChunk chunk : chunks) chunk.update(delta);
 		float cam = camera.position.y;
@@ -70,18 +70,18 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 	}
 	
 	private void extendDown(){
-		originY -= chunks.peek().getHeight(height, viewportHeight);
+		originY -= chunks.peek().getHeight();
 		chunks.add(0, chunks.pop());
 		updateChunkOrigins();
-		chunks.firstElement().updateEntityPositions(viewportHeight);
+		chunks.firstElement().updateEntityPositions();
 	}
 	
 	private void extendUp(){
-		originY += chunks.firstElement().getHeight(height, viewportHeight);
+		originY += chunks.firstElement().getHeight();
 		chunks.add(chunks.firstElement());
 		chunks.remove(chunks.firstElement());
 		updateChunkOrigins();
-		chunks.peek().updateEntityPositions(viewportHeight);
+		chunks.peek().updateEntityPositions();
 	}
 	
 	private void updateChunkOrigins(){
@@ -89,7 +89,7 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 		for (int i = 0; i < chunks.size(); i++){
 			LevelChunk chunk = chunks.get(i);
 			chunk.setOriginY(chunkHeight);
-			chunkHeight += chunk.getHeight(height, viewportHeight);
+			chunkHeight += chunk.getHeight();
 		}
 	}
 
@@ -97,8 +97,8 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 	protected void setupWorld() {
 		updateChunkOrigins();
 		for (LevelChunk chunk : chunks){
-			totalChunkHeight += chunk.getHeight(height, viewportHeight);
-			chunk.updateEntityPositions(viewportHeight);
+			totalChunkHeight += chunk.getHeight();
+			chunk.updateEntityPositions();
 		}
 		
 	}

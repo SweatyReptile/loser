@@ -46,19 +46,19 @@ public class DummyMenu extends InfiniteScrollingLevelScreen {
 		vertical = true;
 		updateCamera();
 		setStrictlyDownwards(true);
-		chunks.add(new LevelChunk() {
+		chunks.add(new LevelChunk(viewportWidth, viewportHeight, width, height) {
 			@Override protected void setup(){
-				background = (Texture) assets.get("menu_dummy_1.png");
+				setBackground((Texture) assets.get("menu_dummy_1.png"));
 				
 				EntityFactory ef = new EntityFactory(assets, chunkEntities, world, contactListener, viewportWidth, width);
 				ef.create("menu_platform", BodyType.StaticBody, 0.125f, 0.4f, new EntityFixtureDef(assets, "menu_platform"), false);
 			}
 		});
 		
-		chunks.add(new LevelChunk() {
+		chunks.add(new LevelChunk(viewportWidth, viewportHeight, width, height) {
 			@SuppressWarnings("unchecked")
 			@Override protected void setup(){
-				background = (Texture) assets.get("menu_dummy_2.png");
+				setBackground((Texture) assets.get("menu_dummy_2.png"));
 				
 				EntityFactory ef = new EntityFactory(assets, chunkEntities, world, contactListener, viewportWidth, width);
 				ef.create("menu_go_frame", BodyType.StaticBody, 2.4f, 3.1f, new EntityFixtureDef(assets, "menu_go_frame"), false);
