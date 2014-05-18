@@ -43,8 +43,8 @@ public class DummyMenu extends InfiniteScrollingLevelScreen {
 		setupBorders(true, false, true, true);
 		player.standRight();
 		setOffsetY(viewportHeight / 3);
-		updateCamera();
 		vertical = true;
+		updateCamera();
 		setStrictlyDownwards(true);
 		chunks.add(new LevelChunk() {
 			@Override protected void setup(){
