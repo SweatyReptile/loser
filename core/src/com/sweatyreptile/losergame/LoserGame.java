@@ -34,7 +34,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		assets.load("badlogic.jpg", Texture.class);
 		assets.load("duck.json", FixedBodyEditorLoader.class);
 		
-		assets.load("background.png", Texture.class);
+		assets.load("background_extended.png", Texture.class);
 		assets.load("menu_dummy_1.png", Texture.class);
 		assets.load("menu_dummy_2.png", Texture.class);
 

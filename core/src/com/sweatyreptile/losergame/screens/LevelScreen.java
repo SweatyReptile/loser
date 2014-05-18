@@ -54,6 +54,8 @@ public abstract class LevelScreen implements FinishableScreen{
 	protected PlayerInputProcessor playerInputProcessor;
 	protected AssetManagerPlus assets;
 	protected Texture background;
+	float bgHeight;
+	float bgWidth;
 	protected BitmapFont defaultSpeechFont;
 	protected LevelTimer levelTimer;
 	protected float timeLimit;
@@ -151,8 +153,8 @@ public abstract class LevelScreen implements FinishableScreen{
 		player.renderSpeech(spriteRenderer, defaultSpeechFont);
 	}
 	
-	protected void renderBackground(float delta) {
-		spriteRenderer.draw(background, 0f, 0f, viewportWidth, viewportHeight); //This background needs to be set by specific levels
+	protected void renderBackground(float delta){
+		spriteRenderer.draw(background, 0f, 0f, bgWidth, bgHeight); //This background needs to be set by specific levels
 	}
 	protected void renderEntities(float delta) {
 		for (Entity<?> entity : entities.values()){
@@ -209,7 +211,9 @@ public abstract class LevelScreen implements FinishableScreen{
 		entityFactory = new EntityFactory(assets, entities,
 				world, contactListener, viewportWidth, Entity.DEFAULT_SCREEN_WIDTH);
 				
-		background = assets.get("background.png");
+		background = assets.get("background_extended.png");
+		bgHeight = ((float) background.getHeight() / height) * viewportHeight;
+		bgWidth = ((float) background.getWidth() / width) * viewportWidth;
 		
 		contactListener = new LoserContactListener();
 		world.setContactListener(contactListener);
