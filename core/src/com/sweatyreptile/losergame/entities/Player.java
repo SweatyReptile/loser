@@ -190,7 +190,7 @@ public class Player extends Entity<Player>{
 		if (!isMoving() && isFlying()) {
 			Vector2 velocity = currentBody.getLinearVelocity();
 			if (Float.compare(velocity.x, 0f) != 0) {
-				currentBody.applyForceToCenter(-velocity.x/3, 0f, true);
+				currentBody.applyForceToCenter(-velocity.x/5, 0f, true);
 			}
 		}
 		
