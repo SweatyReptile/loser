@@ -62,48 +62,48 @@ public abstract class LevelScreen implements FinishableScreen{
 	protected float timeLimit;
 	private boolean limitedTime;
 	protected TweenManager tweenManager;
-	
+
 	public static final LevelScreen newInstance(String levelType, LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName) {
-		
+
 		Class<?> screenClass = null;
 		try {
 			screenClass = Class.forName("com.sweatyreptile.losergame.screens." + levelType);
 		} catch (ClassNotFoundException e) {
-			Gdx.app.error("Level Instantiation", 
+			Gdx.app.error("Level Instantiation",
 					"Level type " + levelType + " not found!", e);
 		}
-		
+
 		LevelScreen levelScreen = null;
 		try {
 			levelScreen = (LevelScreen) screenClass.newInstance();
 		} catch (InstantiationException e) {
-			Gdx.app.error("Level Instantiation", 
+			Gdx.app.error("Level Instantiation",
 					"Level type " + levelType + " could not be instantiated!");
-			Gdx.app.error("Level Instantiation", 
+			Gdx.app.error("Level Instantiation",
 					"This may be because it is an abstract type, or does not contain a nullary constructor.", e);
 		} catch (IllegalAccessException e) {
-			Gdx.app.error("Level Instantiation", 
+			Gdx.app.error("Level Instantiation",
 					"Nullary constructor of " + levelType + " is not public");
 		}
-		
+
 		levelScreen.init(manager, batch, assets,
 				playerInputProcessor, width, height,
-				viewportWidth, viewportHeight, timeLimit, 
+				viewportWidth, viewportHeight, timeLimit,
 				alias, levelName);
-		
+
 		return levelScreen;
 	}
-	
+
 	public LevelScreen(){
-		
+
 	}
-	
+
 	public LevelScreen(LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName){
 		init(manager, batch, assets, playerInputProcessor, width, height, viewportWidth, viewportHeight, timeLimit, alias, levelName);
 	}
-	
+
 	public final void init(LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName){
 		this.levelManager = manager;
@@ -124,23 +124,23 @@ public abstract class LevelScreen implements FinishableScreen{
 		update(delta);
 		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		
+
 		spriteRenderer.begin();
-		
-		spriteRenderer.disableBlending();		
+
+		spriteRenderer.disableBlending();
 		renderBackground(delta);
 		spriteRenderer.enableBlending();
-		
+
 		renderBackground(delta);
 		renderEntities(delta);
 		renderPlayer(delta);
-		
+
 		renderSpeech(delta);
-		
+
 		spriteRenderer.end();
-		
+
 		if (limitedTime) levelTimer.render(shapeRenderer);
-		
+
 		if (DRAW_PHYSICS){
 			physRenderer.render(world, camera.combined);
 		}
@@ -150,10 +150,10 @@ public abstract class LevelScreen implements FinishableScreen{
 		for (Entity<?> entity : entities.values()){
 			entity.renderSpeech(spriteRenderer, defaultSpeechFont);
 		}
-		
+
 		player.renderSpeech(spriteRenderer, defaultSpeechFont);
 	}
-	
+
 	protected void renderBackground(float delta){
 		spriteRenderer.draw(background, 0f, 0f, bgWidth, bgHeight); //This background needs to be set by specific levels
 	}
@@ -179,15 +179,15 @@ public abstract class LevelScreen implements FinishableScreen{
 
 	@Override
 	public void resize(int width, int height) {
-		
+
 	}
-	
+
 	public void setCameraPosition(float x, float y){
 		camera.position.set(x, y, 0f);
 		camera.update();
 		spriteRenderer.setProjectionMatrix(camera.combined);
 	}
-	
+
 	public Vector3 getCameraPosition(){
 		return camera.position;
 	}
@@ -195,37 +195,37 @@ public abstract class LevelScreen implements FinishableScreen{
 	@Override
 	public void show() {
 		tweenManager = new TweenManager();
-		
+
 		entities = new HashMap<String, Entity<?>>();
-		shapeRenderer = new ShapeRenderer();		
+		shapeRenderer = new ShapeRenderer();
 
 		camera = new OrthographicCamera(width, height);
 		camera.viewportHeight = viewportHeight;
 		camera.viewportWidth = viewportWidth;
 		setCameraPosition(viewportWidth/ 2, viewportHeight/ 2);
-		
+
 		shapeRenderer.setProjectionMatrix(camera.combined);
-		
+
 		world = new World(new Vector2(0f, -9.8f), true);
 		physRenderer = new Box2DDebugRenderer();
-		
+
 		entityFactory = new EntityFactory(assets, entities,
 				world, contactListener, viewportWidth, Entity.DEFAULT_SCREEN_WIDTH);
-				
+
 		background = assets.get("background_extended.png");
 		bgHeight = ((float) background.getHeight() / height) * viewportHeight;
 		bgWidth = ((float) background.getWidth() / width) * viewportWidth;
-		
+
 		contactListener = new LoserContactListener();
 		world.setContactListener(contactListener);
-		
+
 		player = createPlayer();
 		if (player == null){
 			throw new IllegalStateException(this + " has not created a player.");
 		}
-		
+
 		playerInputProcessor.setPlayer(player);
-		
+
 		setupFonts();
 		setupWorld();
 
@@ -235,7 +235,7 @@ public abstract class LevelScreen implements FinishableScreen{
 		}
 		if (limitedTime) levelTimer.start();
 	}
-	
+
 	@Override
 	public void dispose() {
 		//world.dispose();
@@ -252,12 +252,12 @@ public abstract class LevelScreen implements FinishableScreen{
 		defaultSpeechFont.setColor(Color.BLACK);
 		generator.dispose();
 	}
-	
+
 	protected void setupBorders(boolean horizontal, boolean vertical){
 		setupBorders(horizontal, horizontal, vertical, vertical);
 	}
-	
-	protected void setupBorders(boolean horizontalTop, boolean horizontalBottom, 
+
+	protected void setupBorders(boolean horizontalTop, boolean horizontalBottom,
 			boolean verticalLeft, boolean verticalRight){
 		if (horizontalTop){
 			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, viewportHeight, new EntityFixtureDef(assets, "horizontal_border"), false);
@@ -273,26 +273,27 @@ public abstract class LevelScreen implements FinishableScreen{
 		}
 	}
 
-	protected abstract Player createPlayer(); 
+	protected abstract Player createPlayer();
 	protected abstract void setupWorld();
-	
+
 	public void finish() {
 		levelManager.level(alias);
 	}
 
 	@Override
 	public void hide() {
-		dispose();
+		playerInputProcessor.clearPlayer();
+    dispose();
 	}
 
 	@Override
 	public void pause() {
-	
+
 	}
 
 	@Override
 	public void resume() {
-	
+
 	}
 
 	public String getNextLevel() {
