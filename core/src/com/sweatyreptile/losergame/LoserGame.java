@@ -6,10 +6,12 @@ import aurelienribon.tweenengine.Tween;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
@@ -41,14 +43,18 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 
 		FontGroupParameters corbelParams = makeCorbelParams();
 		
+		TextureParameter filtering = new TextureParameter();
+		filtering.minFilter = TextureFilter.Linear;
+		filtering.magFilter = TextureFilter.Linear;
+		
 		assets.load("corbelb.ttf", BitmapFontGroup.class, corbelParams);
 		
-		assets.load("badlogic.jpg", Texture.class);
+		assets.load("badlogic.jpg", Texture.class, filtering);
 		assets.load("duck.json", FixedBodyEditorLoader.class);
 		
-		assets.load("background_extended.png", Texture.class);
-		assets.load("menu_dummy_1.png", Texture.class);
-		assets.load("menu_dummy_2.png", Texture.class);
+		assets.load("background_extended.png", Texture.class, filtering);
+		assets.load("menu_dummy_1.png", Texture.class, filtering);
+		assets.load("menu_dummy_2.png", Texture.class, filtering);
 
 		assets.load("quack_dummy.ogg", Sound.class);
 		assets.load("baby_come_back.ogg", Music.class);
