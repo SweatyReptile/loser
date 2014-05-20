@@ -160,7 +160,7 @@ public class Player extends Entity<Player>{
 		grabSensor = new ContentSensor(contactListener, null, world, assets, "duck_grab_sensor", .2f, 0, 3);
 		Collections.addAll(sensors, flightSensor, landingSensor, grabSensor);
 		for (Sensor sensor : sensors) sensor.weld(world, currentBody);
-		quackSound = assets.get("quack_dummy.ogg");
+		quackSound = assets.get("sfx/quack_dummy.ogg");
 		
 		bodyHeight = extractBodyHeight(leftBody);
 		duckingBodyHeight = extractBodyHeight(leftDuckingBody);

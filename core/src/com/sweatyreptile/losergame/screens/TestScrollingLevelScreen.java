@@ -62,7 +62,7 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 		radioBodyDef.position.set(1.4f, 1.1f);
 		radio = new MusicPlayer(contactListener, world, radioBodyDef, assets, 
 				new MetalFixtureDef(assets, "radio"), false, Entity.DEFAULT_SCREEN_WIDTH,
-				viewportWidth, "baby_come_back.ogg", false, player);
+				viewportWidth, "music/baby_come_back.ogg", false, player);
 		entities.put("radio", radio);
 		
 		BodyDef sharbalBodyDef = new BodyDef();

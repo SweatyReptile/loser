@@ -47,17 +47,16 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		filtering.minFilter = TextureFilter.Linear;
 		filtering.magFilter = TextureFilter.Linear;
 		
-		assets.load("corbelb.ttf", BitmapFontGroup.class, corbelParams);
+		assets.load("fonts/corbelb.ttf", BitmapFontGroup.class, corbelParams);
 		
-		assets.load("badlogic.jpg", Texture.class, filtering);
 		assets.load("duck.json", FixedBodyEditorLoader.class);
 		
-		assets.load("background_extended.png", Texture.class, filtering);
-		assets.load("menu_dummy_1.png", Texture.class, filtering);
-		assets.load("menu_dummy_2.png", Texture.class, filtering);
+		assets.load("img/bg/background_extended.png", Texture.class, filtering);
+		assets.load("img/bg/menu_dummy_1.png", Texture.class, filtering);
+		assets.load("img/bg/menu_dummy_2.png", Texture.class, filtering);
 
-		assets.load("quack_dummy.ogg", Sound.class);
-		assets.load("baby_come_back.ogg", Music.class);
+		assets.load("sfx/quack_dummy.ogg", Sound.class);
+		assets.load("music/baby_come_back.ogg", Music.class);
 		
 		PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
 		

@@ -54,7 +54,7 @@ public class LevelTitleScreen implements FinishableScreen {
 	}
 	
 	private BitmapFont generateFont() {
-		BitmapFontGroup corbel = assets.get("corbelb.ttf");
+		BitmapFontGroup corbel = assets.get("fonts/corbelb.ttf");
 		return corbel.get("title");
 	}
 
@@ -80,7 +80,7 @@ public class LevelTitleScreen implements FinishableScreen {
 		font = generateFont();
 		if (timeInSeconds == 0) timeInSeconds = delaySeconds(title);
 		Timer.schedule(finishTask, timeInSeconds);
-		Sound quackSound = (Sound) assets.get("quack_dummy.ogg");
+		Sound quackSound = (Sound) assets.get("sfx/quack_dummy.ogg");
 		quackSound.play();
 	}
 	
