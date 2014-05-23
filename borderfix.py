@@ -4,6 +4,9 @@ Usage:
 
 Options:
     -s BORDER_SIZE_PIXELS, --size BORDER_SIZE_PIXELS
+
+Notes:
+    Folders are not crawled recursively
 """
 
 from docopt import docopt
@@ -31,6 +34,14 @@ def process_image(filepath, size):
     filename = ntpath.basename(filepath)
     newimage.save(BORDERFIX_DIR + filename, "png")
 
+def process_folder(filepath, size):
+    for filename in os.listdir(filepath):
+        filename = filepath + filename
+        if os.path.isfile(filename):
+            print("Add border to " + filename)
+            process_image(filename, size)
+
+
 def getsize(args):
     size = args.get("--size")
     if size == None:
@@ -42,11 +53,11 @@ def process(args):
         for name in args.get("<name>"):
             process_image(name, getsize(args))
     elif args.get("folder"):
-        print("folder")
+        for name in args.get("<name>"):
+                process_folder(name, getsize(args))
 
 if __name__ == "__main__":
     args = docopt(__doc__)
-    print(args)
     if not os.path.exists(BORDERFIX_DIR):
         os.makedirs(BORDERFIX_DIR)
     process(args)
