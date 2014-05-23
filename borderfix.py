@@ -8,6 +8,10 @@ Options:
 
 from docopt import docopt
 from PIL import Image
+import os
+import ntpath
+
+BORDERFIX_DIR = os.getcwd() + "/borderfix/"
 
 def process_image(filepath, size):
     try:
@@ -24,7 +28,8 @@ def process_image(filepath, size):
             newxy = (x+size, y+size)
             pixel = image.getpixel(imgxy)
             newimage.putpixel(newxy, pixel)
-    newimage.save(filepath + ".1", "png")
+    filename = ntpath.basename(filepath)
+    newimage.save(BORDERFIX_DIR + filename, "png")
 
 def getsize(args):
     size = args.get("--size")
@@ -42,4 +47,6 @@ def process(args):
 if __name__ == "__main__":
     args = docopt(__doc__)
     print(args)
+    if not os.path.exists(BORDERFIX_DIR):
+        os.makedirs(BORDERFIX_DIR)
     process(args)
