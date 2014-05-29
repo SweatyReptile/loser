@@ -32,7 +32,7 @@ import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
 
 public abstract class LevelScreen implements FinishableScreen{
 
-	private static final boolean DRAW_PHYSICS = false;
+	private static final boolean DRAW_PHYSICS = true;
 	protected final static float BORDER_WIDTH = 0.06f; //according to image size
 	protected LevelManager levelManager;
 	protected String alias;
@@ -241,7 +241,7 @@ public abstract class LevelScreen implements FinishableScreen{
 	public void dispose() {
 		//world.dispose();
 		shapeRenderer.dispose();
-		physRenderer.dispose();
+		//physRenderer.dispose();
 	}
 
 	protected void setupFonts() {

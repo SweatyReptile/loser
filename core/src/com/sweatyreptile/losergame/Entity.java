@@ -58,7 +58,7 @@ public class Entity <T extends Entity<?>>{
 		float spriteScale = scale;
 		float bodyScale = 0f;
 		if (bodyDef.type == BodyType.DynamicBody){
-			bodyScale = 0.84f * scale;
+			bodyScale = 0.82f * scale;
 		}
 		else {
 			bodyScale = scale;
