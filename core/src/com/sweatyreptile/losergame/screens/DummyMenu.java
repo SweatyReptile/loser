@@ -47,11 +47,33 @@ public class DummyMenu extends InfiniteScrollingLevelScreen {
 		updateCamera();
 		setStrictlyDownwards(true);
 		chunks.add(new LevelChunk(viewportWidth, viewportHeight, width, height) {
+			@SuppressWarnings("unchecked")
 			@Override protected void setup(){
-				setBackground((Texture) assets.get("img/bg/menu_dummy_1.png"));
+				setBackground((Texture) assets.get("img/bg/menu_dummy_0.png"));
 				
 				EntityFactory ef = new EntityFactory(assets, chunkEntities, world, contactListener, viewportWidth, width);
 				ef.create("menu_platform", BodyType.StaticBody, 0.125f, 0.4f, new EntityFixtureDef(assets, "menu_platform"), false);
+				
+				chunkEntities.get("menu_platform").addListener(new EntityListener() {
+					
+					private boolean bgChanged;
+					
+					@Override
+					public void beginContact(Entity entity,
+							FixtureWrapper entityFixture, FixtureWrapper contactee) {
+						Player player = contactee.getPlayer();
+						if (player != null) {
+							if (player.isQuacking() && !bgChanged) {
+								setBackground((Texture) assets.get("img/bg/menu_dummy_1.png"));
+								bgChanged = true;
+							}
+						}
+					}
+					@Override
+					public void endContact(Entity entity,
+							FixtureWrapper entityFixture, FixtureWrapper contactee) {
+					}
+				});
 			}
 		});
 		
