@@ -12,13 +12,12 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
-import com.sweatyreptile.losergame.loaders.FreeTypeFontLoader;
 import com.sweatyreptile.losergame.loaders.FontGroupParameters;
+import com.sweatyreptile.losergame.loaders.FreeTypeFontLoader;
 import com.sweatyreptile.losergame.screens.FinishableScreen;
 import com.sweatyreptile.losergame.screens.LevelScreen;
 import com.sweatyreptile.losergame.screens.LoadingScreen;
@@ -67,6 +66,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		Gdx.input.setInputProcessor(playerInputProcessor);
 		
 		setScreen(loadingScreen);
+		
 	}
 
 	private FontGroupParameters makeCorbelParams() {

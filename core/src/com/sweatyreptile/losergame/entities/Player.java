@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -167,6 +168,7 @@ public class Player extends Entity<Player>{
 		
 	}
 	
+	@Override
 	public void update(float delta) {
 
 		for (Sensor sensor : sensors) {
@@ -193,6 +195,11 @@ public class Player extends Entity<Player>{
 				currentBody.applyForceToCenter(-velocity.x/5, 0f, true);
 			}
 		}
+		
+	}
+	
+	@Override
+	public void render(SpriteBatch renderer){
 		
 	}
 	
