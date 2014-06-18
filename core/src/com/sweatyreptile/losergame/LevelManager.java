@@ -24,6 +24,8 @@ public class LevelManager {
 	
 	private int screenWidth;
 	private int screenHeight;
+	
+	private String currentLevel;
 
 	private ScreenFinishedListener screenFinishedListener;
 	
@@ -63,11 +65,16 @@ public class LevelManager {
 
 	}
 	
+	public void restart(){
+		level(currentLevel);
+	}
+	
 	public void level(String alias){
 		Gdx.app.log("LevelManager", "Switch to " + alias + " title screen");
 		LevelTitleScreen ltScreen = levelTitles.get(alias);
 		screenFinishedListener.onFinish(currentScreen, ltScreen);
 		currentScreen = ltScreen;
+		currentLevel = alias;
 	}
 	
 	public void level_notitle(String alias){
