@@ -4,9 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,7 +23,6 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
-import com.sun.org.apache.xpath.internal.operations.And;
 import com.sweatyreptile.losergame.DuckQuackTopFixtureDef;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityListener;
@@ -77,6 +81,11 @@ public class Player extends Entity<Player>{
 	
 	private float bodyHeight; //Assumes all standing bodies are the same height
 	private float duckingBodyHeight; //Assumes all ducking bodies are the same height
+	
+	private float stateTime;
+	private Animation currentAnimation;
+	private Animation testAnimation;
+	private TextureRegion currentFrame;
 
 	public Player(World world, LoserContactListener contactListener, BodyDef def, AssetManagerPlus assets) {
 		super(world, contactListener, def, "duck");
@@ -166,6 +175,11 @@ public class Player extends Entity<Player>{
 		bodyHeight = extractBodyHeight(leftBody);
 		duckingBodyHeight = extractBodyHeight(leftDuckingBody);
 		
+		stateTime = 0f;
+		Array<AtlasRegion> testFrames = new TextureAtlas("temp/flap.txt").getRegions();
+		testAnimation = new Animation(0.1f, testFrames);
+		currentAnimation = testAnimation;
+		
 	}
 	
 	@Override
@@ -200,7 +214,9 @@ public class Player extends Entity<Player>{
 	
 	@Override
 	public void render(SpriteBatch renderer){
-		
+		stateTime += Gdx.graphics.getDeltaTime();
+		currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+		renderer.draw(currentFrame, sprite.getX(), sprite.getY());
 	}
 	
 	public boolean isMoving() {

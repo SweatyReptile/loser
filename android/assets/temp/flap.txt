@@ -1,0 +1,32 @@
+flap.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+flap
+  rotate: false
+  xy: 206, 2
+  size: 100, 101
+  orig: 100, 101
+  offset: 0, 0
+  index: 1
+flap
+  rotate: false
+  xy: 104, 2
+  size: 100, 101
+  orig: 100, 101
+  offset: 0, 0
+  index: 2
+flap
+  rotate: false
+  xy: 2, 2
+  size: 100, 101
+  orig: 100, 101
+  offset: 0, 0
+  index: 3
+flap
+  rotate: false
+  xy: 104, 2
+  size: 100, 101
+  orig: 100, 101
+  offset: 0, 0
+  index: 4
