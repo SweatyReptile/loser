@@ -32,7 +32,7 @@ import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
 
 public abstract class LevelScreen implements FinishableScreen{
 
-	private static final boolean DRAW_PHYSICS = true;
+	private static final boolean DRAW_PHYSICS = false;
 	protected final static float BORDER_WIDTH = 0.06f; //according to image size
 	protected LevelManager levelManager;
 	protected String alias;

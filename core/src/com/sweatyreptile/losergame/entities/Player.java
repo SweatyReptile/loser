@@ -177,10 +177,10 @@ public class Player extends Entity<Player>{
 		
 		stateTime = 0f;
 		Array<AtlasRegion> testFrames = new TextureAtlas("temp/flap.txt").getRegions();
-		for (AtlasRegion frame : testFrames){
-			frame.setRegionHeight(sprite.getRegionHeight());
-			frame.setRegionWidth(sprite.getRegionWidth());
-		}
+		/*for (AtlasRegion frame : testFrames){
+			frame.setRegionHeight(height);
+			frame.setRegionWidth(width);
+		}*/
 		testAnimation = new Animation(0.05f, testFrames);
 		currentAnimation = testAnimation;
 		
@@ -220,8 +220,11 @@ public class Player extends Entity<Player>{
 	public void render(SpriteBatch renderer){
 		stateTime += Gdx.graphics.getDeltaTime();
 		currentFrame = currentAnimation.getKeyFrame(stateTime, true);
-		renderer.draw(currentFrame, sprite.getX(), sprite.getY());
-		//super.render(renderer);
+		Sprite frameSprite = new Sprite(currentFrame);
+		frameSprite.setSize(DUCK_BODY_SIZE, DUCK_BODY_SIZE);
+		frameSprite.setPosition(sprite.getX(), sprite.getY());
+		sprite = frameSprite;
+		super.render(renderer);
 	}
 	
 	public boolean isMoving() {

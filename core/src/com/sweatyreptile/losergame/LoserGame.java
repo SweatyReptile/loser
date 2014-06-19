@@ -65,8 +65,8 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		
 		Gdx.input.setInputProcessor(playerInputProcessor);
 		
-		setScreen(new AnimationTest(batch));
-		//setScreen(loadingScreen);
+		//setScreen(new AnimationTest(batch));
+		setScreen(loadingScreen);
 		
 	}
 
