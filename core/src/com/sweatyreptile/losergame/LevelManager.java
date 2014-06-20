@@ -70,7 +70,7 @@ public class LevelManager {
 	}
 	
 	public void nextlevel() {
-		// Wow look it's a stub!
+		// Wow, you've reached a stub!
 		
 		// To be called to switch to the level
 		// that comes after the current level

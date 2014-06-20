@@ -11,14 +11,14 @@ public class LevelTimer {
 	private static final float WIDTH = 0.015f;
 	private float viewportWidth;
 	private float viewportHeight;
-	private LevelScreen level;
+	private LevelManager levelManager;
 	
 	private float totalSeconds;
 	private boolean on;
 	private float timePassed;
 		
-	public LevelTimer(LevelScreen level, float viewportWidth, float viewportHeight, float totalSeconds){
-		this.level = level;
+	public LevelTimer(LevelManager levelManager, float viewportWidth, float viewportHeight, float totalSeconds){
+		this.levelManager = levelManager;
 		this.viewportWidth = viewportWidth;
 		this.viewportHeight = viewportHeight;
 		this.totalSeconds = totalSeconds;
@@ -45,7 +45,7 @@ public class LevelTimer {
 				Gdx.app.postRunnable(new Runnable() {
 					@Override
 					public void run() {
-						level.finish();
+						levelManager.restart();
 					}
 				});
 			}
