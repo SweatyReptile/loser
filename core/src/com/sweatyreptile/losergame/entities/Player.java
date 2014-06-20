@@ -220,10 +220,7 @@ public class Player extends Entity<Player>{
 	public void render(SpriteBatch renderer){
 		stateTime += Gdx.graphics.getDeltaTime();
 		currentFrame = currentAnimation.getKeyFrame(stateTime, true);
-		Sprite frameSprite = new Sprite(currentFrame);
-		frameSprite.setSize(DUCK_BODY_SIZE, DUCK_BODY_SIZE);
-		frameSprite.setPosition(sprite.getX(), sprite.getY());
-		sprite = frameSprite;
+		sprite.setRegion(currentFrame);
 		super.render(renderer);
 	}
 	
