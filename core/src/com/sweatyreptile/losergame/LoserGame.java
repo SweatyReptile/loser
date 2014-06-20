@@ -12,22 +12,23 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
-import com.sweatyreptile.losergame.loaders.FreeTypeFontLoader;
 import com.sweatyreptile.losergame.loaders.FontGroupParameters;
+import com.sweatyreptile.losergame.loaders.FreeTypeFontLoader;
 import com.sweatyreptile.losergame.screens.FinishableScreen;
 import com.sweatyreptile.losergame.screens.LevelScreen;
 import com.sweatyreptile.losergame.screens.LoadingScreen;
+import com.sweatyreptile.losergame.screens.LoadingScreen.LoadingFinishedListener;
 import com.sweatyreptile.losergame.screens.ScreenFinishedListener;
 import com.sweatyreptile.losergame.tween.ScrollingLevelAccessor;
 
 public class LoserGame extends Game implements ScreenFinishedListener{
 	SpriteBatch batch;
 	AssetManagerPlus assets;
+	Console console;
 	
 	@Override
 	public void create () {	
@@ -55,6 +56,8 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		assets.load("img/bg/menu_dummy_0.png", Texture.class, filtering);
 		assets.load("img/bg/menu_dummy_1.png", Texture.class, filtering);
 		assets.load("img/bg/menu_dummy_2.png", Texture.class, filtering);
+		assets.load("img/ui/console_bg.png", Texture.class, filtering);
+		assets.load("img/ui/console_textfield.png", Texture.class, filtering);
 
 		assets.load("sfx/quack_dummy.ogg", Sound.class);
 		assets.load("music/baby_come_back.ogg", Music.class);
@@ -62,11 +65,29 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
 		
 		LevelManager levelManager = new LevelManager(assets, batch, playerInputProcessor, this, screenWidth, screenHeight);
-		Screen loadingScreen = new LoadingScreen(assets, levelManager);
+		LoadingScreen loadingScreen = new LoadingScreen(assets, levelManager);
 		
 		Gdx.input.setInputProcessor(playerInputProcessor);
 		
+		console = new Console(batch, assets, Gdx.graphics.getWidth(), 200);
+		
+		loadingScreen.addListener(new LoadingFinishedListener() {
+			
+			@Override
+			public void run() {
+				console.init();
+			}
+		});
+		
 		setScreen(loadingScreen);
+	}
+	
+	
+
+	@Override
+	public void render() {
+		super.render();
+		console.render();
 	}
 
 	private FontGroupParameters makeCorbelParams() {
