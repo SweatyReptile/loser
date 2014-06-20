@@ -69,6 +69,18 @@ public class LevelManager {
 		level(currentLevel);
 	}
 	
+	public void nextlevel() {
+		// Wow look it's a stub!
+		
+		// To be called to switch to the level
+		// that comes after the current level
+		
+		// We don't really have multiple levels yet,
+		// and we don't have the ordering down,
+		// so I don't really know how I'm going to set
+		// up what determines what the next level actually is.
+	}
+
 	public void level(String alias){
 		Gdx.app.log("LevelManager", "Switch to " + alias + " title screen");
 		LevelTitleScreen ltScreen = levelTitles.get(alias);
