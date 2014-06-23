@@ -29,6 +29,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 	SpriteBatch batch;
 	AssetManagerPlus assets;
 	Console console;
+	PlayerInputProcessor inputProcessor;
 	
 	@Override
 	public void create () {	
@@ -62,12 +63,12 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		assets.load("sfx/quack_dummy.ogg", Sound.class);
 		assets.load("music/baby_come_back.ogg", Music.class);
 		
-		PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
+		inputProcessor = new PlayerInputProcessor();
 		
-		LevelManager levelManager = new LevelManager(assets, batch, playerInputProcessor, this, screenWidth, screenHeight);
+		LevelManager levelManager = new LevelManager(assets, batch, inputProcessor, this, screenWidth, screenHeight);
 		LoadingScreen loadingScreen = new LoadingScreen(assets, levelManager);
 		
-		Gdx.input.setInputProcessor(playerInputProcessor);
+		Gdx.input.setInputProcessor(inputProcessor);
 		
 		console = new Console(batch, assets, Gdx.graphics.getWidth(), 200);
 		
@@ -87,7 +88,9 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 	@Override
 	public void render() {
 		super.render();
-		console.render();
+		if (inputProcessor.showConsole()){
+			console.render();
+		}
 	}
 
 	private FontGroupParameters makeCorbelParams() {
