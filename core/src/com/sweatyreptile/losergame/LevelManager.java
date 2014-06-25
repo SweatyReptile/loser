@@ -24,6 +24,8 @@ public class LevelManager {
 	
 	private int screenWidth;
 	private int screenHeight;
+	
+	private String currentLevel;
 
 	private ScreenFinishedListener screenFinishedListener;
 	
@@ -63,11 +65,28 @@ public class LevelManager {
 
 	}
 	
+	public void restart(){
+		level(currentLevel);
+	}
+	
+	public void nextlevel() {
+		// Wow, you've reached a stub!
+		
+		// To be called to switch to the level
+		// that comes after the current level
+		
+		// We don't really have multiple levels yet,
+		// and we don't have the ordering down,
+		// so I don't really know how I'm going to set
+		// up what determines what the next level actually is.
+	}
+
 	public void level(String alias){
 		Gdx.app.log("LevelManager", "Switch to " + alias + " title screen");
 		LevelTitleScreen ltScreen = levelTitles.get(alias);
 		screenFinishedListener.onFinish(currentScreen, ltScreen);
 		currentScreen = ltScreen;
+		currentLevel = alias;
 	}
 	
 	public void level_notitle(String alias){

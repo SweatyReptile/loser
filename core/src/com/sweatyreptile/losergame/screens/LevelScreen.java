@@ -232,7 +232,7 @@ public abstract class LevelScreen implements FinishableScreen{
 
 		if (timeLimit >= 0){
 			limitedTime = true;
-			levelTimer = new LevelTimer(this, viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
+			levelTimer = new LevelTimer(levelManager, viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
 		}
 		if (limitedTime) levelTimer.start();
 	}
@@ -273,7 +273,11 @@ public abstract class LevelScreen implements FinishableScreen{
 	protected abstract void setupWorld();
 
 	public void finish() {
-		levelManager.level(alias);
+		// Do things that should be done after the 
+		// player accomplishes whatever needs to
+		// be accomplished in order to complete
+		// the level
+		levelManager.nextlevel();
 	}
 
 	@Override
