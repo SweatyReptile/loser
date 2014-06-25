@@ -66,15 +66,16 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		assets.load("sfx/quack_dummy.ogg", Sound.class);
 		assets.load("music/baby_come_back.ogg", Music.class);
 		
+		inputMultiplexer = new InputMultiplexer();
+		
 		playerInputProcessor = new PlayerInputProcessor();
 		
 		LevelManager levelManager = new LevelManager(assets, batch, playerInputProcessor, this, screenWidth, screenHeight);
 		LoadingScreen loadingScreen = new LoadingScreen(assets, levelManager);
 		
-		console = new Console(batch, assets, Gdx.graphics.getWidth(), 200);
+		console = new Console(batch, assets, inputMultiplexer, Gdx.graphics.getWidth(), 200);
 		GlobalInputProcessor globalInputProcessor = new GlobalInputProcessor(console);
 		
-		inputMultiplexer = new InputMultiplexer();
 		inputMultiplexer.addProcessor(0, globalInputProcessor);
 		inputMultiplexer.addProcessor(1, playerInputProcessor);
 		
