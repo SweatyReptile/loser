@@ -2,14 +2,16 @@ package com.sweatyreptile.losergame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class Console {
 	
@@ -24,7 +26,7 @@ public class Console {
 	private Stage stage;
 	private InputMultiplexer inputMultiplexer;
 	private TextField textEntry;
-	private TextArea log;
+	private TextArea textLog;
 	
 	private boolean shown;
 	
@@ -39,13 +41,31 @@ public class Console {
 	}
 	
 	public void init(){
-		stage = new Stage();
-		
+		// Non-scene2d setup
 		bg = new Sprite(assets.get("img/ui/console_bg.png", Texture.class));
 		textbg = new Sprite(assets.get("img/ui/console_textfield.png", Texture.class));
-		
 		bg.setSize(width, height);
 		textbg.setSize(width, textHeight);
+		
+		// Scene-2d setup
+		stage = new Stage(new ScreenViewport(), spriteRenderer);
+		
+		Table table = new Table();
+		table.setFillParent(true);
+		
+		Skin testSkin = assets.get("img/ui/skins/gdxtest/uiskin.json");
+		
+		textEntry = new TextField("", testSkin);
+		textLog = new TextArea("", testSkin);
+		
+		textLog.setDisabled(true);
+		
+		stage.addActor(table);
+		table.bottom();
+		table.add(textLog).size(width, height).bottom();
+		table.row();
+		table.add(textEntry).size(width, textHeight).bottom();
+		
 	}
 	
 	public void render(){
@@ -54,6 +74,7 @@ public class Console {
 			bg.draw(spriteRenderer);
 			textbg.draw(spriteRenderer);
 			spriteRenderer.end();
+			stage.draw();
 		}
 	}
 
@@ -65,9 +86,6 @@ public class Console {
 		}
 		else{
 			inputMultiplexer.removeProcessor(stage);
-		}
-		for (InputProcessor p : inputMultiplexer.getProcessors()){
-			Gdx.app.log("Console", p.getClass().toString());
 		}
 	}
 	

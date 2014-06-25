@@ -14,7 +14,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
 import com.sweatyreptile.losergame.loaders.FontGroupParameters;
@@ -55,6 +57,9 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		assets.load("fonts/corbelb.ttf", BitmapFontGroup.class, corbelParams);
 		
 		assets.load("duck.json", FixedBodyEditorLoader.class);
+		
+		assets.load("img/ui/skins/gdxtest/uiskin.atlas", TextureAtlas.class);
+		assets.load("img/ui/skins/gdxtest/uiskin.json", Skin.class);
 		
 		assets.load("img/bg/background_extended.png", Texture.class, filtering);
 		assets.load("img/bg/menu_dummy_0.png", Texture.class, filtering);
