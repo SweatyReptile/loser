@@ -5,6 +5,7 @@ import aurelienribon.tweenengine.Tween;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
@@ -29,7 +30,9 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 	SpriteBatch batch;
 	AssetManagerPlus assets;
 	Console console;
-	PlayerInputProcessor inputProcessor;
+	
+	InputMultiplexer inputMultiplexer;
+	PlayerInputProcessor playerInputProcessor;
 	
 	@Override
 	public void create () {	
@@ -63,14 +66,19 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		assets.load("sfx/quack_dummy.ogg", Sound.class);
 		assets.load("music/baby_come_back.ogg", Music.class);
 		
-		inputProcessor = new PlayerInputProcessor();
+		playerInputProcessor = new PlayerInputProcessor();
 		
-		LevelManager levelManager = new LevelManager(assets, batch, inputProcessor, this, screenWidth, screenHeight);
+		LevelManager levelManager = new LevelManager(assets, batch, playerInputProcessor, this, screenWidth, screenHeight);
 		LoadingScreen loadingScreen = new LoadingScreen(assets, levelManager);
 		
-		Gdx.input.setInputProcessor(inputProcessor);
-		
 		console = new Console(batch, assets, Gdx.graphics.getWidth(), 200);
+		GlobalInputProcessor globalInputProcessor = new GlobalInputProcessor(console);
+		
+		inputMultiplexer = new InputMultiplexer();
+		inputMultiplexer.addProcessor(0, globalInputProcessor);
+		inputMultiplexer.addProcessor(1, playerInputProcessor);
+		
+		Gdx.input.setInputProcessor(inputMultiplexer);
 		
 		loadingScreen.addListener(new LoadingFinishedListener() {
 			
@@ -88,9 +96,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 	@Override
 	public void render() {
 		super.render();
-		if (inputProcessor.showConsole()){
-			console.render();
-		}
+		console.render();
 	}
 
 	private FontGroupParameters makeCorbelParams() {

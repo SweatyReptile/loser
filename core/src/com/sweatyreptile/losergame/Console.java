@@ -15,6 +15,8 @@ public class Console {
 	private int width;
 	private int textHeight;
 	
+	private boolean shown;
+	
 	public Console(SpriteBatch spriteRenderer, AssetManager assets, int width, int height) {
 		this.spriteRenderer = new SpriteBatch();
 		this.assets = assets;
@@ -33,12 +35,16 @@ public class Console {
 	}
 	
 	public void render(){
-		if (bg != null && textbg != null){
+		if (shown && bg != null && textbg != null){
 			spriteRenderer.begin();
 			bg.draw(spriteRenderer);
 			textbg.draw(spriteRenderer);
 			spriteRenderer.end();
 		}
+	}
+
+	public void toggle() {
+		shown = !shown;
 	}
 	
 

@@ -7,11 +7,10 @@ import com.sweatyreptile.losergame.entities.Player;
 public class PlayerInputProcessor implements InputProcessor {
 
 	private Player player;
-	private boolean showConsole;
 
 	@Override
 	public boolean keyDown(int keycode) {
-		if (player != null && !showConsole) {
+		if (player != null) {
 			switch(keycode) {
 			case Input.Keys.SHIFT_LEFT:
 			case Input.Keys.SHIFT_RIGHT:
@@ -32,23 +31,11 @@ public class PlayerInputProcessor implements InputProcessor {
 			case Input.Keys.SPACE:
 				player.jump();
 				return true;
-			case Input.Keys.GRAVE:
-				showConsole = !showConsole;
-				return true;
 			//case Input.Keys.E:
 			//case Input.Keys.ENTER:
 			default:
 				player.quack();
 				return true;
-			}
-		}
-		else if (showConsole){
-			switch(keycode) {
-			case Input.Keys.GRAVE:
-				showConsole = !showConsole;
-				return true;
-			default:
-				return false;
 			}
 		}
 		else{
@@ -134,10 +121,6 @@ public class PlayerInputProcessor implements InputProcessor {
 
 	public void clearPlayer() {
 	  this.player = null;
-	}
-	
-	public boolean showConsole(){
-		return showConsole;
 	}
 
 }
