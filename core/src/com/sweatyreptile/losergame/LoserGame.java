@@ -124,7 +124,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 	public void onFinish(FinishableScreen finished, Screen next) {
 		setScreen(next);
 		if (next == null){
-			Gdx.app.error("LoserGame", "Can't switch to null screen!");
+			LoserLog.error("LoserGame", "Can't switch to null screen!");
 		}
 	}
 	
