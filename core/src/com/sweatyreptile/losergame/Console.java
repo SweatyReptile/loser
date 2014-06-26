@@ -90,18 +90,26 @@ public class Console {
 	}
 
 	public void debug(String tag, String message) {
-		textLog.setText(textLog.getText() + "\n[" + tag + "] " + message);
+		log(tag, message);
 	}
 
 	public void debug(String tag, String message, Exception exception) {
-		textLog.setText(textLog.getText() + "\n[" + tag + "] " + message);
+		log(tag, message, exception);
 	}
 
 	public void error(String tag, String message) {
-		textLog.setText(textLog.getText() + "\n[" + tag + "] " + message);
+		log(tag, message);
 	}
 
 	public void error(String tag, String message, Throwable exception) {
+		log(tag, message, exception);
+	}
+
+	public void log(String tag, String message) {
+		log(tag, message);
+	}
+
+	public void log(String tag, String message, Throwable exception) {
 		textLog.setText(textLog.getText() + "\n[" + tag + "] " + message);
 	}
 	
