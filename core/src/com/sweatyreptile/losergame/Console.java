@@ -88,6 +88,22 @@ public class Console {
 			inputMultiplexer.removeProcessor(stage);
 		}
 	}
+
+	public void debug(String tag, String message) {
+		textLog.setText(textLog.getText() + "\n[" + tag + "] " + message);
+	}
+
+	public void debug(String tag, String message, Exception exception) {
+		textLog.setText(textLog.getText() + "\n[" + tag + "] " + message);
+	}
+
+	public void error(String tag, String message) {
+		textLog.setText(textLog.getText() + "\n[" + tag + "] " + message);
+	}
+
+	public void error(String tag, String message, Throwable exception) {
+		textLog.setText(textLog.getText() + "\n[" + tag + "] " + message);
+	}
 	
 
 }
