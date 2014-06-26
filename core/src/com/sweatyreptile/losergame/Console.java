@@ -28,6 +28,8 @@ public class Console {
 	private TextField textEntry;
 	private TextArea textLog;
 	
+	private String textLogString;
+	
 	private boolean shown;
 	
 	public Console(SpriteBatch spriteRenderer, AssetManager assets,
@@ -37,6 +39,7 @@ public class Console {
 		this.inputMultiplexer = inputMultiplexer;
 		this.height = height;
 		this.width = width;
+		textLogString = "";
 		textHeight = 20;
 	}
 	
@@ -106,11 +109,14 @@ public class Console {
 	}
 
 	public void log(String tag, String message) {
-		log(tag, message);
+		log(tag, message, null);
 	}
 
 	public void log(String tag, String message, Throwable exception) {
-		textLog.setText(textLog.getText() + "\n[" + tag + "] " + message);
+		textLogString = textLogString + "\n[" + tag + "] " + message;
+		if (textLog != null){
+			textLog.setText(textLogString);
+		}
 	}
 	
 
