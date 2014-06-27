@@ -215,6 +215,10 @@ public class Console {
 				LoserLog.log("Console", fieldText);
 				processInput(fieldText);
 			}
+			else if (c == '`'){
+				String fieldText = textField.getText();
+				textField.setText(fieldText.replace("`", ""));
+			}
 		}
 	}
 	
