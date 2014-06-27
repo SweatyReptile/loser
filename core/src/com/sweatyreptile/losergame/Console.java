@@ -84,7 +84,7 @@ public class Console {
 	}
 	
 	public void processInput(String input){
-		
+		textLog.setCursorPosition(textLog.getText().length());
 	}
 
 	public void toggle() {
