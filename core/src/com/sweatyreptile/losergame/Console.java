@@ -1,6 +1,5 @@
 package com.sweatyreptile.losergame;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,10 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class Console {
-	
+
 	private SpriteBatch spriteRenderer;
 	private AssetManager assets;
 	private Sprite bg;
@@ -69,6 +69,8 @@ public class Console {
 		table.row();
 		table.add(textEntry).size(width, textHeight).bottom();
 		
+		textEntry.setTextFieldListener(new ConsoleInputListener());
+		
 	}
 	
 	public void render(){
@@ -79,6 +81,10 @@ public class Console {
 			spriteRenderer.end();
 			stage.draw();
 		}
+	}
+	
+	public void processInput(String input){
+		
 	}
 
 	public void toggle() {
@@ -119,5 +125,15 @@ public class Console {
 		}
 	}
 	
-
+	private class ConsoleInputListener implements TextFieldListener {
+		@Override
+		public void keyTyped(TextField textField, char c) {
+			if (c == "\r".toCharArray()[0] || c == "\n".toCharArray()[0]){
+				String fieldText = textField.getText();
+				textField.setText("");
+				LoserLog.log("Console", fieldText);
+				processInput(fieldText);
+			}
+		}
+	}
 }
