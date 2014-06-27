@@ -167,8 +167,6 @@ public class Console {
 					+ "Perhaps it was declared with the wrong access modifier?");
 		}
 		
-		textLog.setCursorPosition(textLog.getText().length());
-		
 	}
 
 	public void toggle() {
@@ -207,6 +205,7 @@ public class Console {
 		textLogString = textLogString + "\n[" + tag + "] " + message;
 		if (textLog != null){
 			textLog.setText(textLogString);
+			textLog.setCursorPosition(textLog.getText().length());
 		}
 	}
 	
