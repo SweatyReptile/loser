@@ -84,8 +84,22 @@ public class Player extends Entity<Player>{
 	
 	private float stateTime;
 	private Animation currentAnimation;
-	private Animation testAnimation;
 	private TextureRegion currentFrame;
+	
+	private Animation testAnimation;
+	
+	private Animation leftWalkAnim;
+	private Animation rightWalkAnim;
+	private Animation leftWalkQuackAnim;
+	private Animation rightWalkQuackAnim;
+	private Animation leftFlapAnim;
+	private Animation rightFlapAnim;
+	private Animation leftQuackFlapAnim;
+	private Animation rightQuackFlapAnim;
+	private Animation leftDuckFlapAnim;
+	private Animation rightDuckFlapAnim;
+	private Animation leftQuackDuckFlapAnim;
+	private Animation rightQuackDuckFlapAnim;
 
 	public Player(World world, LoserContactListener contactListener, BodyDef def, AssetManagerPlus assets) {
 		super(world, contactListener, def, "duck");
@@ -176,11 +190,7 @@ public class Player extends Entity<Player>{
 		duckingBodyHeight = extractBodyHeight(leftDuckingBody);
 		
 		stateTime = 0f;
-		Array<AtlasRegion> testFrames = new TextureAtlas("temp/flap.txt").getRegions();
-		/*for (AtlasRegion frame : testFrames){
-			frame.setRegionHeight(height);
-			frame.setRegionWidth(width);
-		}*/
+		Array<AtlasRegion> testFrames = new TextureAtlas("temp/flap.txt").getRegions(); //TODO load from asset manager
 		testAnimation = new Animation(0.05f, testFrames);
 		currentAnimation = testAnimation;
 		
@@ -219,7 +229,7 @@ public class Player extends Entity<Player>{
 	@Override
 	public void render(SpriteBatch renderer){
 		stateTime += Gdx.graphics.getDeltaTime();
-		currentFrame = currentAnimation.getKeyFrame(stateTime, true);
+		currentFrame = currentAnimation.getKeyFrame(stateTime, true); //TODO make Animation subclass that keeps track of its own stateTime
 		sprite.setRegion(currentFrame);
 		super.render(renderer);
 	}
@@ -501,6 +511,7 @@ public class Player extends Entity<Player>{
 		duckingSprite.setFlip(horizontal, false);
 		quackingSprite.setFlip(horizontal, false);
 		quackingDuckingSprite.setFlip(horizontal, false);
+		//TODO set animations to opposites
 	}
 	
 	public boolean isFlying(){
