@@ -1,5 +1,9 @@
 package com.sweatyreptile.losergame;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
@@ -15,6 +19,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class Console {
 
+	private LevelManager levelManager;
 	private SpriteBatch spriteRenderer;
 	private AssetManager assets;
 	private Sprite bg;
@@ -85,6 +90,50 @@ public class Console {
 	
 	public void processInput(String input){
 		textLog.setCursorPosition(textLog.getText().length());
+		
+		// The first argument is treated as the command name,
+		// and will always be left as a string.
+		List<String> fullargs = Arrays.asList(input.split(" "));
+		String command = fullargs.get(0);
+		
+		List<String> cmdstringargs = fullargs.subList(1, fullargs.size());
+		
+		
+		// The rest of the arguments should be tested to see
+		// if they should be treated as int or float or boolean
+		List<Class<?>> argclasses = new ArrayList<Class<?>>();
+		List<Object> cmdobjargs = new ArrayList<Object>();
+		for (String arg : cmdstringargs){
+			try{
+				Integer argInt = Integer.parseInt(arg);
+				argclasses.add(int.class);
+				cmdobjargs.add(argInt);
+			}
+			catch(NumberFormatException e){
+				try{
+					Float argFloat = Float.parseFloat(arg);
+					argclasses.add(float.class);
+					cmdobjargs.add(argFloat);
+				}
+				catch(NumberFormatException ex){
+					if("true".equals(arg)){
+						argclasses.add(boolean.class);
+						cmdobjargs.add(new Boolean(true));
+					}
+					else if ("false".equals(arg)){
+						argclasses.add(boolean.class);
+						cmdobjargs.add(new Boolean(false));
+					}
+					else{
+						argclasses.add(String.class);
+						cmdobjargs.add(arg);
+					}
+				}
+			}
+		}
+		
+		LoserLog.debug("Console Parser", argclasses.toString());
+		LoserLog.debug("Console Parser", cmdobjargs.toString());
 	}
 
 	public void toggle() {
@@ -135,5 +184,9 @@ public class Console {
 				processInput(fieldText);
 			}
 		}
+	}
+	
+	public void setLevelManager(LevelManager levelManager){
+		this.levelManager = levelManager;
 	}
 }
