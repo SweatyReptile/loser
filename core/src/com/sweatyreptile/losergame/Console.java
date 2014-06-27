@@ -176,7 +176,7 @@ public class Console {
 		if (shown){
 			// Index 1 is the first position after the global inputProcessor
 			inputMultiplexer.addProcessor(1, stage);
-			
+			stage.setKeyboardFocus(textEntry);
 		}
 		else{
 			inputMultiplexer.removeProcessor(stage);
