@@ -133,9 +133,6 @@ public class Console {
 			}
 		}
 		
-		LoserLog.debug("Console Parser", argclasses.toString());
-		LoserLog.debug("Console Parser", cmdobjargs.toString());
-		
 		// Finally, find a method that matches 
 		// the command name and arg types,
 		// then call it with the args
