@@ -7,13 +7,13 @@ public class LoserLog{
 	protected static Console console;
 	
 	public static void debug(String tag, String message) {
-		Gdx.app.debug(tag, message);
-		console.debug(tag, message);
+		Gdx.app.log(tag, message);
+		console.log(tag, message);
 	}
 
 	public static void debug(String tag, String message, Exception exception) {
-		Gdx.app.debug(tag, message, exception);
-		console.debug(tag, message, exception);
+		Gdx.app.log(tag, message, exception);
+		console.log(tag, message, exception);
 	}
 	
 	public static void error(String tag, String message) {
