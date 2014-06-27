@@ -1,5 +1,7 @@
 package com.sweatyreptile.losergame;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -89,7 +91,6 @@ public class Console {
 	}
 	
 	public void processInput(String input){
-		textLog.setCursorPosition(textLog.getText().length());
 		
 		// The first argument is treated as the command name,
 		// and will always be left as a string.
@@ -134,6 +135,40 @@ public class Console {
 		
 		LoserLog.debug("Console Parser", argclasses.toString());
 		LoserLog.debug("Console Parser", cmdobjargs.toString());
+		
+		// Finally, find a method that matches 
+		// the command name and arg types,
+		// then call it with the args
+		
+		// For now, we will only search levelManager.
+		Class[] parameterTypes = Arrays.copyOf(argclasses.toArray(), argclasses.size(), Class[].class);
+		Object[] parameters = cmdobjargs.toArray();
+		Method method = null;
+		
+		try {
+			method = LevelManager.class.getMethod(command, parameterTypes);
+			
+			try {
+				method.invoke(levelManager, parameters);
+			} catch (IllegalAccessException e) {
+				LoserLog.error("Console", "Unable to access command [" + command + " (args: " + argclasses + ")]."
+						+ "Perhaps it was declared with the wrong access modifier?");
+			} catch (IllegalArgumentException e) {
+				LoserLog.error("Console", "This shouldn't happen.", e);
+			} catch (InvocationTargetException e) {
+				LoserLog.error("Console", "Something went wrong with the command ["
+						+ command + " (args: " + argclasses + ")].", e);
+			}
+			
+		} catch (NoSuchMethodException e) {
+			LoserLog.error("Console", "The command [" + command + " (args: " + argclasses + ")] does not exist.");
+		} catch (SecurityException e) {
+			LoserLog.error("Console", "Unable to access command [" + command + " (args: " + argclasses + ")]."
+					+ "Perhaps it was declared with the wrong access modifier?");
+		}
+		
+		textLog.setCursorPosition(textLog.getText().length());
+		
 	}
 
 	public void toggle() {
@@ -141,6 +176,7 @@ public class Console {
 		if (shown){
 			// Index 1 is the first position after the global inputProcessor
 			inputMultiplexer.addProcessor(1, stage);
+			
 		}
 		else{
 			inputMultiplexer.removeProcessor(stage);
