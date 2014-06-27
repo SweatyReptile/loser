@@ -209,7 +209,7 @@ public class Console {
 	private class ConsoleInputListener implements TextFieldListener {
 		@Override
 		public void keyTyped(TextField textField, char c) {
-			if (c == "\r".toCharArray()[0] || c == "\n".toCharArray()[0]){
+			if (c == '\r' || c == '\n'){
 				String fieldText = textField.getText();
 				textField.setText("");
 				LoserLog.log("Console", fieldText);
