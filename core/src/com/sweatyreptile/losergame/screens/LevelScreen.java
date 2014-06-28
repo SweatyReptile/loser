@@ -24,6 +24,7 @@ import com.sweatyreptile.losergame.EntityFactory;
 import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.LevelTimer;
 import com.sweatyreptile.losergame.LoserContactListener;
+import com.sweatyreptile.losergame.LoserLog;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
@@ -69,7 +70,7 @@ public abstract class LevelScreen implements FinishableScreen{
 		try {
 			screenClass = Class.forName("com.sweatyreptile.losergame.screens." + levelType);
 		} catch (ClassNotFoundException e) {
-			Gdx.app.error("Level Instantiation",
+			LoserLog.error("Level Instantiation",
 					"Level type " + levelType + " not found!", e);
 		}
 
@@ -77,12 +78,12 @@ public abstract class LevelScreen implements FinishableScreen{
 		try {
 			levelScreen = (LevelScreen) screenClass.newInstance();
 		} catch (InstantiationException e) {
-			Gdx.app.error("Level Instantiation",
+			LoserLog.error("Level Instantiation",
 					"Level type " + levelType + " could not be instantiated!");
-			Gdx.app.error("Level Instantiation",
+			LoserLog.error("Level Instantiation",
 					"This may be because it is an abstract type, or does not contain a nullary constructor.", e);
 		} catch (IllegalAccessException e) {
-			Gdx.app.error("Level Instantiation",
+			LoserLog.error("Level Instantiation",
 					"Nullary constructor of " + levelType + " is not public");
 		}
 

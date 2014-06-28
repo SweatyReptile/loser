@@ -119,8 +119,8 @@ public class PlayerInputProcessor implements InputProcessor {
 		this.player = player;
 	}
 
-  public void clearPlayer() {
-    this.player = null;
-  }
+	public void clearPlayer() {
+	  this.player = null;
+	}
 
 }
