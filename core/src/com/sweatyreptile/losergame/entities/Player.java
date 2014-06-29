@@ -198,11 +198,6 @@ public class Player extends Entity<Player>{
 		
 	}
 	
-	@Override
-	public void render(SpriteBatch renderer){
-		
-	}
-	
 	public boolean isMoving() {
 		return movingDirection != Direction.NONE;
 	}
