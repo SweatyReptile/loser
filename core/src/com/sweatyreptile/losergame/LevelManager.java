@@ -32,7 +32,7 @@ public class LevelManager {
 	public LevelManager(AssetManagerPlus assets, SpriteBatch batch, 
 			PlayerInputProcessor inputProcessor, 
 			ScreenFinishedListener screenFinishedListener,
-			int screenWidth, int screenHeight){
+			int screenWidth, int screenHeight) {
 		this.batch = batch;
 		this.assets = assets;
 		this.screenWidth = screenWidth;
@@ -48,7 +48,7 @@ public class LevelManager {
 	}
 	
 	public void instantiate(String alias, String typeName, String levelName,
-			float viewportWidth, float viewportHeight, float timeLimit){
+			float viewportWidth, float viewportHeight, float timeLimit) {
 		
 		LoserLog.log("LevelManager", "Instantiate " + alias + " " + levelName + " (" + typeName + ")");
 		
@@ -65,7 +65,19 @@ public class LevelManager {
 
 	}
 	
-	public void restart(){
+	public void edit() {
+		LevelScreen level = levels.get(currentLevel);
+		level.setEditMode(true);
+		restart();
+	}
+	
+	public void play() {
+		LevelScreen level = levels.get(currentLevel);
+		level.setEditMode(false);
+		restart();
+	}
+	
+	public void restart() {
 		level(currentLevel);
 	}
 	
@@ -81,7 +93,7 @@ public class LevelManager {
 		// up what determines what the next level actually is.
 	}
 
-	public void level(String alias){
+	public void level(String alias) {
 		LoserLog.log("LevelManager", "Switch to " + alias + " title screen");
 		LevelTitleScreen ltScreen = levelTitles.get(alias);
 		screenFinishedListener.onFinish(currentScreen, ltScreen);
@@ -89,7 +101,7 @@ public class LevelManager {
 		currentLevel = alias;
 	}
 	
-	public void level_notitle(String alias){
+	public void level_notitle(String alias) {
 		LoserLog.log("LevelManager", "Switch to " + alias);
 		LevelScreen lvlScreen = levels.get(alias);
 		screenFinishedListener.onFinish(currentScreen, lvlScreen);

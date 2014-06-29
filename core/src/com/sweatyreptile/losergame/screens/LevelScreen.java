@@ -62,6 +62,7 @@ public abstract class LevelScreen implements FinishableScreen{
 	protected float timeLimit;
 	private boolean limitedTime;
 	protected TweenManager tweenManager;
+	private boolean editMode;
 
 	public static final LevelScreen newInstance(String levelType, LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName) {
@@ -196,6 +197,8 @@ public abstract class LevelScreen implements FinishableScreen{
 
 	@Override
 	public void show() {
+		LoserLog.log(this.getClass().getSimpleName(), "Edit mode: " + editMode);
+		
 		tweenManager = new TweenManager();
 
 		entities = new HashMap<String, Entity<?>>();
@@ -347,6 +350,10 @@ public abstract class LevelScreen implements FinishableScreen{
 
 	public void setTimeLimit(float timeLimit) {
 		this.timeLimit = timeLimit;
+	}
+
+	public void setEditMode(boolean editMode) {
+		this.editMode = editMode;
 	}
 
 }
