@@ -229,16 +229,25 @@ public abstract class LevelScreen implements FinishableScreen{
 			throw new IllegalStateException(this + " has not created a player.");
 		}
 
-		playerInputProcessor.setPlayer(player);
-
 		setupFonts();
 		setupWorld();
+		
+		playerInputProcessor.setPlayer(getPlayerForInput());
 
 		if (timeLimit >= 0){
 			limitedTime = true;
 			levelTimer = new LevelTimer(levelManager, viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
 		}
 		if (limitedTime) levelTimer.start();
+	}
+
+	private Player getPlayerForInput() {
+		if (editMode){
+			return null;
+		}
+		else{
+			return player;
+		}
 	}
 	
 	public float getGravity(){
