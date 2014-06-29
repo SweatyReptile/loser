@@ -211,7 +211,7 @@ public abstract class LevelScreen implements FinishableScreen{
 
 		shapeRenderer.setProjectionMatrix(camera.combined);
 
-		world = new World(new Vector2(0f, -9.8f), true);
+		world = new World(new Vector2(0f, getGravity()), true);
 		physRenderer = new Box2DDebugRenderer();
 
 		entityFactory = new EntityFactory(assets, entities,
@@ -239,6 +239,16 @@ public abstract class LevelScreen implements FinishableScreen{
 			levelTimer = new LevelTimer(levelManager, viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
 		}
 		if (limitedTime) levelTimer.start();
+	}
+	
+	public float getGravity(){
+		if (editMode){
+			return 0f;
+		}
+		else{
+			return -9.8f;
+		}
+		
 	}
 
 	@Override
