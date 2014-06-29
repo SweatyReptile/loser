@@ -16,24 +16,29 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
+import com.sweatyreptile.losergame.FixtureWrapper;
 import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.LevelTimer;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.LoserLog;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
+import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
 
 public abstract class LevelScreen implements FinishableScreen{
 
-	private static final boolean DRAW_PHYSICS = false;
+	private static final boolean DRAW_PHYSICS = true;
 	protected final static float BORDER_WIDTH = 0.06f; //according to image size
 	protected LevelManager levelManager;
 	protected String alias;
@@ -62,7 +67,9 @@ public abstract class LevelScreen implements FinishableScreen{
 	protected float timeLimit;
 	private boolean limitedTime;
 	protected TweenManager tweenManager;
+	
 	private boolean editMode;
+	private Body selectedBody;
 
 	public static final LevelScreen newInstance(String levelType, LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName) {
@@ -213,6 +220,7 @@ public abstract class LevelScreen implements FinishableScreen{
 
 		world = new World(new Vector2(0f, getGravity()), true);
 		physRenderer = new Box2DDebugRenderer();
+		physRenderer.setDrawAABBs(true);
 
 		entityFactory = new EntityFactory(assets, entities,
 				world, contactListener, viewportWidth, Entity.DEFAULT_SCREEN_WIDTH);
@@ -374,5 +382,35 @@ public abstract class LevelScreen implements FinishableScreen{
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
 	}
+
+	// Edit mode things
+	
+	public void editTouch(int screenX, int screenY) {
+		final Vector3 worldcoords = camera.unproject(new Vector3(screenX, screenY, 0));
+		LoserLog.log("LevelScreen (Edit)", worldcoords.x + "," + worldcoords.y);
+		//entityFactory.create("a", BodyType.DynamicBody, worldcoords.x, worldcoords.y, new DuckFixtureDef(assets), false);
+		
+		QueryCallback callback = new QueryCallback() {
+			
+			@Override
+			public boolean reportFixture(Fixture fixture) {
+				FixtureWrapper f = new FixtureWrapper(fixture);
+				if (!f.isSensor()){
+					selectedBody = f.getBody();
+					Entity entity = (Entity)selectedBody.getUserData();
+					LoserLog.log("LevelScreen (Edit)", entity.getName());
+					return false;
+				}
+				return true; // Continue query
+			}
+		};
+		
+		world.QueryAABB(callback, 
+				worldcoords.x - 0.00000001f, worldcoords.y - 0.00000001f,
+				worldcoords.x + 0.00000001f, worldcoords.y + 0.00000001f);
+		
+	}
+	
+	
 
 }

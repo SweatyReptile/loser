@@ -3,7 +3,7 @@ package com.sweatyreptile.losergame;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.screens.FinishableScreen;
@@ -20,7 +20,9 @@ public class LevelManager {
 	private FinishableScreen currentScreen;
 	private SpriteBatch batch;
 	private AssetManagerPlus assets;
+	private InputMultiplexer inputMultiplexer;
 	private PlayerInputProcessor inputProcessor;
+	private EditModeInputProcessor editInputProcessor;
 	
 	private int screenWidth;
 	private int screenHeight;
@@ -30,7 +32,7 @@ public class LevelManager {
 	private ScreenFinishedListener screenFinishedListener;
 	
 	public LevelManager(AssetManagerPlus assets, SpriteBatch batch, 
-			PlayerInputProcessor inputProcessor, 
+			InputMultiplexer inputMultiplexer, PlayerInputProcessor inputProcessor, 
 			ScreenFinishedListener screenFinishedListener,
 			int screenWidth, int screenHeight) {
 		this.batch = batch;
@@ -38,6 +40,7 @@ public class LevelManager {
 		this.screenWidth = screenWidth;
 		this.screenHeight = screenHeight;
 		this.screenFinishedListener = screenFinishedListener;
+		this.inputMultiplexer = inputMultiplexer;
 		this.inputProcessor = inputProcessor;
 		
 		levels = new HashMap<String, LevelScreen>();
@@ -68,13 +71,24 @@ public class LevelManager {
 	public void edit() {
 		LevelScreen level = levels.get(currentLevel);
 		level.setEditMode(true);
+		editInputProcessor = new EditModeInputProcessor(level);
+		inputMultiplexer.addProcessor(editInputProcessor);
 		restart();
 	}
 	
-	public void play() {
+	public void play(boolean restart) {
 		LevelScreen level = levels.get(currentLevel);
-		level.setEditMode(false);
-		restart();
+		if (level != null){
+			level.setEditMode(false);
+		}
+		inputMultiplexer.removeProcessor(editInputProcessor);
+		if (restart){
+			restart();
+		}
+	}
+	
+	public void play(){
+		play(true);
 	}
 	
 	public void restart() {
@@ -94,6 +108,12 @@ public class LevelManager {
 	}
 
 	public void level(String alias) {
+		
+		if (!alias.equals(currentLevel)){
+			// Turn off edit mode on current level without restarting it
+			play(false);
+		}
+		
 		LoserLog.log("LevelManager", "Switch to " + alias + " title screen");
 		LevelTitleScreen ltScreen = levelTitles.get(alias);
 		screenFinishedListener.onFinish(currentScreen, ltScreen);
