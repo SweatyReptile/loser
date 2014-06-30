@@ -13,6 +13,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
@@ -57,6 +58,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 
 		assets.load("sfx/quack_dummy.ogg", Sound.class);
 		assets.load("music/baby_come_back.ogg", Music.class);
+		assets.load("temp/flap.txt", TextureAtlas.class);
 		
 		PlayerInputProcessor playerInputProcessor = new PlayerInputProcessor();
 		

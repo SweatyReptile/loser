@@ -190,7 +190,7 @@ public class Player extends Entity<Player>{
 		duckingBodyHeight = extractBodyHeight(leftDuckingBody);
 		
 		stateTime = 0f;
-		Array<AtlasRegion> testFrames = new TextureAtlas("temp/flap.txt").getRegions(); //TODO load from asset manager
+		Array<AtlasRegion> testFrames = ((TextureAtlas) assets.get("temp/flap.txt")).getRegions();
 		testAnimation = new Animation(0.05f, testFrames);
 		currentAnimation = testAnimation;
 		
