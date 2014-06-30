@@ -411,7 +411,6 @@ public class Player extends Entity<Player>{
 		else if (ducking || flying) switchBody(currentBody, leftDuckingBody, false);
 		else if (quacking) switchBody(currentBody, leftQuackingBody, false);
 		else switchBody(currentBody, leftBody, false);
-		flipSprites(false);
 	}
 	
 	public void moveRight() {
@@ -420,7 +419,7 @@ public class Player extends Entity<Player>{
 		else if (ducking || flying) switchBody(currentBody, rightDuckingBody, false);
 		else if (quacking) switchBody (currentBody, rightQuackingBody, false);
 		else switchBody(currentBody, rightBody, false);
-		flipSprites(true);
+		flipSprites();
 	}
 	
 	public void jump() {
@@ -483,7 +482,7 @@ public class Player extends Entity<Player>{
 	
 	public void standRight(){
 		switchBody(currentBody, rightBody, false);
-		flipSprites(true);
+		flipSprites();
 	}
 	
 	private float extractBodyHeight(Body body){
@@ -503,11 +502,11 @@ public class Player extends Entity<Player>{
 		return highestValue - lowestValue;
 	}
 
-	private void flipSprites(boolean horizontal) {
-		standingSprite.setFlip(horizontal, false);
-		duckingSprite.setFlip(horizontal, false);
-		quackingSprite.setFlip(horizontal, false);
-		quackingDuckingSprite.setFlip(horizontal, false);
+	private void flipSprites() {
+		standingSprite.setFlip(true, false);
+		duckingSprite.setFlip(true, false);
+		quackingSprite.setFlip(true, false);
+		quackingDuckingSprite.setFlip(true, false);
 		//TODO set animations to opposites
 	}
 	
