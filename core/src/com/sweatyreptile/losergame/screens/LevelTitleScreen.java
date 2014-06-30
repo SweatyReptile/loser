@@ -3,12 +3,16 @@ package com.sweatyreptile.losergame.screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
@@ -29,6 +33,8 @@ public class LevelTitleScreen implements FinishableScreen {
 	
 	private Task finishTask;
 	private float timeInSeconds;
+	
+	private Camera camera;
 	
 	public LevelTitleScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
 			int screenWidth, int screenHeight, String levelAlias, String title) {
@@ -62,6 +68,7 @@ public class LevelTitleScreen implements FinishableScreen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		font.setScale(1f);
 		font.setColor(Color.WHITE);
@@ -82,6 +89,11 @@ public class LevelTitleScreen implements FinishableScreen {
 		Timer.schedule(finishTask, timeInSeconds);
 		Sound quackSound = (Sound) assets.get("sfx/quack_dummy.ogg");
 		quackSound.play();
+		
+		camera = new OrthographicCamera();
+		Viewport viewport = new StretchViewport(screenWidth, screenHeight, camera);
+		viewport.update(screenWidth, screenHeight, true); // To center the camera
+		camera.update();
 	}
 	
 	private float delaySeconds(String title){
