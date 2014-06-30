@@ -21,8 +21,10 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sweatyreptile.losergame.Entity;
@@ -280,15 +282,54 @@ public abstract class LevelScreen implements FinishableScreen{
 			Entity<?> entity = entities.get(entityName);
 			
 			Skin skin = assets.get("img/ui/skins/gdxtest/uiskin.json");
-			EntityButton button = new EntityButton(entity, camera, skin);
+			final EntityButton button = new EntityButton(entity, camera, skin);
 			
 			Vector3 screencoords = camera.project(new Vector3(entity.getX(), entity.getY(), 0));
 			Vector3 widthheight = camera.project(new Vector3(entity.getWidth(), entity.getHeight(), 0));
 			
 			button.setPosition(screencoords.x, screencoords.y);
-			button.setSize(widthheight.x, widthheight.y);
+			//button.setSize(widthheight.x, widthheight.y);
 			
 			editStage.addActor(button);
+			
+			button.addListener(new ClickListener(){
+
+				// Both vectors in world coordinates
+				private Vector3 clickStart;
+				private Vector3 entityStart;
+				
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y,
+						int pointer, int button2) {
+					Entity<?> entity = button.getEntity();
+					entity.getBody().setActive(false);
+					
+					clickStart = camera.unproject(new Vector3(x, y, 0));
+					entityStart = new Vector3(entity.getX(), entity.getY(), 0);
+					
+					super.touchDown(event, x, y, pointer, button2);
+					
+					LoserLog.log("EditButtons", "touchDown");
+					return true;
+				}
+
+				@Override
+				public void touchDragged(InputEvent event, float x, float y,
+						int pointer) {
+					Entity<?> entity = button.getEntity();
+					
+					Vector3 clickEnd = camera.unproject(new Vector3(x, y, 0));
+					
+					Vector3 difference = clickEnd.sub(clickStart);
+					Vector3 newEntityPos = entityStart.add(difference);
+					
+					entity.setPosition(newEntityPos.x, -newEntityPos.y);
+					
+					super.touchDragged(event, x, y, pointer);
+					LoserLog.log("EditButtons", "touchDragged");
+				}
+				
+			});
 		}
 	}
 

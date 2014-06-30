@@ -160,10 +160,18 @@ public class Entity <T extends Entity<?>>{
 	}
 	
 	public void setX(float x){
+		currentBody.setTransform(x, currentBody.getPosition().y, currentBody.getAngle());
 		sprite.setX(x);
 	}
 	
 	public void setY(float y){
+		currentBody.setTransform(currentBody.getPosition().x, y, currentBody.getAngle());
+		sprite.setY(y);
+	}
+	
+	public void setPosition(float x, float y){
+		currentBody.setTransform(x, y, currentBody.getAngle());
+		sprite.setX(x);
 		sprite.setY(y);
 	}
 

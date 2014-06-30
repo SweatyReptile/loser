@@ -2,6 +2,7 @@ package com.sweatyreptile.losergame;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
@@ -29,6 +30,10 @@ public class EntityButton extends Button {
 		reusableVector.y = entity.getY();
 		reusableVector = levelCamera.project(reusableVector);
 		setPosition(reusableVector.x, reusableVector.y);
+	}
+
+	public Entity<?> getEntity() {
+		return entity;
 	}
 	
 	
