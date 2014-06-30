@@ -82,24 +82,23 @@ public class Player extends Entity<Player>{
 	private float bodyHeight; //Assumes all standing bodies are the same height
 	private float duckingBodyHeight; //Assumes all ducking bodies are the same height
 	
-	private float stateTime;
-	private Animation currentAnimation;
+	private SmartAnimation currentAnimation;
 	private TextureRegion currentFrame;
 	
-	private Animation testAnimation;
+	private SmartAnimation testAnimation;
 	
-	private Animation leftWalkAnim;
-	private Animation rightWalkAnim;
-	private Animation leftWalkQuackAnim;
-	private Animation rightWalkQuackAnim;
-	private Animation leftFlapAnim;
-	private Animation rightFlapAnim;
-	private Animation leftQuackFlapAnim;
-	private Animation rightQuackFlapAnim;
-	private Animation leftDuckFlapAnim;
-	private Animation rightDuckFlapAnim;
-	private Animation leftQuackDuckFlapAnim;
-	private Animation rightQuackDuckFlapAnim;
+	private SmartAnimation leftWalkAnim;
+	private SmartAnimation rightWalkAnim;
+	private SmartAnimation leftWalkQuackAnim;
+	private SmartAnimation rightWalkQuackAnim;
+	private SmartAnimation leftFlapAnim;
+	private SmartAnimation rightFlapAnim;
+	private SmartAnimation leftQuackFlapAnim;
+	private SmartAnimation rightQuackFlapAnim;
+	private SmartAnimation leftDuckFlapAnim;
+	private SmartAnimation rightDuckFlapAnim;
+	private SmartAnimation leftQuackDuckFlapAnim;
+	private SmartAnimation rightQuackDuckFlapAnim;
 
 	public Player(World world, LoserContactListener contactListener, BodyDef def, AssetManagerPlus assets) {
 		super(world, contactListener, def, "duck");
@@ -189,9 +188,7 @@ public class Player extends Entity<Player>{
 		bodyHeight = extractBodyHeight(leftBody);
 		duckingBodyHeight = extractBodyHeight(leftDuckingBody);
 		
-		stateTime = 0f;
-		Array<AtlasRegion> testFrames = ((TextureAtlas) assets.get("temp/flap.txt")).getRegions();
-		testAnimation = new Animation(0.05f, testFrames);
+		testAnimation = new SmartAnimation(0.05f, "temp/flap.txt", assets);
 		currentAnimation = testAnimation;
 		
 	}
@@ -223,14 +220,13 @@ public class Player extends Entity<Player>{
 				currentBody.applyForceToCenter(-velocity.x/5, 0f, true);
 			}
 		}
+		currentAnimation.update();
 		
 	}
 	
 	@Override
 	public void render(SpriteBatch renderer){
-		stateTime += Gdx.graphics.getDeltaTime();
-		currentFrame = currentAnimation.getKeyFrame(stateTime, true); //TODO make Animation subclass that keeps track of its own stateTime
-		sprite.setRegion(currentFrame);
+		sprite.setRegion(currentAnimation.currentFrame());
 		super.render(renderer);
 	}
 	
