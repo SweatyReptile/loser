@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.screens.FinishableScreen;
@@ -22,7 +23,7 @@ public class LevelManager {
 	private AssetManagerPlus assets;
 	private InputMultiplexer inputMultiplexer;
 	private PlayerInputProcessor inputProcessor;
-	private EditModeInputProcessor editInputProcessor;
+	private InputProcessor editInputProcessor;
 	
 	private int screenWidth;
 	private int screenHeight;

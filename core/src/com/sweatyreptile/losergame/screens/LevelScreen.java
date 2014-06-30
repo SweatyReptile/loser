@@ -6,6 +6,7 @@ import java.util.Map;
 import aurelienribon.tweenengine.TweenManager;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -422,6 +423,10 @@ public abstract class LevelScreen implements FinishableScreen{
 
 	public void setEditMode(boolean editMode) {
 		this.editMode = editMode;
+	}
+
+	public InputProcessor getEditInputProcessor() {
+		return editStage;
 	}
 
 }
