@@ -22,6 +22,11 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityFactory;
 import com.sweatyreptile.losergame.FixtureWrapper;
@@ -31,7 +36,6 @@ import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.LoserLog;
 import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
-import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
@@ -70,6 +74,8 @@ public abstract class LevelScreen implements FinishableScreen{
 	
 	private boolean editMode;
 	private Body selectedBody;
+	private Camera editCamera;
+	private Stage editStage;
 
 	public static final LevelScreen newInstance(String levelType, LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName) {
@@ -133,6 +139,8 @@ public abstract class LevelScreen implements FinishableScreen{
 		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		spriteRenderer.setProjectionMatrix(camera.combined);
+		
 		spriteRenderer.begin();
 
 		spriteRenderer.disableBlending();
@@ -151,6 +159,11 @@ public abstract class LevelScreen implements FinishableScreen{
 
 		if (DRAW_PHYSICS){
 			physRenderer.render(world, camera.combined);
+		}
+		
+		if (editMode){
+			spriteRenderer.setProjectionMatrix(editCamera.combined);
+			editStage.draw();
 		}
 	}
 
@@ -240,6 +253,10 @@ public abstract class LevelScreen implements FinishableScreen{
 		setupFonts();
 		setupWorld();
 		
+		if (editMode){
+			setupEditMode();
+		}
+		
 		playerInputProcessor.setPlayer(getPlayerForInput());
 
 		if (timeLimit >= 0){
@@ -247,6 +264,37 @@ public abstract class LevelScreen implements FinishableScreen{
 			levelTimer = new LevelTimer(levelManager, viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
 		}
 		if (limitedTime) levelTimer.start();
+	}
+	
+	private void setupEditMode(){
+		editCamera = new OrthographicCamera();
+		Viewport editViewport = new StretchViewport(width, height, editCamera);
+		editViewport.update(width, height, true);
+		editCamera.update();
+		
+		editStage = new Stage(editViewport, spriteRenderer);
+		for (String entityName : entities.keySet()){
+			
+			Entity<?> entity = entities.get(entityName);
+			
+			Skin skin = assets.get("img/ui/skins/gdxtest/uiskin.json");
+			Button button = new Button(skin);
+			
+			Vector3 screencoords = camera.project(new Vector3(entity.getX(), entity.getY(), 0));
+			Vector3 widthheight = camera.project(new Vector3(entity.getWidth(), entity.getHeight(), 0));
+			
+			button.setPosition(screencoords.x, screencoords.y);
+			button.setSize(widthheight.x, widthheight.y);
+			
+			LoserLog.debug("Edit", "width: " + width);
+			LoserLog.debug("Edit", "height: " + height);
+			LoserLog.debug("Edit", "screencoords.x: " + screencoords.x);
+			LoserLog.debug("Edit", "screencoords.y: " + screencoords.y);
+			LoserLog.debug("Edit", "widthheight.x: " + widthheight.x);
+			LoserLog.debug("Edit", "widthheight.y: " + widthheight.y);
+			
+			editStage.addActor(button);
+		}
 	}
 
 	private Player getPlayerForInput() {

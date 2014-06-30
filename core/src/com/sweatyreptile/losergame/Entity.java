@@ -189,5 +189,23 @@ public class Entity <T extends Entity<?>>{
 	public Body getBody(){
 		return currentBody;
 	}
+
+	public float getX() {
+		updateSprite(0);
+		return sprite.getX();
+	}
+	
+	public float getY() {
+		updateSprite(0);
+		return sprite.getY();
+	}
+
+	public float getWidth() {
+		return sprite.getWidth();
+	}
+	
+	public float getHeight() {
+		return sprite.getHeight();
+	}
 	
 }
