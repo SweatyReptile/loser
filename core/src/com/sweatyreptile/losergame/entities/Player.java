@@ -28,6 +28,7 @@ import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityListener;
 import com.sweatyreptile.losergame.FixtureWrapper;
 import com.sweatyreptile.losergame.LoserContactListener;
+import com.sweatyreptile.losergame.SmartAnimation;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckQuackFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckTopFixtureDef;

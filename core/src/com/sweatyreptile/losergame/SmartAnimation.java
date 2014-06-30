@@ -1,4 +1,4 @@
-package com.sweatyreptile.losergame.entities;
+package com.sweatyreptile.losergame;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
