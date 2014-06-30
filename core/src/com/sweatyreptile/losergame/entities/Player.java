@@ -196,6 +196,11 @@ public class Player extends Entity<Player>{
 	
 	@Override
 	public void update(float delta) {
+		if (currentAnimation != null){
+			sprite = currentAnimation.getSprite();
+			currentAnimation.update();
+		}
+		else revertSprite = sprite; //TODO could be done more efficiently
 		
 		for (Sensor sensor : sensors) {
 			sensor.update(delta);
@@ -222,15 +227,12 @@ public class Player extends Entity<Player>{
 			}
 		}
 		
-		if (currentAnimation != null) currentAnimation.update();
-		
 	}
 	
 	@Override
 	public void render(SpriteBatch renderer){
-		if (currentAnimation != null) sprite = currentAnimation.getSprite();
-		else revertSprite = sprite;
 		super.render(renderer);
+
 	}
 	
 	public boolean isMoving() {
