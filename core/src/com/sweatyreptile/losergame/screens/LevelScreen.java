@@ -286,13 +286,6 @@ public abstract class LevelScreen implements FinishableScreen{
 			button.setPosition(screencoords.x, screencoords.y);
 			button.setSize(widthheight.x, widthheight.y);
 			
-			LoserLog.debug("Edit", "width: " + width);
-			LoserLog.debug("Edit", "height: " + height);
-			LoserLog.debug("Edit", "screencoords.x: " + screencoords.x);
-			LoserLog.debug("Edit", "screencoords.y: " + screencoords.y);
-			LoserLog.debug("Edit", "widthheight.x: " + widthheight.x);
-			LoserLog.debug("Edit", "widthheight.y: " + widthheight.y);
-			
 			editStage.addActor(button);
 		}
 	}
