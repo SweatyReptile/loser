@@ -431,34 +431,4 @@ public abstract class LevelScreen implements FinishableScreen{
 		this.editMode = editMode;
 	}
 
-	// Edit mode things
-	
-	public void editTouch(int screenX, int screenY) {
-		final Vector3 worldcoords = camera.unproject(new Vector3(screenX, screenY, 0));
-		LoserLog.log("LevelScreen (Edit)", worldcoords.x + "," + worldcoords.y);
-		//entityFactory.create("a", BodyType.DynamicBody, worldcoords.x, worldcoords.y, new DuckFixtureDef(assets), false);
-		
-		QueryCallback callback = new QueryCallback() {
-			
-			@Override
-			public boolean reportFixture(Fixture fixture) {
-				FixtureWrapper f = new FixtureWrapper(fixture);
-				if (!f.isSensor()){
-					selectedBody = f.getBody();
-					Entity entity = (Entity)selectedBody.getUserData();
-					LoserLog.log("LevelScreen (Edit)", entity.getName());
-					return false;
-				}
-				return true; // Continue query
-			}
-		};
-		
-		world.QueryAABB(callback, 
-				worldcoords.x - 0.00000001f, worldcoords.y - 0.00000001f,
-				worldcoords.x + 0.00000001f, worldcoords.y + 0.00000001f);
-		
-	}
-	
-	
-
 }
