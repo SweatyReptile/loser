@@ -20,17 +20,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sweatyreptile.losergame.Entity;
+import com.sweatyreptile.losergame.EntityButton;
 import com.sweatyreptile.losergame.EntityFactory;
-import com.sweatyreptile.losergame.FixtureWrapper;
 import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.LevelTimer;
 import com.sweatyreptile.losergame.LoserContactListener;
@@ -199,6 +196,10 @@ public abstract class LevelScreen implements FinishableScreen{
 		}
 		if (limitedTime) levelTimer.update(delta);
 		tweenManager.update(delta);
+		
+		if (editMode){
+			editStage.act(delta);
+		}
 	}
 
 	@Override
@@ -279,7 +280,7 @@ public abstract class LevelScreen implements FinishableScreen{
 			Entity<?> entity = entities.get(entityName);
 			
 			Skin skin = assets.get("img/ui/skins/gdxtest/uiskin.json");
-			Button button = new Button(skin);
+			EntityButton button = new EntityButton(entity, camera, skin);
 			
 			Vector3 screencoords = camera.project(new Vector3(entity.getX(), entity.getY(), 0));
 			Vector3 widthheight = camera.project(new Vector3(entity.getWidth(), entity.getHeight(), 0));
