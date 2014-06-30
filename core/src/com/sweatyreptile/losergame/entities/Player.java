@@ -54,7 +54,7 @@ public class Player extends Entity<Player>{
 	private Sprite duckingSprite;
 	private Sprite quackingSprite;
 	private Sprite quackingDuckingSprite;
-	
+		
 	private Body leftBody;
 	private Body rightBody;
 	private Body leftDuckingBody;
@@ -85,6 +85,7 @@ public class Player extends Entity<Player>{
 	
 	private SmartAnimation currentAnimation;
 	private TextureRegion currentFrame;
+	private Sprite revertSprite;
 	
 	private SmartAnimation testAnimation;
 	
@@ -190,13 +191,12 @@ public class Player extends Entity<Player>{
 		duckingBodyHeight = extractBodyHeight(leftDuckingBody);
 		
 		testAnimation = new SmartAnimation(0.05f, "temp/flap.txt", assets);
-		//currentAnimation = testAnimation;
 		
 	}
 	
 	@Override
 	public void update(float delta) {
-
+		
 		for (Sensor sensor : sensors) {
 			sensor.update(delta);
 		}
@@ -221,13 +221,15 @@ public class Player extends Entity<Player>{
 				currentBody.applyForceToCenter(-velocity.x/5, 0f, true);
 			}
 		}
+		
 		if (currentAnimation != null) currentAnimation.update();
 		
 	}
 	
 	@Override
 	public void render(SpriteBatch renderer){
-		if (currentAnimation != null) sprite.setRegion(currentAnimation.currentFrame());
+		if (currentAnimation != null) sprite = currentAnimation.getSprite();
+		else revertSprite = sprite;
 		super.render(renderer);
 	}
 	
@@ -412,6 +414,7 @@ public class Player extends Entity<Player>{
 		else if (quacking) switchBody(currentBody, leftQuackingBody, false);
 		else switchBody(currentBody, leftBody, false);
 		flipSprites(false);
+
 	}
 	
 	public void moveRight() {
@@ -435,6 +438,8 @@ public class Player extends Entity<Player>{
 			grabbedObject.setLinearVelocity(grabVelocity.x, 0f);
 			grabbedObject.applyLinearImpulse(0, grabbedObject.getMass()*2, grabPos.x, grabPos.y, true);
 		}
+		currentAnimation = testAnimation; //TODO (test)
+
 	}
 	
 	public void stopMovingLeft() {
@@ -443,6 +448,7 @@ public class Player extends Entity<Player>{
 			Vector2 velocity = currentBody.getLinearVelocity();
 			currentBody.setLinearVelocity(velocity.x*2/3, velocity.y);
 		}
+
 	}
 				
 	public void stopMovingRight(){
@@ -456,7 +462,13 @@ public class Player extends Entity<Player>{
 	public void stopJumping() {
 		Vector2 velocity = currentBody.getLinearVelocity();
 		currentBody.setLinearVelocity(velocity.x, velocity.y*1/2);
-		
+		revertSprite(); //TODO (test)
+
+	}
+	
+	public void revertSprite(){
+		currentAnimation = null;
+		sprite = revertSprite;
 	}
 
 	private void switchBody(Body oldBody, Body newBody, boolean fromTop){
