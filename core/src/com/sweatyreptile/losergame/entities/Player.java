@@ -190,7 +190,7 @@ public class Player extends Entity<Player>{
 		duckingBodyHeight = extractBodyHeight(leftDuckingBody);
 		
 		testAnimation = new SmartAnimation(0.05f, "temp/flap.txt", assets);
-		currentAnimation = testAnimation;
+		//currentAnimation = testAnimation;
 		
 	}
 	
@@ -221,13 +221,13 @@ public class Player extends Entity<Player>{
 				currentBody.applyForceToCenter(-velocity.x/5, 0f, true);
 			}
 		}
-		currentAnimation.update();
+		if (currentAnimation != null) currentAnimation.update();
 		
 	}
 	
 	@Override
 	public void render(SpriteBatch renderer){
-		sprite.setRegion(currentAnimation.currentFrame());
+		if (currentAnimation != null) sprite.setRegion(currentAnimation.currentFrame());
 		super.render(renderer);
 	}
 	
@@ -411,6 +411,7 @@ public class Player extends Entity<Player>{
 		else if (ducking || flying) switchBody(currentBody, leftDuckingBody, false);
 		else if (quacking) switchBody(currentBody, leftQuackingBody, false);
 		else switchBody(currentBody, leftBody, false);
+		flipSprites(false);
 	}
 	
 	public void moveRight() {
@@ -419,7 +420,7 @@ public class Player extends Entity<Player>{
 		else if (ducking || flying) switchBody(currentBody, rightDuckingBody, false);
 		else if (quacking) switchBody (currentBody, rightQuackingBody, false);
 		else switchBody(currentBody, rightBody, false);
-		flipSprites();
+		flipSprites(true);
 	}
 	
 	public void jump() {
@@ -482,7 +483,7 @@ public class Player extends Entity<Player>{
 	
 	public void standRight(){
 		switchBody(currentBody, rightBody, false);
-		flipSprites();
+		flipSprites(true);
 	}
 	
 	private float extractBodyHeight(Body body){
@@ -502,11 +503,11 @@ public class Player extends Entity<Player>{
 		return highestValue - lowestValue;
 	}
 
-	private void flipSprites() {
-		standingSprite.setFlip(true, false);
-		duckingSprite.setFlip(true, false);
-		quackingSprite.setFlip(true, false);
-		quackingDuckingSprite.setFlip(true, false);
+	private void flipSprites(boolean right) {
+		standingSprite.setFlip(right, false);
+		duckingSprite.setFlip(right, false);
+		quackingSprite.setFlip(right, false);
+		quackingDuckingSprite.setFlip(right, false);
 		//TODO set animations to opposites
 	}
 	
