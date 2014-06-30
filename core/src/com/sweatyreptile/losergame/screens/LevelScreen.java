@@ -194,7 +194,7 @@ public abstract class LevelScreen implements FinishableScreen{
 		for (Entity<?> entity : entities.values()){
 			entity.update(delta);
 		}
-		if (limitedTime) levelTimer.update(delta);
+		if (limitedTime && !editMode) levelTimer.update(delta);
 		tweenManager.update(delta);
 		
 		if (editMode){
