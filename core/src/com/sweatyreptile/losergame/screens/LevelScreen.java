@@ -280,9 +280,10 @@ public abstract class LevelScreen implements FinishableScreen{
 		for (String entityName : entities.keySet()){
 			
 			Entity<?> entity = entities.get(entityName);
+			entity.setFixedRotation(true);
 			
 			Skin skin = assets.get("img/ui/skins/gdxtest/uiskin.json");
-			final EntityButton button = new EntityButton(entity, camera, skin);
+			final EntityButton button = new EntityButton(entity, skin);
 			
 			Vector3 screencoords = camera.project(new Vector3(entity.getX(), entity.getY(), 0));
 			Vector3 widthheight = camera.project(new Vector3(entity.getWidth(), entity.getHeight(), 0));
@@ -294,45 +295,34 @@ public abstract class LevelScreen implements FinishableScreen{
 			
 			button.addListener(new ClickListener(){
 
-				// Both vectors in world coordinates
-				private Vector3 clickStart;
-				private Vector3 entityStart;
-				
-				@Override
-				public boolean touchDown(InputEvent event, float x, float y,
-						int pointer, int button2) {
-					Entity<?> entity = button.getEntity();
-					entity.getBody().setActive(false);
-					
-					clickStart = camera.unproject(new Vector3(x, y, 0));
-					entityStart = new Vector3(entity.getX(), entity.getY(), 0);
-					
-					super.touchDown(event, x, y, pointer, button2);
-					
-					LoserLog.log("EditButtons", "touchDown");
-					return true;
-				}
-
 				@Override
 				public void touchDragged(InputEvent event, float x, float y,
 						int pointer) {
 					Entity<?> entity = button.getEntity();
-					
-					Vector3 clickEnd = camera.unproject(new Vector3(x, y, 0));
-					
-					Vector3 difference = clickEnd.sub(clickStart);
-					Vector3 newEntityPos = entityStart.add(difference);
-					
-					entity.setPosition(newEntityPos.x, -newEntityPos.y);
-					
+					buttonEditorPosition.x = Gdx.input.getX();
+					buttonEditorPosition.y = Gdx.input.getY();
+					buttonEditorPosition = camera.unproject(buttonEditorPosition);
+					entity.setPosition(buttonEditorPosition.x, buttonEditorPosition.y);
 					super.touchDragged(event, x, y, pointer);
-					LoserLog.log("EditButtons", "touchDragged");
 				}
+
+				@Override
+				public void touchUp(InputEvent event, float x, float y,
+						int pointer, int button2) {
+					button.setPosition(
+							(Gdx.input.getX() - button.getWidth()/2) ,
+							(height - Gdx.input.getY()) - button.getHeight()/2);
+					super.touchUp(event, x, y, pointer, button2);
+				}
+				
+				
 				
 			});
 		}
 	}
 
+	private Vector3 buttonEditorPosition = new Vector3();
+	
 	private Player getPlayerForInput() {
 		if (editMode){
 			return null;

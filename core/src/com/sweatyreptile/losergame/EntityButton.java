@@ -9,28 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class EntityButton extends Button {
 
 	private Entity<?> entity;
-	private Camera levelCamera;
-	Vector3 reusableVector = new Vector3();
 	
-	public EntityButton(Entity<?> entity, Camera levelCamera){
-		this.entity = entity;
-		this.levelCamera = levelCamera;
-	}
-	
-	public EntityButton(Entity<?> entity, Camera levelCamera, Skin skin){
+	public EntityButton(Entity<?> entity, Skin skin){
 		super(skin);
 		this.entity = entity;
-		this.levelCamera = levelCamera;
 	}
 
-	@Override
-	public void act(float delta) {
-		super.act(delta);
-		reusableVector.x = entity.getX();
-		reusableVector.y = entity.getY();
-		reusableVector = levelCamera.project(reusableVector);
-		setPosition(reusableVector.x, reusableVector.y);
-	}
 
 	public Entity<?> getEntity() {
 		return entity;

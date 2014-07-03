@@ -171,8 +171,6 @@ public class Entity <T extends Entity<?>>{
 	
 	public void setPosition(float x, float y){
 		currentBody.setTransform(x, y, currentBody.getAngle());
-		sprite.setX(x);
-		sprite.setY(y);
 	}
 
 	public String getName() {
@@ -214,6 +212,10 @@ public class Entity <T extends Entity<?>>{
 	
 	public float getHeight() {
 		return sprite.getHeight();
+	}
+
+	public void setFixedRotation(boolean rotation) {
+		currentBody.setFixedRotation(rotation);
 	}
 	
 }
