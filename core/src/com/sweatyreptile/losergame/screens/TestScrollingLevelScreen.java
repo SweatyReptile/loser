@@ -45,7 +45,9 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 		
 		EntityFactory ef = entityFactory;
 		
-		ef.create("dead_duck", BodyType.DynamicBody, 1.3f, .5f, new DuckFixtureDef(assets), false);
+		EntityData deadDuckData = new EntityData("dead_duck", BodyType.DynamicBody, 1.3f, .5f, new DuckFixtureDef(assets), false);
+		
+		ef.create(deadDuckData);
 		ef.create("wash_machine", BodyType.StaticBody, .5f, .1f, new EntityFixtureDef(assets, "wash_machine"), false);
 		ef.create("cereal", BodyType.DynamicBody, 3.05f, 0.7f, new LightFixtureDef(assets, "cereal"), false);
 		ef.create("table", BodyType.StaticBody, 2.5f, .1f, new EntityFixtureDef(assets, "table"), false);
