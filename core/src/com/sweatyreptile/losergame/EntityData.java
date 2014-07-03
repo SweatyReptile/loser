@@ -1,4 +1,4 @@
-package com.sweatyreptile.losergame.screens;
+package com.sweatyreptile.losergame;
 
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
@@ -9,16 +9,22 @@ public class EntityData {
 	private BodyType bodyType;
 	private float x;
 	private float y;
-	private EntityFixtureDef fixtureDef;
 	private boolean flipped;
+	private float density;
+	private float restitution;
+	private float friction;
+	private boolean isSensor;
 	
 	public EntityData(String name, BodyType bodyType, float x, float y,
-			EntityFixtureDef fixtureDef, boolean flipped) {
+			float density, float restitution, float friction, boolean isSensor, boolean flipped) {
 		this.name = name;
 		this.bodyType = bodyType;
 		this.x = x;
 		this.y = y;
-		this.fixtureDef = fixtureDef;
+		this.density = density;
+		this.restitution = restitution;
+		this.friction = friction;
+		this.isSensor = isSensor;
 		this.flipped = flipped;
 	}
 
@@ -54,12 +60,36 @@ public class EntityData {
 		this.y = y;
 	}
 
-	public EntityFixtureDef getFixtureDef() {
-		return fixtureDef;
+	public float getDensity() {
+		return density;
 	}
 
-	public void setFixtureDef(EntityFixtureDef fixtureDef) {
-		this.fixtureDef = fixtureDef;
+	public void setDensity(float density) {
+		this.density = density;
+	}
+
+	public float getRestitution() {
+		return restitution;
+	}
+
+	public void setRestitution(float restitution) {
+		this.restitution = restitution;
+	}
+
+	public float getFriction() {
+		return friction;
+	}
+
+	public void setFriction(float friction) {
+		this.friction = friction;
+	}
+
+	public boolean isSensor() {
+		return isSensor;
+	}
+
+	public void setSensor(boolean isSensor) {
+		this.isSensor = isSensor;
 	}
 
 	public boolean isFlipped() {
