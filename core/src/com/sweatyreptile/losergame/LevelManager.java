@@ -73,9 +73,13 @@ public class LevelManager {
 	
 	public void level_save(){
 		Json json = new Json();
-		for(String entityName : levels.get(currentLevel).getEntities().keySet()){
-			LoserLog.log("LevelManager", "Entity name: " + entityName);
-			LoserLog.log("LevelManager", json.prettyPrint(levels.get(currentLevel).getEntities().get(entityName).getEntityData()));
+		LevelScreen level = levels.get(currentLevel);
+		for(String entityName : level.getEntities().keySet()){
+			EntityData entityData = level.getEntities().get(entityName).getEntityData();
+			if (!entityData.isSpecial()){
+				LoserLog.log("LevelManager", json.prettyPrint(entityData));
+			}
+			
 		}
 	}
 	

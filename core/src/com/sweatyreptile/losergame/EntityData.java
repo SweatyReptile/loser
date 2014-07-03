@@ -101,6 +101,14 @@ public class EntityData {
 	public void setFlipped(boolean flipped) {
 		this.flipped = flipped;
 	}
+
+	public boolean isSpecial() {
+		return false;
+	}
+	
+	public boolean setSpecial(boolean special) {
+		return special;
+	}
 	
 	
 
