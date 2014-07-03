@@ -96,4 +96,8 @@ public class LevelManager {
 		currentScreen = lvlScreen;
 	}
 	
+	public void exit(){
+		Gdx.app.exit();
+	}
+	
 }
