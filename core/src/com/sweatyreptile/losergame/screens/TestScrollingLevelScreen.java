@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.sweatyreptile.losergame.Entity;
+import com.sweatyreptile.losergame.EntityData;
 import com.sweatyreptile.losergame.EntityFactory;
 import com.sweatyreptile.losergame.entities.MusicPlayer;
 import com.sweatyreptile.losergame.entities.Player;
@@ -45,9 +46,9 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 		
 		EntityFactory ef = entityFactory;
 		
-		EntityData deadDuckData = new EntityData("dead_duck", BodyType.DynamicBody, 1.3f, .5f, new DuckFixtureDef(assets), false);
+		//EntityData deadDuckData = new EntityData("dead_duck", BodyType.DynamicBody, 1.3f, .5f, new DuckFixtureDef(assets), false);
 		
-		ef.create(deadDuckData);
+		//ef.create(deadDuckData);
 		ef.create("wash_machine", BodyType.StaticBody, .5f, .1f, new EntityFixtureDef(assets, "wash_machine"), false);
 		ef.create("cereal", BodyType.DynamicBody, 3.05f, 0.7f, new LightFixtureDef(assets, "cereal"), false);
 		ef.create("table", BodyType.StaticBody, 2.5f, .1f, new EntityFixtureDef(assets, "table"), false);

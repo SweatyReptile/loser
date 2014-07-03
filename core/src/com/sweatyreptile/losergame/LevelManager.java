@@ -7,6 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.Json;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.screens.FinishableScreen;
 import com.sweatyreptile.losergame.screens.LevelScreen;
@@ -68,6 +69,14 @@ public class LevelManager {
 		levels.put(alias, level);
 		levelTitles.put(alias, titleScreen);
 
+	}
+	
+	public void level_save(){
+		Json json = new Json();
+		for(String entityName : levels.get(currentLevel).getEntities().keySet()){
+			LoserLog.log("LevelManager", "Entity name: " + entityName);
+			LoserLog.log("LevelManager", json.prettyPrint(levels.get(currentLevel).getEntities().get(entityName).getEntityData()));
+		}
 	}
 	
 	public void edit() {

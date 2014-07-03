@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -42,6 +43,9 @@ public class Entity <T extends Entity<?>>{
 	private static final float SPEECH_PADDING = 0.05f;
 	private static final float SEC_PER_CHAR = 0.2f;
 	
+	private EntityFixtureDef fixtureDef;
+	private boolean flipped;
+	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, String name){
 		this.sprite = new Sprite();
 		this.world = world;
@@ -51,6 +55,8 @@ public class Entity <T extends Entity<?>>{
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
 			EntityFixtureDef fixtureDef, float scale, 
 			boolean flipped, String name) {
+		this.fixtureDef = fixtureDef;
+		this.flipped = flipped;
 		
 		setUpEntity(world, bodyDef, name, contactListener);
 		Texture spriteTexture = fixtureDef.getTexture();
@@ -216,6 +222,12 @@ public class Entity <T extends Entity<?>>{
 
 	public void setFixedRotation(boolean rotation) {
 		currentBody.setFixedRotation(rotation);
+	}
+
+	public EntityData getEntityData() {
+		return new EntityData(name, currentBody.getType(), getX(), getY(),
+				fixtureDef.density, fixtureDef.restitution, 
+				fixtureDef.friction, fixtureDef.isSensor, flipped);
 	}
 	
 }

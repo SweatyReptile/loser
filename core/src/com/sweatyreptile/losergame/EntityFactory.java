@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
-import com.sweatyreptile.losergame.screens.EntityData;
 
 public class EntityFactory {
 
@@ -44,7 +43,10 @@ public class EntityFactory {
 		BodyType bodyType = entityData.getBodyType();
 		float x = entityData.getX();
 		float y = entityData.getY();
-		EntityFixtureDef fixtureDef = entityData.getFixtureDef();
+		EntityFixtureDef fixtureDef = new EntityFixtureDef(name);
+		fixtureDef.density = entityData.getDensity();
+		fixtureDef.restitution = entityData.getRestitution();
+		fixtureDef.friction = entityData.getFriction();
 		boolean flipped = entityData.isFlipped();
 		create(name, bodyType, x, y, fixtureDef, flipped);
 	}

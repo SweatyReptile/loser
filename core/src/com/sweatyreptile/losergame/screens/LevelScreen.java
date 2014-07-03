@@ -461,4 +461,8 @@ public abstract class LevelScreen implements FinishableScreen{
 		return editStage;
 	}
 
+	public Map<String, Entity<?>> getEntities() {
+		return entities;
+	}
+
 }
