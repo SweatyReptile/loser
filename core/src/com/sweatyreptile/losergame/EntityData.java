@@ -14,9 +14,10 @@ public class EntityData {
 	private float restitution;
 	private float friction;
 	private boolean isSensor;
+	private boolean isSpecial;
 	
 	public EntityData(String name, BodyType bodyType, float x, float y,
-			float density, float restitution, float friction, boolean isSensor, boolean flipped) {
+			float density, float restitution, float friction, boolean isSensor, boolean isSpecial, boolean flipped) {
 		this.name = name;
 		this.bodyType = bodyType;
 		this.x = x;
@@ -25,6 +26,7 @@ public class EntityData {
 		this.restitution = restitution;
 		this.friction = friction;
 		this.isSensor = isSensor;
+		this.isSpecial = isSpecial;
 		this.flipped = flipped;
 	}
 

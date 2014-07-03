@@ -45,6 +45,7 @@ public class Entity <T extends Entity<?>>{
 	
 	private EntityFixtureDef fixtureDef;
 	private boolean flipped;
+	protected boolean isSpecial;
 	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, String name){
 		this.sprite = new Sprite();
@@ -227,7 +228,7 @@ public class Entity <T extends Entity<?>>{
 	public EntityData getEntityData() {
 		return new EntityData(name, currentBody.getType(), getX(), getY(),
 				fixtureDef.density, fixtureDef.restitution, 
-				fixtureDef.friction, fixtureDef.isSensor, flipped);
+				fixtureDef.friction, fixtureDef.isSensor, isSpecial, flipped);
 	}
 	
 }

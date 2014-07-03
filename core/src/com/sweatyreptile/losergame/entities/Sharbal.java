@@ -51,6 +51,7 @@ public class Sharbal extends Entity<Sharbal> {
 				talk(phrases2);
 			}
 		};
+		isSpecial = true;
 	}
 	
 	public Sharbal(World world, LoserContactListener contactListener,
