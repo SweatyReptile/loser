@@ -68,7 +68,6 @@ public class LevelTitleScreen implements FinishableScreen {
 	public void render(float delta) {
 		Gdx.gl.glClearColor(0f, 0f, 0f, 0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 		font.setScale(1f);
 		font.setColor(Color.WHITE);
@@ -94,6 +93,7 @@ public class LevelTitleScreen implements FinishableScreen {
 		Viewport viewport = new StretchViewport(screenWidth, screenHeight, camera);
 		viewport.update(screenWidth, screenHeight, true); // To center the camera
 		camera.update();
+		batch.setProjectionMatrix(camera.combined);
 	}
 	
 	private float delaySeconds(String title){

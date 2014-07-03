@@ -3,6 +3,7 @@ package com.sweatyreptile.losergame;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -127,6 +128,10 @@ public class LevelManager {
 		LevelScreen lvlScreen = levels.get(alias);
 		screenFinishedListener.onFinish(currentScreen, lvlScreen);
 		currentScreen = lvlScreen;
+	}
+	
+	public void exit(){
+		Gdx.app.exit();
 	}
 	
 }
