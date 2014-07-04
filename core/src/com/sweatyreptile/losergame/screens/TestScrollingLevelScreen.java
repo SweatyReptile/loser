@@ -1,5 +1,6 @@
 package com.sweatyreptile.losergame.screens;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -21,6 +22,7 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 	private MusicPlayer radio;
 	private Sharbal sharbal;
 	
+	
 	public TestScrollingLevelScreen() {
 		super();
 	}
@@ -41,10 +43,7 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 		
 		setupBorders(true, false);
 		
-		background = assets.get("img/bg/background_extended.png");
-		
-		bgHeight = ((float) background.getHeight() / height) * viewportHeight;
-		bgWidth = ((float) background.getWidth() / width) * viewportWidth;
+		setBackground("img/bg/background_extended.png");
 	
 		level0Horizontal = 0f;
 		levelEndHorizontal = bgWidth;
