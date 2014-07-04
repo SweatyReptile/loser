@@ -37,9 +37,9 @@ public class TestLevelScreen extends LevelScreen{
 	protected void setupWorld() {
 		EntityFactory ef = entityFactory;
 		
-		background = assets.get("img/bg/background_extended.png");
+		setBackground("img/bg/background_extended.png");
 		
-		ef.create("dead_duck", BodyType.DynamicBody, 1.4f, .5f, new DuckFixtureDef(assets), false);
+		//ef.create("dead_duck", BodyType.DynamicBody, 1.4f, .5f, new DuckFixtureDef(assets), false);
 		ef.create("wash_machine", BodyType.StaticBody, .5f, .1f, new EntityFixtureDef(assets, "wash_machine"), false);
 		//ef.create("cereal", BodyType.DynamicBody, 1.8f, 0.7f, new EntityFixtureDef(assets, "cereal"), false);
 		ef.create("table", BodyType.StaticBody, 1.25f, .1f, new EntityFixtureDef(assets, "table"), false);
@@ -52,10 +52,10 @@ public class TestLevelScreen extends LevelScreen{
 		BodyDef radioBodyDef = new BodyDef();
 		radioBodyDef.type = BodyType.DynamicBody;
 		radioBodyDef.position.set(1.4f, 1.1f);
-		radio = new MusicPlayer(contactListener, world, radioBodyDef, assets, 
-				new MetalFixtureDef(assets, "radio"), false, Entity.DEFAULT_SCREEN_WIDTH,
-				viewportWidth, "baby_come_back.ogg", false, player);
-		entities.put("radio", radio);
+		//radio = new MusicPlayer(contactListener, world, radioBodyDef, assets, 
+		//		new MetalFixtureDef(assets, "radio"), false, Entity.DEFAULT_SCREEN_WIDTH,
+		//		viewportWidth, "baby_come_back.ogg", false, player);
+		//entities.put("radio", radio);
 		
 		BodyDef sharbalBodyDef = new BodyDef();
 		sharbalBodyDef.type = BodyType.StaticBody;
