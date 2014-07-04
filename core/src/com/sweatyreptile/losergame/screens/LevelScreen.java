@@ -236,8 +236,8 @@ public abstract class LevelScreen implements FinishableScreen{
 		if (limitedTime) levelTimer.start();
 	}
 	
-	protected void setBackground(Texture bg) {
-		background = bg;
+	protected void setBackground(String bgname) {
+		background = assets.get(bgname);
 		bgHeight = ((float) background.getHeight() / height) * viewportHeight;
 		bgWidth = ((float) background.getWidth() / width) * viewportWidth;
 	}
