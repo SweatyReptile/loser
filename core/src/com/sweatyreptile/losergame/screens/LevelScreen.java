@@ -29,7 +29,9 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityButton;
+import com.sweatyreptile.losergame.EntityData;
 import com.sweatyreptile.losergame.EntityFactory;
+import com.sweatyreptile.losergame.LevelData;
 import com.sweatyreptile.losergame.LevelManager;
 import com.sweatyreptile.losergame.LevelTimer;
 import com.sweatyreptile.losergame.LoserContactListener;
@@ -66,6 +68,7 @@ public abstract class LevelScreen implements FinishableScreen{
 	protected Texture background;
 	protected float bgHeight;
 	protected float bgWidth;
+	protected String bgname;
 	protected BitmapFont defaultSpeechFont;
 	protected LevelTimer levelTimer;
 	protected float timeLimit;
@@ -341,6 +344,7 @@ public abstract class LevelScreen implements FinishableScreen{
 	}
 	
 	protected void setBackground(String bgname) {
+		this.bgname = bgname;
 		background = assets.get(bgname);
 		bgHeight = ((float) background.getHeight() / height) * viewportHeight;
 		bgWidth = ((float) background.getWidth() / width) * viewportWidth;
@@ -403,6 +407,16 @@ public abstract class LevelScreen implements FinishableScreen{
 	@Override
 	public void resume() {
 
+	}
+	
+	public LevelData getLevelData() {
+		EntityData[] entityData = new EntityData[entities.size()];
+		int i = 0;
+		for (String name : entities.keySet()){
+			entityData[i] = entities.get(name).getEntityData();
+			i++;
+		}
+		return new LevelData(alias, getClass().getName(), levelName, viewportWidth, viewportHeight, timeLimit, bgname, entityData);
 	}
 
 	public String getNextLevel() {
