@@ -38,12 +38,12 @@ public class EntityFactory {
 		entities.put(name, entity);
 	}
 
-	public void create(EntityData entityData) {
+	public void create(AssetManagerPlus assets, EntityData entityData) {
 		String name = entityData.getName();
 		BodyType bodyType = entityData.getBodyType();
 		float x = entityData.getX();
 		float y = entityData.getY();
-		EntityFixtureDef fixtureDef = new EntityFixtureDef(name);
+		EntityFixtureDef fixtureDef = new EntityFixtureDef(assets, name);
 		fixtureDef.density = entityData.getDensity();
 		fixtureDef.restitution = entityData.getRestitution();
 		fixtureDef.friction = entityData.getFriction();
