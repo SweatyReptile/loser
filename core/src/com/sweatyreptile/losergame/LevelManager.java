@@ -51,6 +51,7 @@ public class LevelManager {
 		
 		instantiate("test_menu", "DummyMenu", "DUCK GAME", DVWIDTH, DVHEIGHT, -1);
 		instantiate("test_home", "TestScrollingLevelScreen", "WELCOME TO THE JUNGLE", DVWIDTH, DVHEIGHT, 20f);
+		instantiate("test_home_old", "TestLevelScreen", "WELCOME TO THE JUNGLE", DVWIDTH, DVHEIGHT, 20f);
 	}
 	
 	public void instantiate(String alias, String typeName, String levelName,
@@ -71,10 +72,23 @@ public class LevelManager {
 
 	}
 	
+	public void instantiate(LevelData level){
+		String newAlias = level.getAlias() + "_g";
+		instantiate(newAlias, "EmptyLevelScreen", level.getTitle(),
+				level.getViewportWidth(), level.getViewportHeight(),
+				level.getTimerLength());
+		LevelScreen newLevel = levels.get(newAlias);
+		for (EntityData edata : level.getEntities()){
+			newLevel.addEntity(edata);
+		}
+	}
+	
 	public void level_save(){
 		Json json = new Json();
 		LevelScreen level = levels.get(currentLevel);
-		LoserLog.log("LevelData", "\n" + json.prettyPrint(level.getLevelData()));
+		LevelData data = level.getLevelData();
+		//LoserLog.log("LevelData", "\n" + json.prettyPrint(data));
+		instantiate(data);
 	}
 	
 	public void edit() {
