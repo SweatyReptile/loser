@@ -1,6 +1,8 @@
 package com.sweatyreptile.losergame.screens;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import aurelienribon.tweenengine.TweenManager;
@@ -18,6 +20,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -61,6 +64,7 @@ public abstract class LevelScreen implements FinishableScreen{
 	protected World world;
 	protected LoserContactListener contactListener;
 	protected EntityFactory entityFactory;
+	protected List<EntityData> entityData;
 	protected Map<String, Entity<?>> entities;
 	protected Player player;
 	protected PlayerInputProcessor playerInputProcessor;
@@ -134,6 +138,7 @@ public abstract class LevelScreen implements FinishableScreen{
 		this.timeLimit = timeLimit;
 		this.levelName = levelName;
 		this.alias = alias;
+		entityData = new ArrayList<EntityData>();
 	}
 
 	@Override
@@ -257,6 +262,10 @@ public abstract class LevelScreen implements FinishableScreen{
 
 		setupFonts();
 		setupWorld();
+		
+		for (EntityData edata : entityData){
+			entityFactory.create(assets, edata);
+		}
 		
 		if (editMode){
 			setupEditMode();
@@ -382,7 +391,14 @@ public abstract class LevelScreen implements FinishableScreen{
 		}
 	}
 
-	protected abstract Player createPlayer();
+	protected Player createPlayer(){
+		BodyDef def = new BodyDef();
+		def.position.set(viewportWidth / 2, viewportHeight / 2);
+		def.fixedRotation = true;
+		def.type = BodyType.DynamicBody;
+		return new Player(world, contactListener, def, assets);
+	}
+	
 	protected abstract void setupWorld();
 
 	public void finish() {
@@ -481,6 +497,10 @@ public abstract class LevelScreen implements FinishableScreen{
 
 	public Map<String, Entity<?>> getEntities() {
 		return entities;
+	}
+	
+	public void addEntity(EntityData entityData){
+		this.entityData.add(entityData);
 	}
 
 }
