@@ -416,7 +416,7 @@ public abstract class LevelScreen implements FinishableScreen{
 			entityData[i] = entities.get(name).getEntityData();
 			i++;
 		}
-		return new LevelData(alias, getClass().getName(), levelName, viewportWidth, viewportHeight, timeLimit, bgname, entityData);
+		return new LevelData(alias, getClass().getSimpleName(), levelName, viewportWidth, viewportHeight, timeLimit, bgname, entityData);
 	}
 
 	public String getNextLevel() {
