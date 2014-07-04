@@ -214,7 +214,6 @@ public abstract class LevelScreen implements FinishableScreen{
 		entityFactory = new EntityFactory(assets, entities,
 				world, contactListener, viewportWidth, Entity.DEFAULT_SCREEN_WIDTH);
 
-		background = assets.get("img/bg/background_extended.png");
 		bgHeight = ((float) background.getHeight() / height) * viewportHeight;
 		bgWidth = ((float) background.getWidth() / width) * viewportWidth;
 

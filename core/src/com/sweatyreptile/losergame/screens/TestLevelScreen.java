@@ -37,6 +37,8 @@ public class TestLevelScreen extends LevelScreen{
 	protected void setupWorld() {
 		EntityFactory ef = entityFactory;
 		
+		background = assets.get("img/bg/background_extended.png");
+		
 		ef.create("dead_duck", BodyType.DynamicBody, 1.4f, .5f, new DuckFixtureDef(assets), false);
 		ef.create("wash_machine", BodyType.StaticBody, .5f, .1f, new EntityFixtureDef(assets, "wash_machine"), false);
 		//ef.create("cereal", BodyType.DynamicBody, 1.8f, 0.7f, new EntityFixtureDef(assets, "cereal"), false);
