@@ -40,12 +40,16 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 		
 		setupBorders(true, false);
 		
+		background = assets.get("img/bg/background_extended.png");
+		
+		bgHeight = ((float) background.getHeight() / height) * viewportHeight;
+		bgWidth = ((float) background.getWidth() / width) * viewportWidth;
+	
 		level0Horizontal = 0f;
 		levelEndHorizontal = bgWidth;
 		
 		EntityFactory ef = entityFactory;
-		
-		background = assets.get("img/bg/background_extended.png");
+
 
 		ef.create("dead_duck", BodyType.DynamicBody, 1.3f, .5f, new DuckFixtureDef(assets), false);
 		ef.create("wash_machine", BodyType.StaticBody, .5f, .1f, new EntityFixtureDef(assets, "wash_machine"), false);

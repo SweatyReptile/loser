@@ -32,7 +32,9 @@ public abstract class LevelChunk {
 	protected abstract void setup();
 	
 	public void renderBackground(float delta, SpriteBatch renderer) { 
-		renderer.draw(background, 0, originY, viewportWidth, viewportHeight); //needs fixin TODO
+		if (background != null){
+			renderer.draw(background, 0, originY, viewportWidth, viewportHeight); //needs fixin TODO
+		}
 	}
 	
 	public void renderEntities(float delta, SpriteBatch renderer) {
