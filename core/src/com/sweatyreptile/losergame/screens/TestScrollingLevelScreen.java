@@ -41,6 +41,11 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 		
 		setupBorders(true, false);
 		
+		background = assets.get("img/bg/background_extended.png");
+		
+		bgHeight = ((float) background.getHeight() / height) * viewportHeight;
+		bgWidth = ((float) background.getWidth() / width) * viewportWidth;
+	
 		level0Horizontal = 0f;
 		levelEndHorizontal = bgWidth;
 		

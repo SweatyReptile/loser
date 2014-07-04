@@ -136,7 +136,7 @@ public abstract class LevelScreen implements FinishableScreen{
 	@Override
 	public void render(float delta) {
 		update(delta);
-		Gdx.gl.glClearColor(0.5f, 0, 0, 1);
+		Gdx.gl.glClearColor(0f, 0f, 0f, 1f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		spriteRenderer.setProjectionMatrix(camera.combined);
@@ -178,7 +178,9 @@ public abstract class LevelScreen implements FinishableScreen{
 	}
 
 	protected void renderBackground(float delta){
-		spriteRenderer.draw(background, 0f, 0f, bgWidth, bgHeight); //This background needs to be set by specific levels
+		if (background != null){
+			spriteRenderer.draw(background, 0f, 0f, bgWidth, bgHeight); //This background needs to be set by specific levels
+		}
 	}
 	protected void renderEntities(float delta) {
 		for (Entity<?> entity : entities.values()){
@@ -241,10 +243,6 @@ public abstract class LevelScreen implements FinishableScreen{
 
 		entityFactory = new EntityFactory(assets, entities,
 				world, contactListener, viewportWidth, Entity.DEFAULT_SCREEN_WIDTH);
-
-		background = assets.get("img/bg/background_extended.png");
-		bgHeight = ((float) background.getHeight() / height) * viewportHeight;
-		bgWidth = ((float) background.getWidth() / width) * viewportWidth;
 
 		contactListener = new LoserContactListener();
 		world.setContactListener(contactListener);
