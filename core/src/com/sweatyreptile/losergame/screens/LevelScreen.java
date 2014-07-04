@@ -55,8 +55,8 @@ public abstract class LevelScreen implements FinishableScreen{
 	protected PlayerInputProcessor playerInputProcessor;
 	protected AssetManagerPlus assets;
 	protected Texture background;
-	float bgHeight;
-	float bgWidth;
+	protected float bgHeight;
+	protected float bgWidth;
 	protected BitmapFont defaultSpeechFont;
 	protected LevelTimer levelTimer;
 	protected float timeLimit;
@@ -234,6 +234,12 @@ public abstract class LevelScreen implements FinishableScreen{
 			levelTimer = new LevelTimer(levelManager, viewportWidth, viewportHeight, timeLimit); //timeLimit in seconds
 		}
 		if (limitedTime) levelTimer.start();
+	}
+	
+	protected void setBackground(Texture bg) {
+		background = bg;
+		bgHeight = ((float) background.getHeight() / height) * viewportHeight;
+		bgWidth = ((float) background.getWidth() / width) * viewportWidth;
 	}
 
 	@Override
