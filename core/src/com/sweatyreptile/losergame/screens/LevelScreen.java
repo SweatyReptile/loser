@@ -155,7 +155,6 @@ public abstract class LevelScreen implements FinishableScreen{
 		renderBackground(delta);
 		spriteRenderer.enableBlending();
 
-		renderBackground(delta);
 		renderEntities(delta);
 		renderPlayer(delta);
 
