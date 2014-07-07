@@ -12,6 +12,10 @@ public class LevelData {
 	
 	private EntityData[] entities;
 
+	public LevelData(){
+		
+	}
+	
 	public LevelData(String alias, String type, String title,
 			float viewportWidth, float viewportHeight, float timerLength,
 			String bgname, EntityData[] entities) {
