@@ -6,6 +6,7 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Json;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
@@ -73,8 +74,8 @@ public class LevelManager {
 	}
 	
 	public void instantiate(LevelData level){
-		String newAlias = level.getAlias() + "_g";
-		instantiate(newAlias, "EmptyLevelScreen", level.getTitle(),
+		String newAlias = level.getAlias();
+		instantiate(newAlias, level.getType(), level.getTitle(),
 				level.getViewportWidth(), level.getViewportHeight(),
 				level.getTimerLength());
 		LevelScreen newLevel = levels.get(newAlias);
@@ -87,9 +88,23 @@ public class LevelManager {
 	public void level_save(){
 		Json json = new Json();
 		LevelScreen level = levels.get(currentLevel);
-		LevelData data = level.getLevelData();
-		//LoserLog.log("LevelData", "\n" + json.prettyPrint(data));
-		instantiate(data);
+		LevelData leveldata = level.getLevelData();
+		FileHandle leveljson = Gdx.files.local("data/levels/" + leveldata.getAlias() + ".json");
+		
+		leveljson.writeString(json.prettyPrint(leveldata), false);
+		LoserLog.log("LevelManager", "Saved to " + leveljson.path());
+	}
+	
+	public void level_load(String alias, String altName){
+		Json json = new Json();
+		FileHandle leveljson = Gdx.files.local("data/levels/" + alias + ".json");
+		LevelData leveldata = json.fromJson(LevelData.class, leveljson);
+		leveldata.setAlias(altName);
+		instantiate(leveldata);
+	}
+	
+	public void level_load(String alias){
+		level_load(alias, alias);
 	}
 	
 	public void edit() {
