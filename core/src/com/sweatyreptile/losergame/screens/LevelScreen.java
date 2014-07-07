@@ -378,16 +378,28 @@ public abstract class LevelScreen implements FinishableScreen{
 	protected void setupBorders(boolean horizontalTop, boolean horizontalBottom,
 			boolean verticalLeft, boolean verticalRight){
 		if (horizontalTop){
-			entityFactory.create("horizontal_border", BodyType.StaticBody, 0f, viewportHeight, new EntityFixtureDef(assets, "horizontal_border"), false);
+			entityFactory.create("horizontal_border", 
+					BodyType.StaticBody, 0f, viewportHeight,
+					new EntityFixtureDef(assets, "horizontal_border"), false)
+					.setSpecial(true);
 		}
 		if (horizontalBottom){
-			entityFactory.create("horizontal_border_2", BodyType.StaticBody, 0f, -BORDER_WIDTH, new EntityFixtureDef(assets, "horizontal_border"), false);
+			entityFactory.create("horizontal_border_2",
+					BodyType.StaticBody, 0f, -BORDER_WIDTH,
+					new EntityFixtureDef(assets, "horizontal_border"), false)
+					.setSpecial(true);
 		}
 		if (verticalLeft){
-			entityFactory.create("vertical_border", BodyType.StaticBody, -BORDER_WIDTH, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+			entityFactory.create("vertical_border",
+					BodyType.StaticBody, -BORDER_WIDTH, 0f,
+					new EntityFixtureDef(assets, "vertical_border"), false)
+					.setSpecial(true);
 		}
 		if (verticalRight){
-			entityFactory.create("vertical_border_2", BodyType.StaticBody, viewportWidth, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+			entityFactory.create("vertical_border_2",
+					BodyType.StaticBody, viewportWidth, 0f,
+					new EntityFixtureDef(assets, "vertical_border"), false)
+					.setSpecial(true);
 		}
 	}
 
@@ -426,11 +438,20 @@ public abstract class LevelScreen implements FinishableScreen{
 	}
 	
 	public LevelData getLevelData() {
-		EntityData[] entityData = new EntityData[entities.size()];
+		int numNonSpecial = 0;
+		for (String entityName : entities.keySet()){
+			if (!entities.get(entityName).isSpecial()){
+				numNonSpecial++;
+			}
+		}
+		EntityData[] entityData = new EntityData[numNonSpecial];
 		int i = 0;
 		for (String name : entities.keySet()){
-			entityData[i] = entities.get(name).getEntityData();
-			i++;
+			Entity<?> entity = entities.get(name);
+			if (!entity.isSpecial()){
+				entityData[i] = entities.get(name).getEntityData();
+				i++;
+			}
 		}
 		return new LevelData(alias, getClass().getSimpleName(), levelName, viewportWidth, viewportHeight, timeLimit, bgname, entityData);
 	}

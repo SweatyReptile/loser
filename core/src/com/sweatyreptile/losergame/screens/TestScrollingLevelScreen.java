@@ -53,16 +53,19 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 		//EntityData deadDuckData = new EntityData("dead_duck", BodyType.DynamicBody, 1.3f, .5f, new DuckFixtureDef(assets), false);
 		
 		//ef.create(deadDuckData);
-		ef.create("wash_machine", BodyType.StaticBody, .5f, .1f, new EntityFixtureDef(assets, "wash_machine"), false);
-		ef.create("cereal", BodyType.DynamicBody, 3.05f, 0.7f, new LightFixtureDef(assets, "cereal"), false);
-		ef.create("table", BodyType.StaticBody, 2.5f, .1f, new EntityFixtureDef(assets, "table"), false);
-		ef.create("book_blue", BodyType.DynamicBody, 1.1f, 1.1f, new WoodFixtureDef(assets, "book_blue"), false);
-		ef.create("book_red", BodyType.DynamicBody, 1.15f, 1.1f, new WoodFixtureDef(assets, "book_red"), false);
-		ef.create("book_yellow", BodyType.DynamicBody, 1.2f, 1.1f, new WoodFixtureDef(assets, "book_yellow"), false);
-		ef.create("shelf", BodyType.StaticBody, 1f, 1f, new EntityFixtureDef(assets, "shelf"), false);
-		ef.create("pencil", BodyType.DynamicBody, 2.85f, 0.7f, new WoodFixtureDef(assets, "pencil"), false);
-		ef.create("wall_left", BodyType.StaticBody, -BORDER_WIDTH, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
-		ef.create("wall_right", BodyType.StaticBody, bgWidth, 0f, new EntityFixtureDef(assets, "vertical_border"), false);
+		//ef.create("wash_machine", BodyType.StaticBody, .5f, .1f, new EntityFixtureDef(assets, "wash_machine"), false);
+		//ef.create("cereal", BodyType.DynamicBody, 3.05f, 0.7f, new LightFixtureDef(assets, "cereal"), false);
+		//ef.create("table", BodyType.StaticBody, 2.5f, .1f, new EntityFixtureDef(assets, "table"), false);
+		//ef.create("book_blue", BodyType.DynamicBody, 1.1f, 1.1f, new WoodFixtureDef(assets, "book_blue"), false);
+		//ef.create("book_red", BodyType.DynamicBody, 1.15f, 1.1f, new WoodFixtureDef(assets, "book_red"), false);
+		//ef.create("book_yellow", BodyType.DynamicBody, 1.2f, 1.1f, new WoodFixtureDef(assets, "book_yellow"), false);
+		//ef.create("shelf", BodyType.StaticBody, 1f, 1f, new EntityFixtureDef(assets, "shelf"), false);
+		//ef.create("pencil", BodyType.DynamicBody, 2.85f, 0.7f, new WoodFixtureDef(assets, "pencil"), false);
+		ef.create("wall_left", BodyType.StaticBody, -BORDER_WIDTH, 0f, new EntityFixtureDef(assets, "vertical_border"), false)
+			.setSpecial(true);;
+		ef.create("wall_right", BodyType.StaticBody, bgWidth, 0f, new EntityFixtureDef(assets, "vertical_border"), false)
+			.setSpecial(true);;
+		
 		
 		BodyDef radioBodyDef = new BodyDef();
 		radioBodyDef.type = BodyType.DynamicBody;

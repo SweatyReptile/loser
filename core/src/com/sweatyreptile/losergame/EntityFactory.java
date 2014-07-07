@@ -26,7 +26,7 @@ public class EntityFactory {
 		this.screenWidth = screenWidth;
 	}
 
-	public void create(String name, BodyType bodyType, 
+	public Entity<?> create(String name, BodyType bodyType, 
 			float xPosition, float yPosition, 
 			EntityFixtureDef entityFixtureDef, boolean flip){
 		
@@ -36,9 +36,10 @@ public class EntityFactory {
 		
 		Entity<?> entity = new Entity<Entity<?>>(world, contactListener, bodyDef, entityFixtureDef, flip, screenWidth, viewportWidth, name);
 		entities.put(name, entity);
+		return entity;
 	}
 
-	public void create(AssetManagerPlus assets, EntityData entityData) {
+	public Entity<?> create(AssetManagerPlus assets, EntityData entityData) {
 		String name = entityData.getName();
 		BodyType bodyType = entityData.getBodyType();
 		float x = entityData.getX();
@@ -48,7 +49,7 @@ public class EntityFactory {
 		fixtureDef.restitution = entityData.getRestitution();
 		fixtureDef.friction = entityData.getFriction();
 		boolean flipped = entityData.isFlipped();
-		create(name, bodyType, x, y, fixtureDef, flipped);
+		return create(name, bodyType, x, y, fixtureDef, flipped);
 	}
 
 	

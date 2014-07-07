@@ -230,5 +230,13 @@ public class Entity <T extends Entity<?>>{
 				fixtureDef.density, fixtureDef.restitution, 
 				fixtureDef.friction, fixtureDef.isSensor, isSpecial, flipped);
 	}
+
+	public void setSpecial(boolean special) {
+		this.isSpecial = special;
+	}
+
+	public boolean isSpecial() {
+		return isSpecial;
+	}
 	
 }
