@@ -1,5 +1,6 @@
 package com.sweatyreptile.losergame;
 
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,6 +46,19 @@ public class LevelManager {
 		
 		instantiate("test_menu", "DummyMenu", "DUCK GAME", DVWIDTH, DVHEIGHT, -1);
 		instantiate("test_home", "TestScrollingLevelScreen", "WELCOME TO THE JUNGLE", DVWIDTH, DVHEIGHT, 20f);
+	}
+	
+	public void help(){
+		LoserLog.log("LevelManager", "List of LevelManager commands:");
+		for (Method method : getClass().getDeclaredMethods()){
+			String name = method.getName();
+			Class<?>[] parameters = method.getParameterTypes();
+			String parameterString = "";
+			for (Class<?> c : parameters){
+				parameterString += c.getSimpleName().toLowerCase() + " ";
+			}
+			LoserLog.log("LevelManager", " - " + name + " " + parameterString);
+		}
 	}
 	
 	public void instantiate(String alias, String typeName, String levelName,
