@@ -81,6 +81,7 @@ public class LevelManager {
 		for (EntityData edata : level.getEntities()){
 			newLevel.addEntity(edata);
 		}
+		newLevel.setBackground(level.getBgname());
 	}
 	
 	public void level_save(){

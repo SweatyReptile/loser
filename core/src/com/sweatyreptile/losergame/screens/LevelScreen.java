@@ -352,7 +352,7 @@ public abstract class LevelScreen implements FinishableScreen{
 		
 	}
 	
-	protected void setBackground(String bgname) {
+	public void setBackground(String bgname) {
 		this.bgname = bgname;
 		background = assets.get(bgname);
 		bgHeight = ((float) background.getHeight() / height) * viewportHeight;
