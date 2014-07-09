@@ -17,11 +17,10 @@ import com.sweatyreptile.losergame.fixtures.LightFixtureDef;
 import com.sweatyreptile.losergame.fixtures.MetalFixtureDef;
 import com.sweatyreptile.losergame.fixtures.WoodFixtureDef;
 
-public class TestScrollingLevelScreen extends ScrollingLevelScreen {
+public class TestScrollingLevelScreen extends LevelScreen {
 	
 	private MusicPlayer radio;
 	private Sharbal sharbal;
-	
 	
 	public TestScrollingLevelScreen() {
 		super();
@@ -39,14 +38,14 @@ public class TestScrollingLevelScreen extends ScrollingLevelScreen {
 	@Override
 	protected void setupWorld() {
 		
-		horizontal = true;
+		scroller.setHorizontal(true);
 		
 		setupBorders(true, false);
 		
 		setBackground("img/bg/background_extended.png");
 	
-		level0Horizontal = 0f;
-		levelEndHorizontal = bgWidth;
+		scroller.setlevel0Horizontal(0f);
+		scroller.setlevelEndHorizontal(bgWidth);
 		
 		EntityFactory ef = entityFactory;
 		

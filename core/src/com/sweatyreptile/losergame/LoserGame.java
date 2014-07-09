@@ -27,7 +27,7 @@ import com.sweatyreptile.losergame.screens.LevelScreen;
 import com.sweatyreptile.losergame.screens.LoadingScreen;
 import com.sweatyreptile.losergame.screens.LoadingScreen.LoadingFinishedListener;
 import com.sweatyreptile.losergame.screens.ScreenFinishedListener;
-import com.sweatyreptile.losergame.tween.ScrollingLevelAccessor;
+import com.sweatyreptile.losergame.tween.LevelScreenAccessor;
 
 public class LoserGame extends Game implements ScreenFinishedListener{
 	SpriteBatch batch;
@@ -40,7 +40,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 	@Override
 	public void create () {	
 		
-		Tween.registerAccessor(LevelScreen.class, new ScrollingLevelAccessor());
+		Tween.registerAccessor(LevelScreen.class, new LevelScreenAccessor());
 		
 		assets = new AssetManagerPlus();
 		assets.setLoader(BitmapFontGroup.class, new FreeTypeFontLoader(new InternalFileHandleResolver()));

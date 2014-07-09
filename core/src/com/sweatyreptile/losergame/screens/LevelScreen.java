@@ -77,6 +77,8 @@ public abstract class LevelScreen implements FinishableScreen{
 	protected LevelTimer levelTimer;
 	protected float timeLimit;
 	private boolean limitedTime;
+	
+	protected CameraScroller scroller;
 	protected TweenManager tweenManager;
 	
 	private boolean editMode;
@@ -211,6 +213,8 @@ public abstract class LevelScreen implements FinishableScreen{
 		if (editMode){
 			editStage.act(delta);
 		}
+		
+		scroller.update(delta);
 	}
 
 	@Override
@@ -258,6 +262,8 @@ public abstract class LevelScreen implements FinishableScreen{
 		if (player == null){
 			throw new IllegalStateException(this + " has not created a player.");
 		}
+		
+		scroller = new CameraScroller(this, camera, player, tweenManager);
 
 		setupFonts();
 		setupWorld();
@@ -525,6 +531,10 @@ public abstract class LevelScreen implements FinishableScreen{
 	
 	public void addEntity(EntityData entityData){
 		this.entityData.add(entityData);
+	}
+
+	public CameraScroller getCameraScroller() {
+		return scroller;
 	}
 
 }

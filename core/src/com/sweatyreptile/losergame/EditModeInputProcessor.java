@@ -45,7 +45,13 @@ public class EditModeInputProcessor implements InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if (notnull()){
-			return level.getEditInputProcessor().touchDown(screenX, screenY, pointer, button);
+			boolean consumed = level.getEditInputProcessor().touchDown(screenX, screenY, pointer, button);
+			if (consumed){
+				return true;
+			}
+			else{
+				
+			}
 		}
 		return false;
 	}

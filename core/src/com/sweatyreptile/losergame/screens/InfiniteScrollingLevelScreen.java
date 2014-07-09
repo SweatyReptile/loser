@@ -9,7 +9,7 @@ import com.sweatyreptile.losergame.PlayerInputProcessor;
 import com.sweatyreptile.losergame.entities.Player;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
-public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen {
+public abstract class InfiniteScrollingLevelScreen extends LevelScreen {
 
 	private float originY;
 	protected Stack<LevelChunk> chunks; //Should contain at least 2 chunks
@@ -25,7 +25,7 @@ public abstract class InfiniteScrollingLevelScreen extends ScrollingLevelScreen 
 			float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName, 
 			boolean horizontalScrolling, boolean verticalScrolling) {
 		super(levelManager, batch, assets, playerInputProcessor, width, height,
-				viewportWidth, viewportHeight, timeLimit, alias, levelName, horizontalScrolling, verticalScrolling);
+				viewportWidth, viewportHeight, timeLimit, alias, levelName);
 		chunks = new Stack<LevelChunk>();
 	}
 	public InfiniteScrollingLevelScreen(LevelManager levelManager, SpriteBatch batch, AssetManagerPlus assets,
