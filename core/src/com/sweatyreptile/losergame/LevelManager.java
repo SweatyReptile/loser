@@ -84,6 +84,14 @@ public class LevelManager {
 
 	}
 	
+	public void lvl_new(String alias, String typeName, String levelName){
+		lvl_new(alias, typeName, levelName, DVWIDTH, DVHEIGHT, -1f);
+	}
+	
+	public void lvl_new(String alias, String levelName){
+		lvl_new(alias, "EmptyLevelScreen", levelName);
+	}
+	
 	public void lvl_new(LevelData level){
 		String newAlias = level.getAlias();
 		lvl_new(newAlias, level.getType(), level.getTitle(),
