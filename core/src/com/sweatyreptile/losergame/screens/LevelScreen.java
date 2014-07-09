@@ -321,6 +321,10 @@ public abstract class LevelScreen implements FinishableScreen{
 					button.setPosition(
 							(Gdx.input.getX() - button.getWidth()/2) ,
 							(height - Gdx.input.getY()) - button.getHeight()/2);
+					Entity<?> entity = button.getEntity();
+					LoserLog.log("Editor", 
+							entity.getName() + 
+							" location: (" + entity.getX() + ", " + entity.getY() + ")");
 					super.touchUp(event, x, y, pointer, button2);
 				}
 				
