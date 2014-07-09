@@ -18,8 +18,8 @@ import com.sweatyreptile.losergame.screens.ScreenFinishedListener;
 
 public class LevelManager {
 	
-	private static final float DVWIDTH = 3.2f;
-	private static final float DVHEIGHT = 1.8f;
+	public static final float DVWIDTH = 3.2f;
+	public static final float DVHEIGHT = 1.8f;
 	private Map<String, LevelTitleScreen> levelTitles;
 	private Map<String, LevelScreen> levels;
 	private FinishableScreen currentScreen;
@@ -51,9 +51,6 @@ public class LevelManager {
 		levels = new HashMap<String, LevelScreen>();
 		levelTitles = new HashMap<String, LevelTitleScreen>();
 		
-		instantiate("test_menu", "DummyMenu", "DUCK GAME", DVWIDTH, DVHEIGHT, -1);
-		instantiate("test_home", "TestScrollingLevelScreen", "WELCOME TO THE JUNGLE", DVWIDTH, DVHEIGHT, 20f);
-		instantiate("test_home_old", "TestLevelScreen", "WELCOME TO THE JUNGLE", DVWIDTH, DVHEIGHT, 20f);
 	}
 	
 	public void help(){
@@ -119,6 +116,13 @@ public class LevelManager {
 	
 	public void level_load(String alias){
 		level_load(alias, alias);
+	}
+	
+	public void level_reload_all(){
+		FileHandle[] levels = Gdx.files.internal("data/levels/").list();
+		for (FileHandle file : levels){
+			level_load(file.nameWithoutExtension());
+		}
 	}
 	
 	public void edit() {
