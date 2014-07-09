@@ -38,6 +38,10 @@ public class EntityFactory {
 		entities.put(name, entity);
 		return entity;
 	}
+	
+	public Entity<?> create(AssetManagerPlus assets, String name, BodyType bodyType){
+		return create(name, bodyType, viewportWidth / 2, 0.2f, new EntityFixtureDef(assets, name), false);
+	}
 
 	public Entity<?> create(AssetManagerPlus assets, EntityData entityData) {
 		String name = entityData.getName();

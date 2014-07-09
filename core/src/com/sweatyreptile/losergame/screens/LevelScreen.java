@@ -300,48 +300,52 @@ public abstract class LevelScreen implements FinishableScreen{
 		for (String entityName : entities.keySet()){
 			
 			Entity<?> entity = entities.get(entityName);
-			entity.setFixedRotation(true);
-			
-			Skin skin = assets.get("img/ui/skins/gdxtest/uiskin.json");
-			final EntityButton button = new EntityButton(entity, skin);
-			editButtons.add(button);
-			
-			Vector3 screencoords = camera.project(new Vector3(entity.getX(), entity.getY(), 0));
-			Vector3 widthheight = camera.project(new Vector3(entity.getWidth(), entity.getHeight(), 0));
-			
-			button.setPosition(screencoords.x, screencoords.y);
-			//button.setSize(widthheight.x, widthheight.y);
-			
-			editStage.addActor(button);
-			
-			button.addListener(new ClickListener(){
-
-				@Override
-				public void touchDragged(InputEvent event, float x, float y,
-						int pointer) {
-					Entity<?> entity = button.getEntity();
-					buttonEditorPosition.x = Gdx.input.getX();
-					buttonEditorPosition.y = Gdx.input.getY();
-					buttonEditorPosition = camera.unproject(buttonEditorPosition);
-					entity.setPosition(buttonEditorPosition.x, buttonEditorPosition.y);
-					super.touchDragged(event, x, y, pointer);
-				}
-
-				@Override
-				public void touchUp(InputEvent event, float x, float y,
-						int pointer, int button2) {
-					updateEditButton(button);
-					Entity<?> entity = button.getEntity();
-					LoserLog.log("Editor", 
-							entity.getName() + 
-							" location: (" + entity.getX() + ", " + entity.getY() + ")");
-					super.touchUp(event, x, y, pointer, button2);
-				}
-				
-				
-				
-			});
+			createEditButton(entity);
 		}
+	}
+
+	private void createEditButton(Entity<?> entity) {
+		entity.setFixedRotation(true);
+		
+		Skin skin = assets.get("img/ui/skins/gdxtest/uiskin.json");
+		final EntityButton button = new EntityButton(entity, skin);
+		editButtons.add(button);
+		
+		Vector3 screencoords = camera.project(new Vector3(entity.getX(), entity.getY(), 0));
+		Vector3 widthheight = camera.project(new Vector3(entity.getWidth(), entity.getHeight(), 0));
+		
+		button.setPosition(screencoords.x, screencoords.y);
+		//button.setSize(widthheight.x, widthheight.y);
+		
+		editStage.addActor(button);
+		
+		button.addListener(new ClickListener(){
+
+			@Override
+			public void touchDragged(InputEvent event, float x, float y,
+					int pointer) {
+				Entity<?> entity = button.getEntity();
+				buttonEditorPosition.x = Gdx.input.getX();
+				buttonEditorPosition.y = Gdx.input.getY();
+				buttonEditorPosition = camera.unproject(buttonEditorPosition);
+				entity.setPosition(buttonEditorPosition.x, buttonEditorPosition.y);
+				super.touchDragged(event, x, y, pointer);
+			}
+
+			@Override
+			public void touchUp(InputEvent event, float x, float y,
+					int pointer, int button2) {
+				updateEditButton(button);
+				Entity<?> entity = button.getEntity();
+				LoserLog.log("Editor", 
+						entity.getName() + 
+						" location: (" + entity.getX() + ", " + entity.getY() + ")");
+				super.touchUp(event, x, y, pointer, button2);
+			}
+			
+			
+			
+		});
 	}
 
 	private Vector3 buttonEditorPosition = new Vector3();
@@ -535,6 +539,11 @@ public abstract class LevelScreen implements FinishableScreen{
 	
 	public void addEntity(EntityData entityData){
 		this.entityData.add(entityData);
+	}
+	
+	public void addEntity(String name, BodyType bodyType){
+		Entity<?> entity = entityFactory.create(assets, name, bodyType);
+		createEditButton(entity);
 	}
 
 	public CameraScroller getCameraScroller() {

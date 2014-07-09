@@ -9,6 +9,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.utils.Json;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.screens.FinishableScreen;
@@ -191,6 +192,20 @@ public class LevelManager {
 		LevelScreen lvlScreen = levels.get(alias);
 		screenFinishedListener.onFinish(currentScreen, lvlScreen);
 		currentScreen = lvlScreen;
+	}
+	
+	public void entity(String name, String bodyType){
+		LevelScreen level = levels.get(currentLevel);
+		level.addEntity(name, BodyType.valueOf(bodyType));
+	}
+	
+	public void entity(String name){
+		entity(name, "DynamicBody");
+	}
+	
+	public void bg(String bgname){
+		LevelScreen level = levels.get(currentLevel);
+		level.setBackground("img/bg/" + bgname + ".png");
 	}
 	
 	public void exit(){
