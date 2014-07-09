@@ -209,6 +209,11 @@ public class LevelManager {
 		entity(name, "DynamicBody");
 	}
 	
+	public void entity_rm(String name){
+		LevelScreen level = levels.get(currentLevel);
+		level.removeEntity(name);
+	}
+	
 	public void bg(String bgname){
 		LevelScreen level = levels.get(currentLevel);
 		level.setBackground("img/bg/" + bgname + ".png");

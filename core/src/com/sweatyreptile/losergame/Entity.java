@@ -58,6 +58,7 @@ public class Entity <T extends Entity<?>>{
 			boolean flipped, String name) {
 		this.fixtureDef = fixtureDef;
 		this.flipped = flipped;
+		this.world = world;
 		
 		setUpEntity(world, bodyDef, name, contactListener);
 		Texture spriteTexture = fixtureDef.getTexture();
@@ -237,6 +238,24 @@ public class Entity <T extends Entity<?>>{
 
 	public boolean isSpecial() {
 		return isSpecial;
+	}
+
+	public void destroy() {
+		world.destroyBody(currentBody);
+	}
+
+	/**
+	 * In radians.
+	 */
+	public float getRotation() {
+		return currentBody.getAngle();
+	}
+
+	/**
+	 * In radians.
+	 */
+	public void setRotation(float rotation) {
+		currentBody.setTransform(currentBody.getPosition(), rotation);
 	}
 	
 }

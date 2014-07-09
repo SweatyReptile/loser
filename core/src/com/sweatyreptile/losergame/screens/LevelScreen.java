@@ -85,7 +85,7 @@ public abstract class LevelScreen implements FinishableScreen{
 	private Body selectedBody;
 	private Camera editCamera;
 	private Stage editStage;
-	private List<EntityButton> editButtons;
+	private Map<String, EntityButton> editButtons;
 
 	public static final LevelScreen newInstance(String levelType, LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName) {
@@ -242,7 +242,7 @@ public abstract class LevelScreen implements FinishableScreen{
 		
 		tweenManager = new TweenManager();
 
-		editButtons = new ArrayList<EntityButton>();
+		editButtons = new HashMap<String, EntityButton>();
 		entities = new HashMap<String, Entity<?>>();
 		shapeRenderer = new ShapeRenderer();
 
@@ -271,11 +271,10 @@ public abstract class LevelScreen implements FinishableScreen{
 		scroller = new CameraScroller(this, camera, player, tweenManager);
 
 		setupFonts();
-		setupWorld();
-		
 		for (EntityData edata : entityData){
 			entityFactory.create(assets, edata);
 		}
+		setupWorld();
 		
 		if (editMode){
 			setupEditMode();
@@ -309,7 +308,7 @@ public abstract class LevelScreen implements FinishableScreen{
 		
 		Skin skin = assets.get("img/ui/skins/gdxtest/uiskin.json");
 		final EntityButton button = new EntityButton(entity, skin);
-		editButtons.add(button);
+		editButtons.put(entity.getName(), button);
 		
 		Vector3 screencoords = camera.project(new Vector3(entity.getX(), entity.getY(), 0));
 		Vector3 widthheight = camera.project(new Vector3(entity.getWidth(), entity.getHeight(), 0));
@@ -546,6 +545,18 @@ public abstract class LevelScreen implements FinishableScreen{
 		createEditButton(entity);
 	}
 
+	public void removeEntity(String name) {
+		entities.get(name).destroy();
+		entities.remove(name);
+		removeButton(name);
+	}
+
+	private void removeButton(String name) {
+		EntityButton button = editButtons.get(name);
+		button.remove();
+		editButtons.remove(name);
+	}
+
 	public CameraScroller getCameraScroller() {
 		return scroller;
 	}
@@ -559,7 +570,8 @@ public abstract class LevelScreen implements FinishableScreen{
 	}
 
 	public void updateEditButtons() {
-		for (EntityButton button : editButtons){
+		for (String name : editButtons.keySet()){
+			EntityButton button = editButtons.get(name);
 			Entity<?> entity = button.getEntity();
 			Vector3 entityPos = new Vector3(entity.getX(), entity.getY(), 0);
 			Vector3 buttonPos = camera.project(entityPos);
