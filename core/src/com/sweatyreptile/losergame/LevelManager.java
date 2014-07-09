@@ -142,6 +142,12 @@ public class LevelManager {
 		restart();
 	}
 	
+	public void saveplay(){
+		lvl_save();
+		lvl_load(currentLevel);
+		play();
+	}
+	
 	public void play(boolean restart) {
 		LevelScreen level = levels.get(currentLevel);
 		if (level != null){
