@@ -11,13 +11,13 @@ import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.utils.Logger;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
 import com.sweatyreptile.losergame.loaders.FontGroupParameters;
@@ -61,13 +61,11 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		
 		assets.load("img/ui/skins/gdxtest/uiskin.atlas", TextureAtlas.class);
 		assets.load("img/ui/skins/gdxtest/uiskin.json", Skin.class);
-		
-		assets.load("img/bg/background_extended.png", Texture.class, filtering);
-		assets.load("img/bg/menu_dummy_0.png", Texture.class, filtering);
-		assets.load("img/bg/menu_dummy_1.png", Texture.class, filtering);
-		assets.load("img/bg/menu_dummy_2.png", Texture.class, filtering);
+
 		assets.load("img/ui/console_bg.png", Texture.class, filtering);
 		assets.load("img/ui/console_textfield.png", Texture.class, filtering);
+		
+		loadBackgrounds(filtering);
 
 		assets.load("sfx/quack_dummy.ogg", Sound.class);
 		assets.load("music/baby_come_back.ogg", Music.class);
@@ -104,8 +102,13 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		setScreen(loadingScreen);
 		
 	}
-	
-	
+
+	private void loadBackgrounds(TextureParameter filtering) {
+		FileHandle[] bgDir = Gdx.files.internal("img/bg/").list();
+		for (FileHandle file : bgDir){
+			assets.load(file.path(), Texture.class, filtering);
+		}
+	}
 
 	@Override
 	public void render() {
