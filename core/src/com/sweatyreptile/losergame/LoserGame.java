@@ -99,7 +99,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 				console.init();
 				levelManager.lvl_reload_all();
 				
-				levelManager.instantiate("test_menu", "DummyMenu", "DUCK GAME",
+				levelManager.lvl_new("test_menu", "DummyMenu", "DUCK GAME",
 						LevelManager.DVWIDTH, LevelManager.DVHEIGHT, -1);
 			}
 		});

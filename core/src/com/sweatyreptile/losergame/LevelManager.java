@@ -66,7 +66,7 @@ public class LevelManager {
 		}
 	}
 	
-	public void instantiate(String alias, String typeName, String levelName,
+	public void lvl_new(String alias, String typeName, String levelName,
 			float viewportWidth, float viewportHeight, float timeLimit) {
 		
 		LoserLog.log("LevelManager", "Instantiate " + alias + " " + levelName + " (" + typeName + ")");
@@ -84,9 +84,9 @@ public class LevelManager {
 
 	}
 	
-	public void instantiate(LevelData level){
+	public void lvl_new(LevelData level){
 		String newAlias = level.getAlias();
-		instantiate(newAlias, level.getType(), level.getTitle(),
+		lvl_new(newAlias, level.getType(), level.getTitle(),
 				level.getViewportWidth(), level.getViewportHeight(),
 				level.getTimerLength());
 		LevelScreen newLevel = levels.get(newAlias);
@@ -111,7 +111,7 @@ public class LevelManager {
 		FileHandle leveljson = Gdx.files.local("data/levels/" + alias + ".json");
 		LevelData leveldata = json.fromJson(LevelData.class, leveljson);
 		leveldata.setAlias(altName);
-		instantiate(leveldata);
+		lvl_new(leveldata);
 	}
 	
 	public void lvl_load(String alias){
