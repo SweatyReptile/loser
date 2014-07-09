@@ -213,8 +213,9 @@ public abstract class LevelScreen implements FinishableScreen{
 		if (editMode){
 			editStage.act(delta);
 		}
-		
-		scroller.update(delta);
+		if (!editMode){
+			scroller.update(delta);
+		}
 	}
 
 	@Override
@@ -535,6 +536,14 @@ public abstract class LevelScreen implements FinishableScreen{
 
 	public CameraScroller getCameraScroller() {
 		return scroller;
+	}
+
+	public Camera getCamera() {
+		return camera;
+	}
+
+	public TweenManager getTweenManager() {
+		return tweenManager;
 	}
 
 }

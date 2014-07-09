@@ -1,7 +1,13 @@
 package com.sweatyreptile.losergame;
 
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenEquations;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector3;
 import com.sweatyreptile.losergame.screens.LevelScreen;
+import com.sweatyreptile.losergame.tween.LevelScreenAccessor;
 
 public class EditModeInputProcessor implements InputProcessor {
 
@@ -46,12 +52,15 @@ public class EditModeInputProcessor implements InputProcessor {
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		if (notnull()){
 			boolean consumed = level.getEditInputProcessor().touchDown(screenX, screenY, pointer, button);
-			if (consumed){
-				return true;
+			if (!consumed){
+				Vector3 worldCoords = level.getCamera().unproject(
+						new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+				Tween.to(level, LevelScreenAccessor.CAMERA_POSITION, 2f)
+					 .target(worldCoords.x, worldCoords.y)
+					 .ease(TweenEquations.easeOutExpo)
+					 .start(level.getTweenManager());
 			}
-			else{
-				
-			}
+			return true;
 		}
 		return false;
 	}
