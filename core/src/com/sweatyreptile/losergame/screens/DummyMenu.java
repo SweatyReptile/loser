@@ -97,7 +97,7 @@ public class DummyMenu extends InfiniteScrollingLevelScreen {
 						Player player = contactee.getPlayer();
 						if (player != null) {
 							if (player.isQuacking() && !switchCalled) {
-								levelManager.level("test_home");
+								levelManager.lvl("test_home");
 								switchCalled = true;
 							}
 						}

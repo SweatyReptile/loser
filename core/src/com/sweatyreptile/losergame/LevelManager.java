@@ -157,7 +157,7 @@ public class LevelManager {
 	}
 	
 	public void restart() {
-		level(currentLevel);
+		lvl(currentLevel);
 	}
 	
 	public void nextlvl() {
@@ -172,7 +172,7 @@ public class LevelManager {
 		// up what determines what the next level actually is.
 	}
 
-	public void level(String alias) {
+	public void lvl(String alias) {
 		
 		if (!alias.equals(currentLevel)){
 			// Turn off edit mode on current level without restarting it
