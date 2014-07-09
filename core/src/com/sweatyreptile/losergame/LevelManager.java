@@ -96,7 +96,7 @@ public class LevelManager {
 		newLevel.setBackground(level.getBgname());
 	}
 	
-	public void level_save(){
+	public void lvl_save(){
 		Json json = new Json();
 		LevelScreen level = levels.get(currentLevel);
 		LevelData leveldata = level.getLevelData();
@@ -106,7 +106,7 @@ public class LevelManager {
 		LoserLog.log("LevelManager", "Saved to " + leveljson.path());
 	}
 	
-	public void level_load(String alias, String altName){
+	public void lvl_load(String alias, String altName){
 		Json json = new Json();
 		FileHandle leveljson = Gdx.files.local("data/levels/" + alias + ".json");
 		LevelData leveldata = json.fromJson(LevelData.class, leveljson);
@@ -114,14 +114,14 @@ public class LevelManager {
 		instantiate(leveldata);
 	}
 	
-	public void level_load(String alias){
-		level_load(alias, alias);
+	public void lvl_load(String alias){
+		lvl_load(alias, alias);
 	}
 	
-	public void level_reload_all(){
+	public void lvl_reload_all(){
 		FileHandle[] levels = Gdx.files.internal("data/levels/").list();
 		for (FileHandle file : levels){
-			level_load(file.nameWithoutExtension());
+			lvl_load(file.nameWithoutExtension());
 		}
 	}
 	
@@ -152,7 +152,7 @@ public class LevelManager {
 		level(currentLevel);
 	}
 	
-	public void nextlevel() {
+	public void nextlvl() {
 		// Wow, you've reached a stub!
 		
 		// To be called to switch to the level
@@ -178,7 +178,7 @@ public class LevelManager {
 		currentLevel = alias;
 	}
 	
-	public void level_notitle(String alias) {
+	public void lvl_notitle(String alias) {
 		LoserLog.log("LevelManager", "Switch to " + alias);
 		LevelScreen lvlScreen = levels.get(alias);
 		screenFinishedListener.onFinish(currentScreen, lvlScreen);

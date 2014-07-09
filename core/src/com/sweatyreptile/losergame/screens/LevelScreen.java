@@ -417,7 +417,7 @@ public abstract class LevelScreen implements FinishableScreen{
 		// player accomplishes whatever needs to
 		// be accomplished in order to complete
 		// the level
-		levelManager.nextlevel();
+		levelManager.nextlvl();
 	}
 
 	@Override
