@@ -1,6 +1,8 @@
 package com.sweatyreptile.losergame;
 
+import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenEquations;
 
 import com.badlogic.gdx.Gdx;
@@ -55,10 +57,18 @@ public class EditModeInputProcessor implements InputProcessor {
 			if (!consumed){
 				Vector3 worldCoords = level.getCamera().unproject(
 						new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-				Tween.to(level, LevelScreenAccessor.CAMERA_POSITION, 2f)
+				Tween.to(level, LevelScreenAccessor.CAMERA_POSITION, 0.5f)
 					 .target(worldCoords.x, worldCoords.y)
 					 .ease(TweenEquations.easeOutExpo)
 					 .start(level.getTweenManager());
+				Tween.call(new TweenCallback() {
+					@Override
+					public void onEvent(int arg0, BaseTween<?> arg1) {
+						level.updateEditButtons();
+					}
+				})
+					.delay(0.5f)
+					.start(level.getTweenManager());
 			}
 			return true;
 		}

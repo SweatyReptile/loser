@@ -85,6 +85,7 @@ public abstract class LevelScreen implements FinishableScreen{
 	private Body selectedBody;
 	private Camera editCamera;
 	private Stage editStage;
+	private List<EntityButton> editButtons;
 
 	public static final LevelScreen newInstance(String levelType, LevelManager manager, SpriteBatch batch, AssetManagerPlus assets, PlayerInputProcessor playerInputProcessor,
 			int width, int height, float viewportWidth, float viewportHeight, float timeLimit, String alias, String levelName) {
@@ -172,7 +173,9 @@ public abstract class LevelScreen implements FinishableScreen{
 		
 		if (editMode){
 			spriteRenderer.setProjectionMatrix(editCamera.combined);
-			editStage.draw();
+			if (tweenManager.getRunningTweensCount() == 0){
+				editStage.draw(); // Only draw if not moving something (like the camera) 
+			}
 		}
 	}
 
@@ -239,6 +242,7 @@ public abstract class LevelScreen implements FinishableScreen{
 		
 		tweenManager = new TweenManager();
 
+		editButtons = new ArrayList<EntityButton>();
 		entities = new HashMap<String, Entity<?>>();
 		shapeRenderer = new ShapeRenderer();
 
@@ -300,6 +304,7 @@ public abstract class LevelScreen implements FinishableScreen{
 			
 			Skin skin = assets.get("img/ui/skins/gdxtest/uiskin.json");
 			final EntityButton button = new EntityButton(entity, skin);
+			editButtons.add(button);
 			
 			Vector3 screencoords = camera.project(new Vector3(entity.getX(), entity.getY(), 0));
 			Vector3 widthheight = camera.project(new Vector3(entity.getWidth(), entity.getHeight(), 0));
@@ -325,9 +330,7 @@ public abstract class LevelScreen implements FinishableScreen{
 				@Override
 				public void touchUp(InputEvent event, float x, float y,
 						int pointer, int button2) {
-					button.setPosition(
-							(Gdx.input.getX() - button.getWidth()/2) ,
-							(height - Gdx.input.getY()) - button.getHeight()/2);
+					updateEditButton(button);
 					Entity<?> entity = button.getEntity();
 					LoserLog.log("Editor", 
 							entity.getName() + 
@@ -544,6 +547,25 @@ public abstract class LevelScreen implements FinishableScreen{
 
 	public TweenManager getTweenManager() {
 		return tweenManager;
+	}
+
+	public void updateEditButtons() {
+		for (EntityButton button : editButtons){
+			Entity<?> entity = button.getEntity();
+			Vector3 entityPos = new Vector3(entity.getX(), entity.getY(), 0);
+			Vector3 buttonPos = camera.project(entityPos);
+			updateEditButton(button, buttonPos.x, buttonPos.y);
+		}
+	}
+	
+	public void updateEditButton(EntityButton button, float x, float y){
+		button.setPosition(
+				 x - button.getWidth()/2,
+				 y - button.getHeight()/2);
+	}
+	
+	public void updateEditButton(EntityButton button){
+		updateEditButton(button, Gdx.input.getX(), height - Gdx.input.getY());
 	}
 
 }
