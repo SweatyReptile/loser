@@ -41,7 +41,6 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 		quackSensor.setCenterRoundSensor(sprite);
 		quackSensor.weld(world, currentBody);
 		
-		isSpecial = true;
 	}
 	
 	public void setRange(String name, float scale, Object userData, int index1, int index2, boolean setCenter){

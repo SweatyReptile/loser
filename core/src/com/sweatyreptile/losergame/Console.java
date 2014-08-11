@@ -178,10 +178,6 @@ public class Console {
 		}
 	}
 
-	public void toggle(boolean on) {
-		shown = on;
-	}
-
 	public void debug(String tag, String message) {
 		log(tag, message);
 	}
@@ -228,9 +224,5 @@ public class Console {
 	
 	public void setLevelManager(LevelManager levelManager){
 		this.levelManager = levelManager;
-	}
-
-	public boolean isShown() {
-		return shown;
 	}
 }

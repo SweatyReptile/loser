@@ -11,13 +11,13 @@ import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Logger;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 import com.sweatyreptile.losergame.loaders.BitmapFontGroup;
 import com.sweatyreptile.losergame.loaders.FontGroupParameters;
@@ -27,7 +27,7 @@ import com.sweatyreptile.losergame.screens.LevelScreen;
 import com.sweatyreptile.losergame.screens.LoadingScreen;
 import com.sweatyreptile.losergame.screens.LoadingScreen.LoadingFinishedListener;
 import com.sweatyreptile.losergame.screens.ScreenFinishedListener;
-import com.sweatyreptile.losergame.tween.LevelScreenAccessor;
+import com.sweatyreptile.losergame.tween.ScrollingLevelAccessor;
 
 public class LoserGame extends Game implements ScreenFinishedListener{
 	SpriteBatch batch;
@@ -40,7 +40,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 	@Override
 	public void create () {	
 		
-		Tween.registerAccessor(LevelScreen.class, new LevelScreenAccessor());
+		Tween.registerAccessor(LevelScreen.class, new ScrollingLevelAccessor());
 		
 		assets = new AssetManagerPlus();
 		assets.setLoader(BitmapFontGroup.class, new FreeTypeFontLoader(new InternalFileHandleResolver()));
@@ -61,11 +61,13 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		
 		assets.load("img/ui/skins/gdxtest/uiskin.atlas", TextureAtlas.class);
 		assets.load("img/ui/skins/gdxtest/uiskin.json", Skin.class);
-
+		
+		assets.load("img/bg/background_extended.png", Texture.class, filtering);
+		assets.load("img/bg/menu_dummy_0.png", Texture.class, filtering);
+		assets.load("img/bg/menu_dummy_1.png", Texture.class, filtering);
+		assets.load("img/bg/menu_dummy_2.png", Texture.class, filtering);
 		assets.load("img/ui/console_bg.png", Texture.class, filtering);
 		assets.load("img/ui/console_textfield.png", Texture.class, filtering);
-		
-		loadBackgrounds(filtering);
 
 		assets.load("sfx/quack_dummy.ogg", Sound.class);
 		assets.load("music/baby_come_back.ogg", Music.class);
@@ -77,7 +79,7 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 		console = new Console(batch, assets, inputMultiplexer, Gdx.graphics.getWidth(), 200);
 		LoserLog.console = console;
 		
-		final LevelManager levelManager = new LevelManager(assets, batch, inputMultiplexer, playerInputProcessor, this, screenWidth, screenHeight);
+		LevelManager levelManager = new LevelManager(assets, batch, playerInputProcessor, this, screenWidth, screenHeight);
 		LoadingScreen loadingScreen = new LoadingScreen(assets, levelManager);
 		
 		console.setLevelManager(levelManager);
@@ -94,21 +96,14 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 			@Override
 			public void run() {
 				console.init();
-				levelManager.lvl_reload_all();
-				levelManager.lvl_new("test_menu", "DummyMenu", "DUCK GAME");
 			}
 		});
 		
 		setScreen(loadingScreen);
 		
 	}
-
-	private void loadBackgrounds(TextureParameter filtering) {
-		FileHandle[] bgDir = Gdx.files.internal("img/bg/").list();
-		for (FileHandle file : bgDir){
-			assets.load(file.path(), Texture.class, filtering);
-		}
-	}
+	
+	
 
 	@Override
 	public void render() {
