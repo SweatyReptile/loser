@@ -136,7 +136,7 @@ public class LevelTitleScreen implements FinishableScreen {
 
 	@Override
 	public void finish() {
-		levelManager.level_notitle(levelAlias);
+		levelManager.lvl_notitle(levelAlias);
 	}
 
 }

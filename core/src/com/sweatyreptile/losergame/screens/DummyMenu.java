@@ -42,10 +42,10 @@ public class DummyMenu extends InfiniteScrollingLevelScreen {
 	protected void setupWorld() {
 		setupBorders(true, false, true, true);
 		player.standRight();
-		setOffsetY(viewportHeight / 3);
-		vertical = true;
-		updateCamera();
-		setStrictlyDownwards(true);
+		scroller.setOffsetY(viewportHeight / 3);
+		scroller.setVertical(true);
+		scroller.updateCamera();
+		scroller.setStrictlyDownwards(true);
 		chunks.add(new LevelChunk(viewportWidth, viewportHeight, width, height) {
 			@SuppressWarnings("unchecked")
 			@Override protected void setup(){
@@ -97,7 +97,7 @@ public class DummyMenu extends InfiniteScrollingLevelScreen {
 						Player player = contactee.getPlayer();
 						if (player != null) {
 							if (player.isQuacking() && !switchCalled) {
-								levelManager.level("test_home");
+								levelManager.lvl("test_home");
 								switchCalled = true;
 							}
 						}

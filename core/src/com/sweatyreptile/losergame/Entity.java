@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -42,6 +43,10 @@ public class Entity <T extends Entity<?>>{
 	private static final float SPEECH_PADDING = 0.05f;
 	private static final float SEC_PER_CHAR = 0.2f;
 	
+	private EntityFixtureDef fixtureDef;
+	private boolean flipped;
+	protected boolean isSpecial;
+	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, String name){
 		this.sprite = new Sprite();
 		this.world = world;
@@ -51,6 +56,9 @@ public class Entity <T extends Entity<?>>{
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
 			EntityFixtureDef fixtureDef, float scale, 
 			boolean flipped, String name) {
+		this.fixtureDef = fixtureDef;
+		this.flipped = flipped;
+		this.world = world;
 		
 		setUpEntity(world, bodyDef, name, contactListener);
 		Texture spriteTexture = fixtureDef.getTexture();
@@ -160,11 +168,17 @@ public class Entity <T extends Entity<?>>{
 	}
 	
 	public void setX(float x){
+		currentBody.setTransform(x, currentBody.getPosition().y, currentBody.getAngle());
 		sprite.setX(x);
 	}
 	
 	public void setY(float y){
+		currentBody.setTransform(currentBody.getPosition().x, y, currentBody.getAngle());
 		sprite.setY(y);
+	}
+	
+	public void setPosition(float x, float y){
+		currentBody.setTransform(x, y, currentBody.getAngle());
 	}
 
 	public String getName() {
@@ -188,6 +202,60 @@ public class Entity <T extends Entity<?>>{
 	
 	public Body getBody(){
 		return currentBody;
+	}
+
+	public float getX() {
+		updateSprite(0);
+		return sprite.getX();
+	}
+	
+	public float getY() {
+		updateSprite(0);
+		return sprite.getY();
+	}
+
+	public float getWidth() {
+		return sprite.getWidth();
+	}
+	
+	public float getHeight() {
+		return sprite.getHeight();
+	}
+
+	public void setFixedRotation(boolean rotation) {
+		currentBody.setFixedRotation(rotation);
+	}
+
+	public EntityData getEntityData() {
+		return new EntityData(name, currentBody.getType(), getX(), getY(),
+				fixtureDef.density, fixtureDef.restitution, 
+				fixtureDef.friction, fixtureDef.isSensor, isSpecial, flipped);
+	}
+
+	public void setSpecial(boolean special) {
+		this.isSpecial = special;
+	}
+
+	public boolean isSpecial() {
+		return isSpecial;
+	}
+
+	public void destroy() {
+		world.destroyBody(currentBody);
+	}
+
+	/**
+	 * In radians.
+	 */
+	public float getRotation() {
+		return currentBody.getAngle();
+	}
+
+	/**
+	 * In radians.
+	 */
+	public void setRotation(float rotation) {
+		currentBody.setTransform(currentBody.getPosition(), rotation);
 	}
 	
 }

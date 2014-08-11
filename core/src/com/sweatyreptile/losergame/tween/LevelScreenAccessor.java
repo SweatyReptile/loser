@@ -3,20 +3,20 @@ package com.sweatyreptile.losergame.tween;
 import aurelienribon.tweenengine.TweenAccessor;
 
 import com.badlogic.gdx.math.Vector3;
-import com.sweatyreptile.losergame.screens.ScrollingLevelScreen;
+import com.sweatyreptile.losergame.screens.LevelScreen;
 
-public class ScrollingLevelAccessor implements TweenAccessor<ScrollingLevelScreen> {
+public class LevelScreenAccessor implements TweenAccessor<LevelScreen> {
 
 	public static final int CAMERA_POSITION = 0;
 	public static final int BORDER_X = 1;
 	public static final int BORDER_Y = 2;
 	
-	public ScrollingLevelAccessor() {
+	public LevelScreenAccessor() {
 		
 	}
 
 	@Override
-	public int getValues(ScrollingLevelScreen level, int tweenType, float[] values) {
+	public int getValues(LevelScreen level, int tweenType, float[] values) {
 		switch(tweenType){
 		case CAMERA_POSITION:
 			Vector3 cameraPosition = level.getCameraPosition(); 
@@ -24,10 +24,10 @@ public class ScrollingLevelAccessor implements TweenAccessor<ScrollingLevelScree
 			values[1] = cameraPosition.y;
 			return 2;
 		case BORDER_X:
-			values[0] = level.getBorderX();
+			values[0] = level.getCameraScroller().getBorderX();
 			return 1;
 		case BORDER_Y:
-			values[0] = level.getBorderY();
+			values[0] = level.getCameraScroller().getBorderY();
 			return 1;
 		default: return 0;
 
@@ -35,16 +35,16 @@ public class ScrollingLevelAccessor implements TweenAccessor<ScrollingLevelScree
 	}
 
 	@Override
-	public void setValues(ScrollingLevelScreen level, int tweenType, float[] values) {
+	public void setValues(LevelScreen level, int tweenType, float[] values) {
 		switch(tweenType){
 		case CAMERA_POSITION:
 			level.setCameraPosition(values[0], values[1]);
 			break;
 		case BORDER_X:
-			level.updateBordersX(values[0]);
+			level.getCameraScroller().updateBordersX(values[0], level.getEntities());
 			break;
 		case BORDER_Y:
-			level.updateBordersY(values[0]);
+			level.getCameraScroller().updateBordersY(values[0], level.getEntities());
 			break;
 		}
 	}

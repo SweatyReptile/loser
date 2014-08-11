@@ -69,7 +69,7 @@ public class LoadingScreen implements FinishableScreen{
 		for (LoadingFinishedListener listener : listeners){
 			listener.run();
 		}
-		levelManager.level("test_menu");
+		levelManager.lvl("test_menu");
 	}
 	
 	public void addListener(LoadingFinishedListener listener){
