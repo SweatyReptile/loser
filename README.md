@@ -16,7 +16,8 @@ All art assets are licensed under the [Creative Commons Attribution-NonCommercia
 
 [![Art licensed under CC-BY-NC-SA](http://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
 
-loser
-=====
+###Menu Screen###
+<a href="http://mnmn.me/duck.webm" target=“_blank”>![Menu Screen](http://mnmn.me/duckplay.gif)</a>
 
-[![](http://i.imgur.com/Y5I6lO7.png)](http://i.imgur.com/Y5I6lO7.png)
+###Test Level###
+<a href="http://mnmn.me/duck1.webm" target=“_blank”>![Test Level](http://mnmn.me/duck1play.gif)]</a>
