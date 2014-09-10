@@ -6,7 +6,6 @@ import java.util.Stack;
 
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -18,7 +17,6 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJoint;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Timer;
-import com.sun.org.apache.xpath.internal.operations.And;
 import com.sweatyreptile.losergame.DuckQuackTopFixtureDef;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityListener;
@@ -77,6 +75,8 @@ public class Player extends Entity<Player>{
 	
 	private float bodyHeight; //Assumes all standing bodies are the same height
 	private float duckingBodyHeight; //Assumes all ducking bodies are the same height
+	
+	private boolean grounded;
 
 	public Player(World world, LoserContactListener contactListener, BodyDef def, AssetManagerPlus assets) {
 		super(world, contactListener, def, "duck");
@@ -139,27 +139,22 @@ public class Player extends Entity<Player>{
 		contactFixer = new PlayerContactFixerListener();
 		addListener(contactFixer);
 		
-		CountingSensorListener flightSensorListener = new CountingSensorListener() {
-			@Override public void contactAdded(int totalContacts){}
+		CountingSensorListener landingSensorListener = new CountingSensorListener() {
 			@Override public void contactRemoved(int totalContacts) {
-				if (totalContacts == 0 && !isFlying()) {
-					fly();
+				if (totalContacts == 0) grounded = false;
+			}
+			@Override public void contactAdded(int totalContacts) {
+				if (totalContacts != 0){
+					grounded = true;
+					if (isFlying()) land();
 				}
 			}
 		};
 		
-		CountingSensorListener landingSensorListener = new CountingSensorListener() {
-			@Override public void contactRemoved(int totalContacts) {}
-			@Override public void contactAdded(int totalContacts) {
-				if (totalContacts != 0 && isFlying()) land();
-			}
-		};
-		
 		sensors = new ArrayList<Sensor>();
-		Sensor flightSensor = new CountingSensor(contactListener, flightSensorListener, world, assets, "duck_flight_sensor", .2f, 0, 2);
 		Sensor landingSensor = new CountingSensor(contactListener, landingSensorListener, world, assets, "duck_landing_sensor", .2f, 0, 2);
 		grabSensor = new ContentSensor(contactListener, null, world, assets, "duck_grab_sensor", .2f, 0, 3);
-		Collections.addAll(sensors, flightSensor, landingSensor, grabSensor);
+		Collections.addAll(sensors, landingSensor, grabSensor);
 		for (Sensor sensor : sensors) sensor.weld(world, currentBody);
 		quackSound = assets.get("sfx/quack_dummy.ogg");
 		
@@ -402,6 +397,7 @@ public class Player extends Entity<Player>{
 			grabbedObject.setLinearVelocity(grabVelocity.x, 0f);
 			grabbedObject.applyLinearImpulse(0, grabbedObject.getMass()*2, grabPos.x, grabPos.y, true);
 		}
+		if (!grounded) fly();
 	}
 	
 	public void stopMovingLeft() {
