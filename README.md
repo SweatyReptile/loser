@@ -20,4 +20,4 @@ All art assets are licensed under the [Creative Commons Attribution-NonCommercia
 <a href="http://mnmn.me/duck.webm" target=“_blank”>![Menu Screen](http://mnmn.me/duckplay.gif)</a>
 
 ###Test Level###
-<a href="http://mnmn.me/duck1.webm" target=“_blank”>![Test Level](http://mnmn.me/duck1play.gif)]</a>
+<a href="http://mnmn.me/duck1.webm" target=“_blank”>![Test Level](http://mnmn.me/duck1play.gif)</a>
