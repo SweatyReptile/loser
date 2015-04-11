@@ -2,10 +2,10 @@ Videos
 ======
 Gameplay demo video:
 
-[![Gameplay](assetsrc/images/screenshots/gameplay.png?raw=true)](https://youtu.be/tGQSMRsMdI8)
+[![Gameplay](assetsrc/images/screenshots/gameplay.png?raw=true)](https://youtu.be/tGQSMRsMdI8){:target="_blank"}
 
 In-game console demo video:
-[![Console Demo](assetsrc/images/screenshots/console.png?raw=true)](https://youtu.be/7PblE93kbjA)
+[![Console Demo](assetsrc/images/screenshots/console.png?raw=true)](https://youtu.be/7PblE93kbjA){:target="_blank"}
 
 
 Building
