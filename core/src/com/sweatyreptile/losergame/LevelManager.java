@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
@@ -128,9 +129,18 @@ public class LevelManager {
 	}
 	
 	public void lvl_reload_all(){
-		FileHandle[] levels = Gdx.files.internal("data/levels/").list();
-		for (FileHandle file : levels){
-			lvl_load(file.nameWithoutExtension());
+		// WHY WHY WHY WHY WHY
+		// See: backgrounds hack in LoserGame.java
+		boolean hack = true;
+		if (hack && Gdx.app.getType() == ApplicationType.Desktop){
+			lvl_load("test_editor");
+			lvl_load("test_home");
+		}
+		else{
+			FileHandle[] levels = Gdx.files.internal("data/levels/").list();
+			for (FileHandle file : levels){
+				lvl_load(file.nameWithoutExtension());
+			}
 		}
 	}
 	

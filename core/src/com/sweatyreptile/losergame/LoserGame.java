@@ -3,6 +3,7 @@ package com.sweatyreptile.losergame;
 import aurelienribon.bodyeditor.FixedBodyEditorLoader;
 import aurelienribon.tweenengine.Tween;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -104,9 +105,34 @@ public class LoserGame extends Game implements ScreenFinishedListener{
 	}
 
 	private void loadBackgrounds(TextureParameter filtering) {
-		FileHandle[] bgDir = Gdx.files.internal("img/bg/").list();
-		for (FileHandle file : bgDir){
-			assets.load(file.path(), Texture.class, filtering);
+		boolean hack = true;
+		if(hack && Gdx.app.getType() == ApplicationType.Desktop){
+			// Hack, because listing classpath directories
+			// isn't supported, and that's how the files are
+			// packaged on desktop.
+			// To update this for new files, turn off the hack
+			// and watch the log for entries like this:
+			//
+			// BGLoad: img/bg/background.png
+			// BGLoad: img/bg/background_extended.png
+			// BGLoad: img/bg/menu_dummy_0.png
+			// BGLoad: img/bg/menu_dummy_1.png
+			// BGLoad: img/bg/menu_dummy_2.png
+			// BGLoad: img/bg/void.png
+			// Just add them to the list... :(
+			assets.load("img/bg/background.png", Texture.class, filtering);
+			assets.load("img/bg/background_extended.png", Texture.class, filtering);
+			assets.load("img/bg/menu_dummy_0.png", Texture.class, filtering);
+			assets.load("img/bg/menu_dummy_1.png", Texture.class, filtering);
+			assets.load("img/bg/menu_dummy_2.png", Texture.class, filtering);
+			assets.load("img/bg/void.png", Texture.class, filtering);
+		}
+		else{
+			FileHandle[] bgDir = Gdx.files.internal("img/bg/").list();
+			for (FileHandle file : bgDir){
+				Gdx.app.log("BGLoad", file.path());
+				assets.load(file.path(), Texture.class, filtering);
+			}
 		}
 	}
 
