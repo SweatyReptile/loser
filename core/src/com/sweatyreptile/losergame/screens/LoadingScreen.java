@@ -1,18 +1,24 @@
 package com.sweatyreptile.losergame.screens;
 
-import com.badlogic.gdx.Screen;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.sweatyreptile.losergame.LevelManager;
 
-public class LoadingScreen extends FinishableScreen{
+public class LoadingScreen implements FinishableScreen{
 
+	private List<LoadingFinishedListener> listeners;
 	private AssetManager loader;
+	private LevelManager levelManager;
 	
-	public LoadingScreen(ScreenFinishedListener listener, AssetManager loader, Screen nextScreen) {
-		super(listener, nextScreen);
+	public LoadingScreen(AssetManager loader, LevelManager levelManager) {
 		new World(new Vector2(0, 0), false);
 		this.loader = loader;
+		this.levelManager = levelManager;
+		this.listeners = new ArrayList<LoadingFinishedListener>();
 	}
 
 	@Override
@@ -58,4 +64,20 @@ public class LoadingScreen extends FinishableScreen{
 
 	}
 
+	@Override
+	public void finish() {
+		for (LoadingFinishedListener listener : listeners){
+			listener.run();
+		}
+		levelManager.lvl("test_menu");
+	}
+	
+	public void addListener(LoadingFinishedListener listener){
+		listeners.add(listener);
+	}
+
+	public static interface LoadingFinishedListener {
+		public void run();
+	}
+	
 }

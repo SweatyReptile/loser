@@ -1,17 +1,15 @@
 package com.sweatyreptile.losergame;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
@@ -41,10 +39,13 @@ public class Entity <T extends Entity<?>>{
 	protected LoserContactListener contactListener;
 	
 	private String speech;
-	private BitmapFont speechFont;
 	private Task speechTask;
 	private static final float SPEECH_PADDING = 0.05f;
 	private static final float SEC_PER_CHAR = 0.2f;
+	
+	private EntityFixtureDef fixtureDef;
+	private boolean flipped;
+	protected boolean isSpecial;
 	
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, String name){
 		this.sprite = new Sprite();
@@ -55,6 +56,9 @@ public class Entity <T extends Entity<?>>{
 	public Entity(World world, LoserContactListener contactListener, BodyDef bodyDef, 
 			EntityFixtureDef fixtureDef, float scale, 
 			boolean flipped, String name) {
+		this.fixtureDef = fixtureDef;
+		this.flipped = flipped;
+		this.world = world;
 		
 		setUpEntity(world, bodyDef, name, contactListener);
 		Texture spriteTexture = fixtureDef.getTexture();
@@ -62,7 +66,7 @@ public class Entity <T extends Entity<?>>{
 		float spriteScale = scale;
 		float bodyScale = 0f;
 		if (bodyDef.type == BodyType.DynamicBody){
-			bodyScale = 0.84f * scale;
+			bodyScale = 0.82f * scale;
 		}
 		else {
 			bodyScale = scale;
@@ -99,13 +103,7 @@ public class Entity <T extends Entity<?>>{
 	}
 	
 	
-	@SuppressWarnings("deprecation")
 	private void setUpSpeech() {
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("corbelb.ttf"));
-		speechFont = generator.generateFont(18);
-		speechFont.setScale(.0025f);
-		speechFont.setColor(Color.BLACK);
-		generator.dispose();
 		speechTask = new Task() {
 			@Override
 			public void run() {
@@ -126,7 +124,10 @@ public class Entity <T extends Entity<?>>{
 	
 	public void render(SpriteBatch renderer){
 		sprite.draw(renderer);
-		if (speech != null) speechFont.draw(renderer, speech, getSpeechX(), getSpeechY());
+	}
+	
+	public void renderSpeech(SpriteBatch renderer, BitmapFont font){
+		if (speech != null) font.draw(renderer, speech, getSpeechX(font), getSpeechY(font));
 	}
 	
 	public void update(float delta){
@@ -143,10 +144,23 @@ public class Entity <T extends Entity<?>>{
 		sprite.setRotation(MathUtils.radiansToDegrees * currentBody.getAngle());
 	}
 	
+	private float delaySeconds(String speech){
+		return speech.replaceAll("[^\\p{L}\\p{Nd}]", "").length()*SEC_PER_CHAR;
+	}
+	
 	public void talk(String speech){
 		this.speech = speech;
 		if (speechTask.isScheduled()) speechTask.cancel();
-		Timer.schedule(speechTask, speech.length()*SEC_PER_CHAR);
+		Timer.schedule(speechTask, delaySeconds(speech));
+	}
+	
+	public void talk(String[] phrases) {
+		talk(generatePhrase(phrases));
+	}
+	
+	private String generatePhrase(String[] phrases){
+		int random = (int) (Math.random()*phrases.length);
+		return phrases[random];
 	}
 
 	private void clearSpeech(){
@@ -154,11 +168,17 @@ public class Entity <T extends Entity<?>>{
 	}
 	
 	public void setX(float x){
+		currentBody.setTransform(x, currentBody.getPosition().y, currentBody.getAngle());
 		sprite.setX(x);
 	}
 	
 	public void setY(float y){
+		currentBody.setTransform(currentBody.getPosition().x, y, currentBody.getAngle());
 		sprite.setY(y);
+	}
+	
+	public void setPosition(float x, float y){
+		currentBody.setTransform(x, y, currentBody.getAngle());
 	}
 
 	public String getName() {
@@ -169,12 +189,73 @@ public class Entity <T extends Entity<?>>{
 		contactListener.addEntityListener(name, listener);
 	}
 	
-	private float getSpeechY() {
-		return sprite.getY() + sprite.getHeight() + speechFont.getBounds(speech).height + SPEECH_PADDING; //speech cannot be null, only works with single sprite entities
+	// For the below two methods, speech cannot be null, 
+	// and only works with single sprite entities
+	
+	private float getSpeechY(BitmapFont font) {
+		return sprite.getY() + sprite.getHeight() + font.getBounds(speech).height + SPEECH_PADDING;
 	}
 
-	private float getSpeechX() {
-		return sprite.getX() + sprite.getWidth()/2 - speechFont.getBounds(speech).width/2; //speech cannot be null, only works with single sprite entities
+	private float getSpeechX(BitmapFont font) {
+		return sprite.getX() + sprite.getWidth()/2 - font.getBounds(speech).width/2; 
+	}
+	
+	public Body getBody(){
+		return currentBody;
+	}
+
+	public float getX() {
+		updateSprite(0);
+		return sprite.getX();
+	}
+	
+	public float getY() {
+		updateSprite(0);
+		return sprite.getY();
+	}
+
+	public float getWidth() {
+		return sprite.getWidth();
+	}
+	
+	public float getHeight() {
+		return sprite.getHeight();
+	}
+
+	public void setFixedRotation(boolean rotation) {
+		currentBody.setFixedRotation(rotation);
+	}
+
+	public EntityData getEntityData() {
+		return new EntityData(name, currentBody.getType(), getX(), getY(),
+				fixtureDef.density, fixtureDef.restitution, 
+				fixtureDef.friction, fixtureDef.isSensor, isSpecial, flipped);
+	}
+
+	public void setSpecial(boolean special) {
+		this.isSpecial = special;
+	}
+
+	public boolean isSpecial() {
+		return isSpecial;
+	}
+
+	public void destroy() {
+		world.destroyBody(currentBody);
+	}
+
+	/**
+	 * In radians.
+	 */
+	public float getRotation() {
+		return currentBody.getAngle();
+	}
+
+	/**
+	 * In radians.
+	 */
+	public void setRotation(float rotation) {
+		currentBody.setTransform(currentBody.getPosition(), rotation);
 	}
 	
 }

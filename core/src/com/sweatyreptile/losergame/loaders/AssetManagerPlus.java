@@ -10,8 +10,10 @@ import aurelienribon.bodyeditor.FixedBodyEditorLoader;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
+import com.badlogic.gdx.assets.loaders.TextureLoader.TextureParameter;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 
 /**
  * 
@@ -65,9 +67,13 @@ public class AssetManagerPlus extends AssetManager {
 			FixedBodyEditorLoader loader = new FixedBodyEditorLoader(Gdx.files.internal(loaderNameString));
 			bodyEditorLoaders.put(loaderNameString,loader);
 			
+			TextureParameter filtering = new TextureParameter();
+			filtering.minFilter = TextureFilter.Linear;
+			filtering.magFilter = TextureFilter.Linear;
+			
 			List<String> images = loader.getImagePaths();
 			for (String image : images){
-				load(image, Texture.class);
+				load(image, Texture.class, filtering);
 			}
 		}
 		bodiesLoaded = true;

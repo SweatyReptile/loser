@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Stack;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -21,6 +20,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.sweatyreptile.losergame.DuckQuackTopFixtureDef;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityListener;
+import com.sweatyreptile.losergame.FixtureWrapper;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.fixtures.DuckFixtureDef;
 import com.sweatyreptile.losergame.fixtures.DuckQuackFixtureDef;
@@ -75,6 +75,8 @@ public class Player extends Entity<Player>{
 	
 	private float bodyHeight; //Assumes all standing bodies are the same height
 	private float duckingBodyHeight; //Assumes all ducking bodies are the same height
+	
+	private boolean grounded;
 
 	public Player(World world, LoserContactListener contactListener, BodyDef def, AssetManagerPlus assets) {
 		super(world, contactListener, def, "duck");
@@ -137,35 +139,31 @@ public class Player extends Entity<Player>{
 		contactFixer = new PlayerContactFixerListener();
 		addListener(contactFixer);
 		
-		CountingSensorListener flightSensorListener = new CountingSensorListener() {
-			@Override public void contactAdded(int totalContacts){}
+		CountingSensorListener landingSensorListener = new CountingSensorListener() {
 			@Override public void contactRemoved(int totalContacts) {
-				if (totalContacts == 0 && !isFlying()) {
-					fly();
+				if (totalContacts == 0) grounded = false;
+			}
+			@Override public void contactAdded(int totalContacts) {
+				if (totalContacts != 0){
+					grounded = true;
+					if (isFlying()) land();
 				}
 			}
 		};
 		
-		CountingSensorListener landingSensorListener = new CountingSensorListener() {
-			@Override public void contactRemoved(int totalContacts) {}
-			@Override public void contactAdded(int totalContacts) {
-				if (totalContacts != 0 && isFlying()) land();
-			}
-		};
-		
 		sensors = new ArrayList<Sensor>();
-		Sensor flightSensor = new CountingSensor(contactListener, flightSensorListener, world, assets, "duck_flight_sensor", .2f, 0, 2);
 		Sensor landingSensor = new CountingSensor(contactListener, landingSensorListener, world, assets, "duck_landing_sensor", .2f, 0, 2);
 		grabSensor = new ContentSensor(contactListener, null, world, assets, "duck_grab_sensor", .2f, 0, 3);
-		Collections.addAll(sensors, flightSensor, landingSensor, grabSensor);
+		Collections.addAll(sensors, landingSensor, grabSensor);
 		for (Sensor sensor : sensors) sensor.weld(world, currentBody);
-		quackSound = assets.get("quack_dummy.ogg");
+		quackSound = assets.get("sfx/quack_dummy.ogg");
 		
 		bodyHeight = extractBodyHeight(leftBody);
 		duckingBodyHeight = extractBodyHeight(leftDuckingBody);
 		
 	}
 	
+	@Override
 	public void update(float delta) {
 
 		for (Sensor sensor : sensors) {
@@ -184,6 +182,12 @@ public class Player extends Entity<Player>{
 				if (!ducking) currentBody.setLinearVelocity(MAX_VELOCITY, velocity.y);
 				else currentBody.setLinearVelocity(MAX_VELOCITY/2, velocity.y);
 	
+			}
+		}
+		if (!isMoving() && isFlying()) {
+			Vector2 velocity = currentBody.getLinearVelocity();
+			if (Float.compare(velocity.x, 0f) != 0) {
+				currentBody.applyForceToCenter(-velocity.x/5, 0f, true);
 			}
 		}
 		
@@ -385,7 +389,7 @@ public class Player extends Entity<Player>{
 		Vector2 position = currentBody.getPosition();
 		Vector2 velocity = currentBody.getLinearVelocity();
 		currentBody.setLinearVelocity(velocity.x, 0f);
-		currentBody.applyLinearImpulse(0, 0.55f, position.x, position.y, true);
+		currentBody.applyLinearImpulse(0, 0.40f, position.x, position.y, true);
 		
 		if (grabbedObject != null){
 			Vector2 grabPos = grabbedObject.getPosition();
@@ -393,6 +397,7 @@ public class Player extends Entity<Player>{
 			grabbedObject.setLinearVelocity(grabVelocity.x, 0f);
 			grabbedObject.applyLinearImpulse(0, grabbedObject.getMass()*2, grabPos.x, grabPos.y, true);
 		}
+		if (!grounded) fly();
 	}
 	
 	public void stopMovingLeft() {
@@ -402,7 +407,7 @@ public class Player extends Entity<Player>{
 			currentBody.setLinearVelocity(velocity.x*2/3, velocity.y);
 		}
 	}
-	
+				
 	public void stopMovingRight(){
 		if (movingDirection == Direction.RIGHT){
 			movingDirection = Direction.NONE;
@@ -439,6 +444,11 @@ public class Player extends Entity<Player>{
 		else body.setTransform(currentBody.getPosition(), 0f);
 	}
 	
+	public void standRight(){
+		switchBody(currentBody, rightBody, false);
+		flipSprites(true);
+	}
+	
 	private float extractBodyHeight(Body body){
 		Vector2 currentPos = currentBody.getPosition();
 		float lowestValue = currentPos.x;
@@ -462,10 +472,6 @@ public class Player extends Entity<Player>{
 		quackingSprite.setFlip(horizontal, false);
 		quackingDuckingSprite.setFlip(horizontal, false);
 	}
-
-	public Body getBody() {
-		return currentBody;
-	}
 	
 	public boolean isFlying(){
 		return flying;
@@ -483,41 +489,38 @@ public class Player extends Entity<Player>{
 		
 		// Holds current player contacts so that they may be flushed
 		// when the player switches bodies
-		private Stack<Array<Fixture>> startedContacts = new Stack<Array<Fixture>>();
+		private Stack<Array<FixtureWrapper>> startedContacts = new Stack<Array<FixtureWrapper>>();
 		
 		@Override
-		public void beginContact(Player entity, Fixture entityFixture, Fixture contacted) {
-			Array<Fixture> group = new Array<Fixture>(2);
-			group.add(entityFixture);
-			group.add(contacted);
-			startedContacts.push(group);
-			Gdx.app.log("Player", "Touched something, size: " + startedContacts.size());
+		public void beginContact(Player entity, FixtureWrapper entityFixture, FixtureWrapper contacted) {
+			Array<FixtureWrapper> collisionCouple = new Array<FixtureWrapper>(2);
+			collisionCouple.add(entityFixture);
+			collisionCouple.add(contacted);
+			startedContacts.push(collisionCouple);
 		}
 
 		@Override
-		public void endContact(Player entity, Fixture entityFixture, Fixture contacted) {
+		public void endContact(Player entity, FixtureWrapper entityFixture, FixtureWrapper contacted) {
 			for (int i = 0; i < startedContacts.size(); i++){
-				Array<Fixture> group = startedContacts.get(i);
-				Fixture storedEntityFixture = group.get(0);
-				Fixture storedContactedFixture = group.get(1);
+				Array<FixtureWrapper> collisionCouple = startedContacts.get(i);
+				FixtureWrapper storedEntityFixture = collisionCouple.get(0);
+				FixtureWrapper storedContactedFixture = collisionCouple.get(1);
 				if (entityFixture.equals(storedEntityFixture) &&
 						contacted.equals(storedContactedFixture)){
-					startedContacts.remove(group);
-					break; // We only need remove one instance of this group
-					       // because only one contact was ended
+					startedContacts.remove(collisionCouple);
+					break; // We only need remove one instance of these
+					       // fixtures because only one contact was ended
 				}
 			}
-			Gdx.app.log("Player", "Stopped touching something!, size: " + startedContacts.size());
 		}
 		
 		public void flushContacts(LoserContactListener contactListener){
-			Gdx.app.log("Player", "Flushing contacts!");
 			while(!startedContacts.isEmpty()){
-				Array<Fixture> group = startedContacts.pop();
-				Fixture storedEntityFixture = group.get(0);
-				Fixture storedContactedFixture = group.get(1);
-				contactListener.processFixture(storedEntityFixture, storedContactedFixture, false);
-				contactListener.processFixture(storedContactedFixture, storedEntityFixture, false);
+				Array<FixtureWrapper> group = startedContacts.pop();
+				FixtureWrapper storedEntityFixture = group.get(0);
+				FixtureWrapper storedContactedFixture = group.get(1);
+				contactListener.processFixture(storedEntityFixture.getFixture(), storedContactedFixture.getFixture(), false);
+				contactListener.processFixture(storedContactedFixture.getFixture(), storedEntityFixture.getFixture(), false);
 			}
 		}
 		

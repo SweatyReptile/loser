@@ -50,21 +50,24 @@ public class LoserContactListener implements ContactListener {
 				SensorListener listener = sensorListeners.get(contactor.getBody().getUserData());
 				if (listener == null) throw new IllegalArgumentException("Listener named " + contactor.getUserData() + " is not in SensorContactListener");
 				if (beginContact) {
-					listener.beginContact(contactor, contactee);
+					listener.beginContact(new FixtureWrapper(contactor), new FixtureWrapper(contactee));
 				}
 				else {
-					listener.endContact(contactor, contactee);
+					listener.endContact(new FixtureWrapper(contactor), new FixtureWrapper(contactee));
 				}
 			}
 			else if (!contactor.isSensor()){
 				Entity<?> entity = (Entity<?>) contactor.getBody().getUserData();
-				EntityListener<Entity<?>> listener = (EntityListener<Entity<?>>) entityListeners.get(entity.getName());
+				
+				@SuppressWarnings("unchecked")
+					EntityListener<Entity<?>> listener = (EntityListener<Entity<?>>) entityListeners.get(entity.getName());
+				
 				if (listener != null){
 					if (beginContact) {
-						listener.beginContact(entity, contactor, contactee);
+						listener.beginContact(entity, new FixtureWrapper(contactor), new FixtureWrapper(contactee));
 					}
 					else {
-						listener.endContact(entity, contactor, contactee);
+						listener.endContact(entity, new FixtureWrapper(contactor), new FixtureWrapper(contactee));
 					}
 				}
 			}
@@ -79,13 +82,11 @@ public class LoserContactListener implements ContactListener {
 
 	@Override
 	public void preSolve(Contact contact, Manifold oldManifold) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void postSolve(Contact contact, ContactImpulse impulse) {
-		// TODO Auto-generated method stub
 
 	}
 

@@ -15,10 +15,10 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = '1.0'
+    version = 'develop'
     ext {
         appName = 'my-gdx-game'
-        gdxVersion = '1.0.1-SNAPSHOT'
+        gdxVersion = '1.0.1'
         roboVMVersion = '0.0.11'
     }
 
@@ -97,6 +97,7 @@ project(":core") {
         compile "com.badlogicgames.box2dlights:box2dlights:1.1"
         compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
+        compile fileTree(dir: 'lib', include: '*.jar')
     }
 }
 

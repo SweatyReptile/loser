@@ -2,14 +2,10 @@ package com.sweatyreptile.losergame.entities;
 
 import java.util.Stack;
 
-import sun.rmi.runtime.Log;
-
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.World;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.LoserContactListener;
@@ -22,7 +18,7 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 
 	private ContentSensor quackSensor;
 	private Music music;
-	private static final float MAX_DISTANCE = 2;
+	private static final float MAX_DISTANCE = 5;
 	
 	private Player player;
 	private AssetManagerPlus assets;
@@ -40,13 +36,12 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 		music.setLooping(true);
 		if (autoPlay) music.play();
 		
-		Gdx.app.log("Radio", this.player.toString());
-		
 		ContentSensorListener quackSensorListener = new MusicPlayerContentSensorListener();
 		quackSensor = new ContentSensor(contactListener, quackSensorListener, world, assets, "default_sensor", .5f, 0, 0);
 		quackSensor.setCenterRoundSensor(sprite);
 		quackSensor.weld(world, currentBody);
 		
+		isSpecial = true;
 	}
 	
 	public void setRange(String name, float scale, Object userData, int index1, int index2, boolean setCenter){
@@ -87,8 +82,6 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 		
 		@Override
 		public void bodyAdded(Stack<Body> contents) {
-			Gdx.app.log("Radio", player.toString());
-			Gdx.app.log("Radio", "Added. Size: " + contents.size());
 			Body lastBody = contents.peek();
 			if (isPlayer(lastBody)){	
 				Player player = (Player) lastBody.getUserData();
@@ -100,7 +93,6 @@ public class MusicPlayer extends Entity<MusicPlayer> {
 
 		@Override
 		public void bodyRemoved(Stack<Body> contents) {
-			Gdx.app.log("Radio", "Removed. Size: " + contents.size());
 			
 		}
 		

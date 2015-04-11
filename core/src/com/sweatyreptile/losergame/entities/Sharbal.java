@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.Timer.Task;
 import com.sweatyreptile.losergame.Entity;
 import com.sweatyreptile.losergame.EntityListener;
+import com.sweatyreptile.losergame.FixtureWrapper;
 import com.sweatyreptile.losergame.LoserContactListener;
 import com.sweatyreptile.losergame.fixtures.EntityFixtureDef;
 import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
@@ -21,7 +22,11 @@ public class Sharbal extends Entity<Sharbal> {
 	
 	private ContentSensor sensor;
 	
-	private static final String[] DEFAULT_PHRASES = new String[]{"go away", "i hate u", "who are you even"};
+	private static final String[] DEFAULT_PHRASES = new String[]{
+		"go away", "i hate u", "who are you even", "leave me alone", "shoo", 
+		"SWEATY REPTILES UNITE!", "i miss clib", "i kick ducks like you", "wow i m cute",
+		"*clever remark*", "i want a donut", "*reptile noise*", "u think ur so cool but ur nothing but a fool"};
+	private static final String[] OUCH_PHRASES = new String[]{"ow", "ouch", "owwwies!"};
 	private Task respondTask;
 	
 	private static final float PAINFUL_VELOCITY = 3f;
@@ -43,9 +48,10 @@ public class Sharbal extends Entity<Sharbal> {
 		respondTask = new Task() {
 			@Override
 			public void run() {
-				talk(generatePhrase(phrases2));
+				talk(phrases2);
 			}
 		};
+		isSpecial = true;
 	}
 	
 	public Sharbal(World world, LoserContactListener contactListener,
@@ -61,12 +67,6 @@ public class Sharbal extends Entity<Sharbal> {
 		sensor.update(delta);
 	}
 	
-	private String generatePhrase(String[] phrases){
-		int random = (int) (Math.random()*phrases.length);
-		System.out.println(random);
-		return phrases[random];
-	}
-	
 	private class SharbalContentSensorListener implements ContentSensorListener {
 
 		//private boolean playerEntered;
@@ -78,8 +78,7 @@ public class Sharbal extends Entity<Sharbal> {
 			if (isPlayer(lastBody)){
 				Player player = (Player) lastBody.getUserData();
 				if (player.isQuacking()){
-					if (respondTask.isScheduled()) respondTask.cancel();
-					Timer.schedule(respondTask, 1f);
+					if (!respondTask.isScheduled()) Timer.schedule(respondTask, 1f);
 				}
 				/*if (!playerEntered){
 					talk(generatePhrase(phrases));
@@ -114,20 +113,20 @@ public class Sharbal extends Entity<Sharbal> {
 		Body fastBody;
 		
 		@Override
-		public void beginContact(Sharbal entity, Fixture entityFixture,
-				Fixture contactee) {
+		public void beginContact(Sharbal entity, FixtureWrapper entityFixture,
+				FixtureWrapper contactee) {
 			Vector2 velocityVector = contactee.getBody().getLinearVelocity();
 			float velocity = (float) Math.pow((float) Math.pow(velocityVector.x, 2) + (float) Math.pow(velocityVector.y, 2), 0.5);
 			if (velocity > PAINFUL_VELOCITY && fastBody == null){
 				fastBody = contactee.getBody();
-				talk(generatePhrase(new String[]{"ow", "ouch", "owwwies!"}));
+				talk(OUCH_PHRASES);
 			}
 			
 		}
 
 		@Override
-		public void endContact(Sharbal entity, Fixture entityFixture,
-				Fixture contactee) {
+		public void endContact(Sharbal entity, FixtureWrapper entityFixture,
+				FixtureWrapper contactee) {
 			if (contactee.getBody() == fastBody) fastBody = null;
 			
 		}

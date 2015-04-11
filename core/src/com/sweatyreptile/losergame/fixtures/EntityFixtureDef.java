@@ -9,19 +9,26 @@ import com.sweatyreptile.losergame.loaders.AssetManagerPlus;
 
 public class EntityFixtureDef extends FixtureDef {
 
-	private AssetManagerPlus assets;
-	private FixedBodyEditorLoader loader;
-	private String loaderName = "duck.json";
+	private transient AssetManagerPlus assets;
+	private transient FixedBodyEditorLoader loader;
+	private transient String loaderName = "duck.json";
 	private String name;
 	
-	public EntityFixtureDef(AssetManagerPlus assets, String name) {
-		this.loader = assets.get(loaderName, FixedBodyEditorLoader.class);
-		this.assets = assets;
-		this.name = name;
-		
+	public EntityFixtureDef(){
 		density = 0.0001f;
 		friction = 0.4f;
 		restitution = 0f;
+	}
+	
+	public EntityFixtureDef(String name){
+		this();
+		this.name = name;
+	}
+	
+	public EntityFixtureDef(AssetManagerPlus assets, String name) {
+		this(name);
+		this.assets = assets;
+		this.loader = assets.get(loaderName, FixedBodyEditorLoader.class);
 	}
 	
 	public void attach(Body body, float scale, boolean flipped) {
