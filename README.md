@@ -1,3 +1,13 @@
+Videos
+======
+Gameplay demo video:
+
+[![Gameplay](assetsrc/images/screenshots/gameplay.png?raw=true)](https://youtu.be/tGQSMRsMdI8)
+
+In-game console demo video:
+[![Console Demo](assetsrc/images/screenshots/console.png?raw=true)](https://youtu.be/7PblE93kbjA)
+
+
 Building
 ========
 [![Build Status](https://travis-ci.org/SweatyReptile/loser.svg?branch=develop)](https://travis-ci.org/SweatyReptile/loser)
