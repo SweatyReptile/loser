@@ -7,7 +7,7 @@ If the game doesn't start when you double-click `duck.jar`, run the following co
 java -jar path/to/file/duck.jar
 ```
 
-If you just want to see gameplay, scroll down for some video links
+**If you just want to see gameplay, scroll down for some video links**
 
 Building
 ========
@@ -26,11 +26,11 @@ gradlew.bat :desktop:run
 
 Videos
 ======
-Gameplay demo video:
+**Gameplay demo video:**
 
 <a href="https://youtu.be/tGQSMRsMdI8" target="_blank">![Gameplay](assetsrc/images/screenshots/gameplay.png?raw=true)</a>
 
-In-game console demo video:
+**In-game console demo video:**
 <a href="https://youtu.be/7PblE93kbjA" target="_blank">![Console Demo](assetsrc/images/screenshots/console.png?raw=true)</a>
 
 License
