@@ -1,3 +1,27 @@
+Playing
+=======
+Download the latest build here: [duck.jar](https://github.com/SweatyReptile/loser/releases)
+
+If the game doesn't start when you double-click `duck.jar`, run the following command
+```
+java -jar path/to/file/duck.jar
+```
+
+Building
+========
+[![Build Status](https://travis-ci.org/SweatyReptile/loser.svg?branch=develop)](https://travis-ci.org/SweatyReptile/loser)
+
+Unfortunately, you probably need the android SDK set up somewhere, and that directory needs to be in the `ANDROID_HOME` environment variable.
+
+```bash
+git clone https://github.com/SweatyReptile/loser.git
+cd loser
+# If you have a bash environment,
+./gradlew :desktop:run
+# On windows,
+gradlew.bat :desktop:run
+```
+
 Videos
 ======
 Gameplay demo video:
@@ -6,12 +30,6 @@ Gameplay demo video:
 
 In-game console demo video:
 <a href="https://youtu.be/7PblE93kbjA" target="_blank">![Console Demo](assetsrc/images/screenshots/console.png?raw=true)</a>
-
-
-Building
-========
-[![Build Status](https://travis-ci.org/SweatyReptile/loser.svg?branch=develop)](https://travis-ci.org/SweatyReptile/loser)
-
 
 License
 =======
