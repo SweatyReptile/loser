@@ -7,6 +7,8 @@ If the game doesn't start when you double-click `duck.jar`, run the following co
 java -jar path/to/file/duck.jar
 ```
 
+If you just want to see gameplay, scroll down for some video links
+
 Building
 ========
 [![Build Status](https://travis-ci.org/SweatyReptile/loser.svg?branch=develop)](https://travis-ci.org/SweatyReptile/loser)
